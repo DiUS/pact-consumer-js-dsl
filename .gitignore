@@ -1,0 +1,7 @@
+node_modules
+bower_components
+pact_tests/logs/
+pact_tests/project/project
+pact_tests/project/target
+pact_tests/target/
+

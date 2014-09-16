@@ -1,0 +1,12 @@
+{
+  "name": "pact-js-dsl",
+  "version": "0.0.1",
+  "authors": [
+    "Fu Ying <fu.ying.er@rea-group.com>"
+  ],
+  "main": ["dist/pact-js-dsl.js"],
+  "dependencies": {
+    "jquery": "~1.8.3"
+  },
+  "devDependencies": {}
+}
