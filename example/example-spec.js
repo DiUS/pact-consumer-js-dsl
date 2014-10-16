@@ -40,7 +40,7 @@ define(['jquery', 'pactBuilder', 'interaction'],
                     });
                 };
 
-                pactProvider.runPact(setClientEndPoint, testClient);
+                pactProvider.runInteractions(setClientEndPoint, testClient);
             });
         });
     });

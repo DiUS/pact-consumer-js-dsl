@@ -63,7 +63,7 @@ define('pactBuilder', ['jquery', 'pact'],
             });
         };
 
-        PactBuilder.prototype.runPact = function (setup, test) {
+        PactBuilder.prototype.runInteractions = function (setup, test) {
 
             var self = this;
             var port;

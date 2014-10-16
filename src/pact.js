@@ -4,9 +4,7 @@ define('pact', [], function () {
 		this.consumer = {};
 		this.interactions = [];
 		this.metadata = {
-			"pact_gem" : {
-			"version" : "1.0.9"
-			}
+			"pactSpecificationVersion" : "1.0.0"
 		};
 	}
 
