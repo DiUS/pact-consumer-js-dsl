@@ -82,76 +82,143 @@ define('pactBuilder', ['jquery', 'pact'],
         };
 
         PactBuilder.prototype.setup = function () {
+            console.log("In setup");
+            debugger;
             var self = this,
                 interactions = self.pact.interactions;
-
             $.ajax({
-                url: "http://localhost:29999/create?state=" + interactions[0].provider_state,
-                type: "POST",
-                data: JSON.stringify(this.pact),
-                dataType: "json",
-                async: false
-            }).done(function (data) {
-                    self.port = data.port;
-                }).fail(function (error) {
-                    self.port = error;
-                });
+                url: "http://127.0.0.1:1234/interactions",
+                type: "DELETE",
+                beforeSend: function (request)
+                {
+                    request.setRequestHeader("X-Pact-Mock-Service", true);
+                },
+                async: false,
+                success: function (data) {console.log("success delete: "+data);  },
+                error: function (jqXHR, textStatus, errorThrown) { console.log("error sending delete: "+errorThrown);}
+            }).always(function (data) {
+                console.dir(data);
+            });
+            console.log("Sent DELETE request :::");
 
-            return self.port;
+//
+//            var testInteraction = {
+//                "description": "a request for foo",
+//                "provider_state": "foo exists",
+//                "request": {
+//                    "method": "get",
+//                    "path": "/foo"
+//                },
+//                "response": {
+//                    "status": 200,
+//                    "headers": {
+//                        "Content-Type": "application/json"
+//                    },
+//                    "body": {
+//                        "foo": "bar"
+//                    }
+//                }
+//            };
+
+            //We need to send mu;tiple requests for each interaction
+            for (var i=0; i < this.pact.interactions.length; i++) {
+                $.ajax({
+                    url: "http://127.0.0.1:1234/interactions",
+                    type: "POST",
+                    beforeSend: function (request)
+                    {
+                        request.setRequestHeader("X-Pact-Mock-Service", true);
+                    },
+                    contentType: "application/json",
+                    data: JSON.stringify(this.pact.interactions[i]),
+                    dataType: "json",
+                    async: false,
+                    success: function (data) { console.log("success post: "+data); },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        debugger;
+                        console.log("error sending post errorThrown : "+errorThrown);
+                        console.log("error sending post responseText : "+jqXHR.responseText);
+                        console.log("error sending post jqXHR.status : "+jqXHR.status);
+                    }
+                }).always(function (data) {
+                    console.dir(data);
+                });
+                console.log("Sent POST request with ::: "+JSON.stringify(this.pact.interactions[i]));
+            }
+
+            return 1234;
         };
 
         PactBuilder.prototype.verify = function (statePort) {
+            console.log("In verify :::: "+ statePort);
             var response;
             $.ajax({
-                url: "http://localhost:29999/complete",
-                type: "POST",
-                data: JSON.stringify({"port": statePort}),
-                dataType: "json",
-                async: false
+                //url: "http://localhost:1234/complete",
+                url: "http://127.0.0.1:1234/interactions/verification",
+                type: "GET",
+                beforeSend: function (request)
+                {
+                    request.setRequestHeader("X-Pact-Mock-Service", true);
+                },
+                //data: JSON.stringify({"port": statePort}),
+               // dataType: "json",
+                async: false,
+                success: function (data) { console.log("success verification: "+data); },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    debugger;
+                    console.log("error verification errorThrown : "+errorThrown);
+                    console.log("error verification responseText : "+jqXHR.responseText);
+                    console.log("error verification jqXHR.status : "+jqXHR.status);
+                }
             }).done(function (data) {
-                    response = data;
-                });
+                console.log(data);
+                response = data;
+            });
 
             return response;
         };
 
-        PactBuilder.prototype.runAndWait = function (f) {
-            var latch = false;
-            runs(function () {
-                f();
-                latch = true;
-            });
-            waitsFor(function () {
-                return latch;
-            });
-        };
+//        PactBuilder.prototype.runAndWait = function (f) {
+//            var latch = false;
+//            runs(function () {
+//                f();
+//                latch = true;
+//            });
+//            waitsFor(function () {
+//                return latch;
+//            });
+//        };
 
-        PactBuilder.prototype.runPact = function (setup, test) {
+        PactBuilder.prototype.runPact = function (clientSetup, test) {
 
             var self = this;
             var port;
-            self.runAndWait(function () {
-                port = self.setup();
-            });
+
+            port = self.setup();
+
+//            self.runAndWait(function () {
+//                port = self.setup();
+//            });
 
             runs(function () {
-                setup(port);
+                clientSetup(port);
             });
 
-            var latch = false;
+ //           var latch = false;
             var completed = function () {
-                latch = true;
+ //               latch = true;
             };
             runs(function () {
                 test(completed);
             });
-            waitsFor(function () {
-                return latch;
-            });
+//            waitsFor(function () {
+//                return latch;
+//            });
 
-            self.runAndWait(function () {
-                self.verify(port);
-            });
+            self.verify(port);
+//            self.runAndWait(function () {
+//                self.verify(port);
+//            });
         };
 
         return PactBuilder;

@@ -17,12 +17,12 @@ module.exports = function (grunt) {
         karma: {
             pact: {
                 configFile: 'example/karma.conf.js',
-                singleRun: true
+                singleRun: false
             }
         },
         shell: {
             pact: {
-                command: 'echo run pact test; cd ./pact_tests; ./pact.sh',
+                command: 'echo run pact tests; cd ./pact_tests; ./pact.sh',
                 options: {
                     stdout: true,
                     failOnError: true

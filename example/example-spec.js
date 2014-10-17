@@ -4,30 +4,31 @@ define(['jquery', 'pactBuilder', 'interaction'],
         describe("example pact test", function () {
             var pactProvider;
             var url;
-
+            console.log("In test describe");
             it("get the expected response", function () {
+                console.log("In test case get the expected response");
+                debugger;
                 pactProvider = new PactBuilder("pact-consumer", "pact-provider");
                 var expectedResponse = {
-                    name: "fuying"
+                    foo: "bar"
                 };
 
                 pactProvider
                     .withInteractions([
-                        Given("have item")
-                            .uponReceiving("get item name")
+                        Given("foo exists")
+                            .uponReceiving("a request for foo")
                             .withRequest(
-                                path = "/item",
-                                method = "GET",
-                                headers = {}
+                                path = "/foo",
+                                method = "GET"
                             )
                             .willRespondWith(
                                 status = 200,
-                                headers = {},
+                                headers = { "Content-Type": "application/json"},
                                 body = expectedResponse)
                     ]);
 
                 var setClientEndPoint = function (port) {
-                    url = "http://localhost:" + port + "/item";
+                    url = "http://localhost:" + port + "/foo";
                 };
 
                 var testClient = function (completed) {
@@ -35,7 +36,7 @@ define(['jquery', 'pactBuilder', 'interaction'],
                         url: url
                     }).done(function(data){
                         data = JSON.parse(data);
-                        expect(data.name).toBe("fuying");
+                        expect(data.foo).toBe("bar");
                         completed();
                     });
                 };

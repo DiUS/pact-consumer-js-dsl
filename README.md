@@ -31,7 +31,7 @@ There is an example in the example folder. You will find how to use it.
 
 For contribute
 -----
-You can also contribut to this codebase
+You can also contribute to this codebase
 
 ### Prepare Development Environment
 
