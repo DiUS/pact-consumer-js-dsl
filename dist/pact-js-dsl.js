@@ -53,9 +53,7 @@ define('pact', [], function () {
 		this.consumer = {};
 		this.interactions = [];
 		this.metadata = {
-			"pact_gem" : {
-			"version" : "1.0.9"
-			}
+			"pactSpecificationVersion" : "1.0.0"
 		};
 	}
 
@@ -189,7 +187,9 @@ define('pactBuilder', ['jquery', 'pact'],
 //            });
 //        };
 
-        PactBuilder.prototype.runPact = function (clientSetup, test) {
+
+
+        PactBuilder.prototype.runInteractions = function (clientSetup, test) {
 
             var self = this;
             var port;
