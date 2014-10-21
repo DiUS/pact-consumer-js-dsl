@@ -4,10 +4,7 @@ define(['jquery', 'pactBuilder', 'interaction'],
         describe("example pact test", function () {
             var pactProvider;
             var url;
-            console.log("In test describe");
             it("get the expected response", function () {
-                console.log("In test case get the expected response");
-                debugger;
                 pactProvider = new PactBuilder("pact-consumer", "pact-provider");
                 var expectedResponse = {
                     foo: "bar"
@@ -19,7 +16,7 @@ define(['jquery', 'pactBuilder', 'interaction'],
                             .uponReceiving("a request for foo")
                             .withRequest(
                                 path = "/foo",
-                                method = "GET"
+                                method = "get"
                             )
                             .willRespondWith(
                                 status = 200,
@@ -27,21 +24,20 @@ define(['jquery', 'pactBuilder', 'interaction'],
                                 body = expectedResponse)
                     ]);
 
-                var setClientEndPoint = function (port) {
+                var testClient = function (port, completed) {
                     url = "http://localhost:" + port + "/foo";
-                };
+                    var request = $.ajax({
+                        url: url,
+                        type: "GET",
+                        async: false
+                    });
 
-                var testClient = function (completed) {
-                    $.ajax({
-                        url: url
-                    }).done(function(data){
-                        data = JSON.parse(data);
+                    request.always(function(data){
                         expect(data.foo).toBe("bar");
                         completed();
                     });
                 };
-
-                pactProvider.runPact(setClientEndPoint, testClient);
+                pactProvider.runInteractions(testClient);
             });
         });
     });
