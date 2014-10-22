@@ -23,13 +23,14 @@ bundles: {
 
 #### 2. you need a pact server
 
-In the example here, we are using jvm pact server. You can find it in the pact_tests folder
+In the example here, we are using ruby pact server (a gem). 
+Ref: https://github.com/realestate-com-au/pact 
 
 ### Example
 
-There is an example in the example folder. You will find how to use it.
+There is an example in the example folder.  
 
-For contribute
+To contribute
 -----
 You can also contribute to this codebase
 
@@ -37,13 +38,13 @@ You can also contribute to this codebase
 
 You need to install nodejs to you computer.
 
-For MacOSX:
+In MacOSX:
 
 - brew install node
 - export PATH=$PATH:/usr/local/share/npm/bin
 - source .bash_profile
 
-### Start development
+### To start development
 
 You need to install grunt-cli, bower and karma first
 
@@ -60,4 +61,4 @@ Install other dependencies
 
 ### Create the pact-js-dsl.js
 
-- grunt package (this will concat the src code into pact-js-dsl.js and put it into dist)
+- grunt pact (this will concat the src code into pact-js-dsl.js and put it into dist)

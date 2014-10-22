@@ -2,7 +2,8 @@
   "name": "pact-js-dsl",
   "version": "0.0.1",
   "authors": [
-    "Fu Ying <fu.ying.er@rea-group.com>"
+    "Fu Ying <fu.ying.er@rea-group.com>",
+    "Malinda Kapuruge <mkapuruge@dius.com.au>"
   ],
   "main": ["dist/pact-js-dsl.js"],
   "dependencies": {

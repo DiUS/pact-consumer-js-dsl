@@ -2,15 +2,14 @@ define(['jquery', 'pactBuilder', 'interaction'],
     function ($, PactBuilder, Given) {
 
         describe("example pact test", function () {
-            var pactProvider;
-            var url;
+            var pactBuilder;
+            
             it("get the expected response", function () {
-                pactProvider = new PactBuilder("pact-consumer", "pact-provider");
-                var expectedResponse = {
-                    foo: "bar"
-                };
+                //Ceate a new pactBuilder
+                pactBuilder = new PactBuilder("pact-consumer", "pact-provider", "1234");
 
-                pactProvider
+                //Configure the pactBuilder
+                pactBuilder
                     .withInteractions([
                         Given("foo exists")
                             .uponReceiving("a request for foo")
@@ -21,14 +20,16 @@ define(['jquery', 'pactBuilder', 'interaction'],
                             .willRespondWith(
                                 status = 200,
                                 headers = { "Content-Type": "application/json"},
-                                body = expectedResponse)
+                                body = {foo: "bar"}
+                            )
                     ]);
 
+                //Test Client - the actual test
                 var testClient = function (port, completed) {
-                    url = "http://localhost:" + port + "/foo";
+                    var url = "http://localhost:" + port + "/foo";
                     var request = $.ajax({
                         url: url,
-                        type: "GET",
+                        type: "GET", 
                         async: false
                     });
 
@@ -37,7 +38,9 @@ define(['jquery', 'pactBuilder', 'interaction'],
                         completed();
                     });
                 };
-                pactProvider.runInteractions(testClient);
+
+                //Run the test
+                pactBuilder.runInteractions(testClient);
             });
         });
     });

@@ -1,5 +1,5 @@
 {
-  "name": "pact-dsl",
+  "name": "pact-js-dsl",
   "version": "0.0.1",
   "description": "DSL for write pact test in JS",
   "main": "Gruntfile.js",
@@ -20,5 +20,12 @@
     "load-grunt-tasks": "0.4.0"
   },
   "scripts": {},
-  "author": "Fu Ying"
+  "contributors": [{
+    "name": "Fu Ying",
+    "email": "fu.ying.er@rea-group.com"
+    },
+    {
+    "name": "Malinda Kapuruge",
+    "email": "mkapuruge@dius.com.au"
+    }]
 }

@@ -22,25 +22,18 @@ module.exports = function (grunt) {
         },
         shell: {
             pact: {
-                command: 'echo run pact tests; cd ./pact_tests; ./pact.sh',
+                command: 'echo run pact tests; cd ./pact_tests; ./pact.sh 1234',
                 options: {
                     stdout: true,
                     failOnError: true
-                }
-            },
-            copyPacts: {
-                command: 'echo copy Pacts file to provider; cd ./pact_tests; ./sbt copyPacts',
-                options: {
-                    stdout: true
                 }
             }
         },
     });
 
     require("load-grunt-tasks")(grunt);
-
     grunt.registerTask('pactTest', ['shell:pact']);
 
-    grunt.registerTask('pact', ['concat', 'shell:pact', 'shell:copyPacts']);
+    grunt.registerTask('package', ['concat']);
 
 };

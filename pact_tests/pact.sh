@@ -1,16 +1,19 @@
 #!/bin/sh
 # This script will run the pact process.  There is no need to edit this file.
 
+PORT=$1
 
-echo "Running the pact server on port 1234"
+echo "Running the pact server on $PORT"
 
-pact service -p 1234 &
+rm /tmp/pact.log
+pact service -p $PORT -l /tmp/pact.log >out.txt 2>&1 &
 
-echo "\nStart running pact test\n"
+echo "\nStart running pact tests \n"
+
 GRUNT=grunt
 
 if [ -e `npm bin`/grunt ]; then
   GRUNT=`npm bin`/grunt
 fi
 
-$GRUNT karma:pact
+$GRUNT karma:pact 
