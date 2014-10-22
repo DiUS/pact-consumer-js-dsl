@@ -25,7 +25,7 @@ define(['jquery', 'pactBuilder', 'interaction'],
                     ]);
             });
 
-            it("get the expected response", function () {
+            it("Should get the expected response", function () {
                 
                 //Test Client - i.e., the actual test
                 var testClient = function (port, completed) {
