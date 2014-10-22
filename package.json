@@ -14,18 +14,21 @@
     "grunt-shell": "0.6.1",
     "karma": "0.12.0",
     "karma-chrome-launcher": "0.1.2",
+    "karma-firefox-launcher": "^0.1.3",
     "karma-jasmine": "^0.1.5",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-requirejs": "0.2.2",
     "load-grunt-tasks": "0.4.0"
   },
   "scripts": {},
-  "contributors": [{
-    "name": "Fu Ying",
-    "email": "fu.ying.er@rea-group.com"
+  "contributors": [
+    {
+      "name": "Fu Ying",
+      "email": "fu.ying.er@rea-group.com"
     },
     {
-    "name": "Malinda Kapuruge",
-    "email": "mkapuruge@dius.com.au"
-    }]
+      "name": "Malinda Kapuruge",
+      "email": "mkapuruge@dius.com.au"
+    }
+  ]
 }

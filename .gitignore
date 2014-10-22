@@ -5,4 +5,4 @@ pact_tests/logs/
 pact_tests/project/project
 pact_tests/project/target
 pact_tests/target/
-
+pact_tests/*.txt
