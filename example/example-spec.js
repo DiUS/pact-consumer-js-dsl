@@ -4,8 +4,8 @@ define(['jquery', 'pactBuilder', 'interaction'],
         describe("example pact test", function () {
             var pactBuilder;
             
-            it("get the expected response", function () {
-                //Ceate a new pactBuilder
+            beforeEach(function() {
+               //Ceate a new pactBuilder
                 pactBuilder = new PactBuilder("pact-consumer", "pact-provider", "1234");
 
                 //Configure the pactBuilder
@@ -23,7 +23,10 @@ define(['jquery', 'pactBuilder', 'interaction'],
                                 body = {foo: "bar"}
                             )
                     ]);
+            });
 
+            it("get the expected response", function () {
+                
                 //Test Client - i.e., the actual test
                 var testClient = function (port, completed) {
                     var url = "http://localhost:" + port + "/foo";
