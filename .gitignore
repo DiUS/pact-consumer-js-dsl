@@ -1,5 +1,6 @@
 node_modules
 bower_components
+pact_tests/spec/
 pact_tests/logs/
 pact_tests/project/project
 pact_tests/project/target

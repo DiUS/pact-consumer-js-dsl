@@ -9,6 +9,5 @@ define('pact', [], function () {
 			}
 		};
 	}
-
 	return Pact;
 });

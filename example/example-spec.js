@@ -24,7 +24,7 @@ define(['jquery', 'pactBuilder', 'interaction'],
                             )
                     ]);
 
-                //Test Client - the actual test
+                //Test Client - i.e., the actual test
                 var testClient = function (port, completed) {
                     var url = "http://localhost:" + port + "/foo";
                     var request = $.ajax({

@@ -12,13 +12,11 @@ define('interaction', [], function () {
 
     Interaction.prototype.given = function (providerState) {
         this.provider_state = providerState;
-
         return this;
     };
 
     Interaction.prototype.uponReceiving = function (description) {
         this.description = description;
-
         return this;
     };
 

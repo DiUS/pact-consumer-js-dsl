@@ -2,6 +2,7 @@ define('pactBuilder', ['jquery', 'pact'],
     function($, Pact) {
         var _host = "http://127.0.0.1"; 
         var _port= "";
+
         function PactBuilder(consumerName, providerName, port) {
             _port = port;
             this.pact = new Pact();
@@ -34,7 +35,6 @@ define('pactBuilder', ['jquery', 'pact'],
             var self = this,
                 interactions = self.pact.interactions;
 
-            //We need to send multiple requests for each interaction
             for (var i = 0; i < this.pact.interactions.length; i++) {
                 $.ajax({
                     url: _host+":"+_port+"/interactions",
@@ -47,7 +47,6 @@ define('pactBuilder', ['jquery', 'pact'],
                     dataType: "json",
                     async: false
                 });
-                
             }
             return _port;
         };
@@ -94,8 +93,6 @@ define('pactBuilder', ['jquery', 'pact'],
             });
         };
 
-
-
         PactBuilder.prototype.runInteractions = function(test) {
             var self = this;
             var port;
@@ -111,10 +108,10 @@ define('pactBuilder', ['jquery', 'pact'],
             });
             
             var latch = false;
-            
             var completed = function() {
                 latch = true;
             };
+
             //The real interaction
             runs(function() {
                 test(port, completed);
@@ -123,16 +120,16 @@ define('pactBuilder', ['jquery', 'pact'],
             waitsFor(function() {
                 return latch;
             });
+
             //Verify
             self.runAndWait(function() {
                 self.verify(port);
             });
+
             //Write pact file
             self.runAndWait(function() {
                 self.write();
             });
         };
-
         return PactBuilder;
-
     });
