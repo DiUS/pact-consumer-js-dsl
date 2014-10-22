@@ -57,8 +57,8 @@ Install other dependencies
 
 ### Run example test
 
-- grunt pactTest (this will run the example test in the example folder)
+- grunt test (this will run the example test in the example folder)
 
 ### Create the pact-js-dsl.js
 
-- grunt pact (this will concat the src code into pact-js-dsl.js and put it into dist)
+- grunt package (this will concat the src code into pact-js-dsl.js and put it into dist)
