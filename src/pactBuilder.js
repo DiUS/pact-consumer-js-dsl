@@ -1,13 +1,16 @@
 define('pactBuilder', ['jquery', 'pact'],
     function($, Pact) {
-        var _host = "http://127.0.0.1"; 
-        var _port= "";
+        var _host = "http://127.0.0.1";
+        var _port = "";
 
-        function PactBuilder(consumerName, providerName, port) {
+        function PactBuilder(consumerName, providerName, port, pactDir) {
             _port = port;
             this.pact = new Pact();
             this.pact.consumer.name = consumerName;
             this.pact.provider.name = providerName;
+            if (pactDir) {
+                this.pact.pact_dir = pactDir;
+            }
             for (var prop in this) {
                 PactBuilder.prototype[prop] = this[prop];
             }
@@ -20,15 +23,15 @@ define('pactBuilder', ['jquery', 'pact'],
             return this;
         };
 
-        PactBuilder.prototype.clean = function(){
-             $.ajax({
-                url: _host+":"+_port+"/interactions",
+        PactBuilder.prototype.clean = function() {
+            $.ajax({
+                url: _host + ":" + _port + "/interactions",
                 type: "DELETE",
                 beforeSend: function(request) {
                     request.setRequestHeader("X-Pact-Mock-Service", true);
                 },
                 async: false
-            }); 
+            });
         };
 
         PactBuilder.prototype.setup = function() {
@@ -37,7 +40,7 @@ define('pactBuilder', ['jquery', 'pact'],
 
             for (var i = 0; i < this.pact.interactions.length; i++) {
                 $.ajax({
-                    url: _host+":"+_port+"/interactions",
+                    url: _host + ":" + _port + "/interactions",
                     type: "POST",
                     beforeSend: function(request) {
                         request.setRequestHeader("X-Pact-Mock-Service", true);
@@ -48,38 +51,32 @@ define('pactBuilder', ['jquery', 'pact'],
                     async: false
                 });
             }
-            return _port;
         };
 
-        PactBuilder.prototype.verify = function(statePort) { 
-            var response;
+        PactBuilder.prototype.verify = function(statePort) {
             $.ajax({
-                url: _host+":"+_port+"/interactions/verification",
+                url: _host + ":" + _port + "/interactions/verification",
                 type: "GET",
                 beforeSend: function(request) {
                     request.setRequestHeader("X-Pact-Mock-Service", true);
                 },
                 async: false
-            }).done(function(data) {
-                response = data;
-            }); 
-            return response;
+            });
         };
 
         PactBuilder.prototype.write = function() {
-            var self = this
- 
-            $.ajax({
-                    url: _host+":"+_port+"/pact",
-                    type: "POST",
-                    beforeSend: function(request) {
-                        request.setRequestHeader("X-Pact-Mock-Service", true);
-                    },
-                    contentType: "application/json",
-                    data: JSON.stringify(this.pact),
-                    dataType: "json",
-                    async: false
-                });
+            var self = this;
+            var pactCall = $.ajax({
+                url: _host + ":" + _port + "/pact",
+                type: "POST",
+                beforeSend: function(request) {
+                    request.setRequestHeader("X-Pact-Mock-Service", true);
+                },
+                contentType: "application/json",
+                data: JSON.stringify(this.pact),
+                dataType: "json",
+                async: false
+            });
         };
 
         PactBuilder.prototype.runAndWait = function(f) {
@@ -95,7 +92,6 @@ define('pactBuilder', ['jquery', 'pact'],
 
         PactBuilder.prototype.runInteractions = function(test) {
             var self = this;
-            var port;
 
             //Cleanup the server 
             self.runAndWait(function() {
@@ -104,9 +100,9 @@ define('pactBuilder', ['jquery', 'pact'],
 
             //Post the interactions
             self.runAndWait(function() {
-                port = self.setup();
+                self.setup();
             });
-            
+
             var latch = false;
             var completed = function() {
                 latch = true;
@@ -114,7 +110,7 @@ define('pactBuilder', ['jquery', 'pact'],
 
             //The real interaction
             runs(function() {
-                test(port, completed);
+                test(_port, completed);
             });
 
             waitsFor(function() {
@@ -123,7 +119,7 @@ define('pactBuilder', ['jquery', 'pact'],
 
             //Verify
             self.runAndWait(function() {
-                self.verify(port);
+                self.verify(_port);
             });
 
             //Write pact file

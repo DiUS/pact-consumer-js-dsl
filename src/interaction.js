@@ -1,4 +1,4 @@
-define('interaction', [], function () {
+define('interaction', [], function() {
 
     function Interaction() {
         this.provider_state = "";
@@ -10,17 +10,17 @@ define('interaction', [], function () {
         }
     }
 
-    Interaction.prototype.given = function (providerState) {
+    Interaction.prototype.given = function(providerState) {
         this.provider_state = providerState;
         return this;
     };
 
-    Interaction.prototype.uponReceiving = function (description) {
+    Interaction.prototype.uponReceiving = function(description) {
         this.description = description;
         return this;
     };
 
-    Interaction.prototype.withRequest = function (path, method, headers, body) {
+    Interaction.prototype.withRequest = function(path, method, headers, body) {
         this.request.path = path;
         this.request.method = method;
         this.request.headers = headers;
@@ -29,7 +29,7 @@ define('interaction', [], function () {
         return this;
     };
 
-    Interaction.prototype.willRespondWith = function (status, headers, body) {
+    Interaction.prototype.willRespondWith = function(status, headers, body) {
         this.response.status = status;
         this.response.headers = headers;
         this.response.body = body;
