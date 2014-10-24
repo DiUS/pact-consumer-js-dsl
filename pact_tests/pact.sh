@@ -6,7 +6,7 @@ PORT=$1
 echo "Running the pact server on $PORT"
 
 rm /tmp/pact.log
-pact service -p $PORT -l /tmp/pact.log >out.txt 2>&1 &
+pact-mock-service  -p $PORT -l /tmp/pact.log >out.txt 2>&1 &
 
 echo "\nStart running pact tests \n"
 
@@ -16,4 +16,4 @@ if [ -e `npm bin`/grunt ]; then
   GRUNT=`npm bin`/grunt
 fi
 
-$GRUNT karma:pact 
+$GRUNT karma:pact

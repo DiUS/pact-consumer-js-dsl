@@ -51,7 +51,7 @@ module.exports = function (config) {
         // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
         // - PhantomJS
         // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-        browsers: ['Chrome_without_security','PhantomJS_without_security'],
+        browsers: ['Chrome_without_security'],
 
         customLaunchers: {
             Chrome_without_security: {
