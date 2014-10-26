@@ -31,8 +31,7 @@ define(['jquery', 'pactBuilder', 'interaction'],
 
             it("Should get the expected response", function() {
 
-                //Test Client - i.e., the actual test
-                var testClient = function(port, completed) {
+                var clientTest = function(port, completed) {
                     var url = "http://localhost:" + port + "/foo";
                     var request = $.ajax({
                         url: url,
@@ -47,7 +46,7 @@ define(['jquery', 'pactBuilder', 'interaction'],
                 };
 
                 //Run the test
-                pactBuilder.runInteractions(testClient);
+                pactBuilder.runInteractions(clientTest);
             });
         });
     });
