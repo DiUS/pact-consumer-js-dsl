@@ -96,9 +96,9 @@ At the moment the hard requirements are,
             expect(MyClient.hello().responseMessage).toBe("hello to you too");
             completed();
           });
-        } // end it
+        }); // end it
 
-      } // end describe
+      }); // end describe
 
     }
   ); // end define
