@@ -29,7 +29,7 @@ define('interaction', [], function() {
         return this;
     };
 
-    Interaction.prototype.willRespondWith = function(status, headers, body) {
+    Interaction.prototype.thenRespondWith = function(status, headers, body) {
         this.response.status = status;
         this.response.headers = headers;
         this.response.body = body;

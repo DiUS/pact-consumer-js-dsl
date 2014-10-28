@@ -11,13 +11,13 @@ define(
                 pactBuilder
                     .withInteractions([ 
                     	//First interaction
-                        Given("Say hello")
+                        Given("Normal state of the server")
 	                        .uponReceiving("a request for hello")
 	                        .withRequest(
 	                            path = "/sayHello", 
 	                            method = "get"
 	                        )
-	                        .willRespondWith(
+	                        .thenRespondWith(
 	                            status = 200,
 	                            headers = {
 	                                "Content-Type": "application/json"
@@ -27,13 +27,13 @@ define(
 	                            }
 	                        ),
                         //Second interaction
-                        Given("Say bye")
-	                        .uponReceiving("a request for bye")
+                        Given("I am a friend")
+	                        .uponReceiving("a request to unfriend")
 	                        .withRequest(
 	                            path = "/unfriendMe", 
 	                            method = "put"
 	                        )
-	                        .willRespondWith(
+	                        .thenRespondWith(
 	                            status = 200,
 	                            headers = {
 	                                "Content-Type": "application/json"
