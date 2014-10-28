@@ -82,7 +82,7 @@ At the moment the hard requirements are,
         it('should behave as expected', function () {
           var pactBuilder = new PactBuilder('my-client', 'my-service', '9427');
           pactBuilder.withInteractions([
-            Given("usual state").
+            Given("usual state")
               .uponReceiving("a greeting")
               .withRequest(
                 path = "/hello",
