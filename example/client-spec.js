@@ -12,7 +12,7 @@ define(
                     .withInteractions([ 
                     	//First interaction 
 	                    UponReceiving("a request for hello")
-	                        .theRequest(
+	                        .with(
 	                            path = "/sayHello", 
 	                            method = "get"
 	                        )
@@ -27,7 +27,7 @@ define(
 	                        ),
                         //Second interaction
                         UponReceiving("a request to unfriend")
-	                        .theRequest(
+	                        .with(
 	                            path = "/unfriendMe", 
 	                            method = "put"
 	                        )
