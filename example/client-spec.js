@@ -46,21 +46,21 @@ define(
             });
  
             it("Should say Hello", function() {
-                var testClient = function(port, completed) {
+                var clientTest = function(port, completed) {
                     expect(client.sayHello()).toEqual("Hello");
                     completed();
                 };
                 //Run the test
-                pactBuilder.runInteractions(testClient);
+                pactBuilder.runInteractions(clientTest);
             });
 
             it("Should say Bye", function() {
-                var testClient = function(port, completed) {
+                var clientTest = function(port, completed) {
                     expect(client.unfriendMe()).toEqual("Bye");
                     completed();
                 };
                 //Run the test
-                pactBuilder.runInteractions(testClient);
+                pactBuilder.runInteractions(clientTest);
             });
 
         });
