@@ -115,7 +115,7 @@ At the moment the hard requirements are,
   
 1. Let's run that bad boy!
 
-  * start the pact mock server with `bundle exec pact -p 9427 -l /tmp/pact.logs`
+  * start the pact mock server with `bundle exec pact service -p 9427 -l /tmp/pact.logs`
   * run `karma start` (in another terminal window)
 
 1. Write some Grunt, Gulp, Rake, etc., tasks to make running easier. As an example, look at the `Gruntfile` in this repo.
