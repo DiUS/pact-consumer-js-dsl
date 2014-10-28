@@ -20,7 +20,7 @@ define('interaction', [], function() {
         return this;
     };
 
-    Interaction.prototype.withRequest = function(path, method, headers, body) {
+    Interaction.prototype.theRequest = function(path, method, headers, body) {
         this.request.path = path;
         this.request.method = method;
         this.request.headers = headers;
