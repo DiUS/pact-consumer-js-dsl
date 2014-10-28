@@ -37,13 +37,13 @@ define('interaction', [], function() {
         return this;
     };
 
-    function Given(option) {
+    function UponReceiving(option) {
         var interaction = new Interaction();
-        interaction.given(option);
+        interaction.uponReceiving(option);
         return interaction;
     }
 
-    return Given;
+    return UponReceiving;
 });
 
 define('pact', [], function () {

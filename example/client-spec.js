@@ -1,6 +1,6 @@
 define(
     ['client', 'pactBuilder', 'interaction'],
-    function(Client, PactBuilder, Given) {
+    function(Client, PactBuilder, UponReceiving) {
     	var client = new Client();
         describe("example pact test for hello client", function() {
             beforeEach(function() {
@@ -10,9 +10,8 @@ define(
                 //Configure the pactBuilder
                 pactBuilder
                     .withInteractions([ 
-                    	//First interaction
-                        Given("Normal state of the server")
-	                        .uponReceiving("a request for hello")
+                    	//First interaction 
+	                    UponReceiving("a request for hello")
 	                        .withRequest(
 	                            path = "/sayHello", 
 	                            method = "get"
@@ -27,12 +26,12 @@ define(
 	                            }
 	                        ),
                         //Second interaction
-                        Given("I am a friend")
-	                        .uponReceiving("a request to unfriend")
+                        UponReceiving("a request to unfriend")
 	                        .withRequest(
 	                            path = "/unfriendMe", 
 	                            method = "put"
 	                        )
+                            .given("I am friends with Fred")
 	                        .thenRespondWith(
 	                            status = 200,
 	                            headers = {
