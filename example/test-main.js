@@ -14,7 +14,8 @@ requirejs.config({
 
     paths: {
         "jquery": "bower_components/jquery/jquery",
-        "pact-js-dsl": "dist/pact-js-dsl"
+        "pact-js-dsl": "dist/pact-js-dsl",
+        "client": "example/client"
     },
     bundles: {
         'pact-js-dsl': ['pact', 'interaction', 'pactBuilder']

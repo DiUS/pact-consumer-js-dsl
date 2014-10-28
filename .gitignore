@@ -6,3 +6,5 @@ pact_tests/project/project
 pact_tests/project/target
 pact_tests/target/
 pact_tests/*.txt
+pact-consumer-pact-provider.json
+hello-consumer-hello-provider.json
