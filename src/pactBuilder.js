@@ -1,5 +1,5 @@
-define('pactBuilder', ['jquery', 'pact'],
-    function($, Pact) {
+define('pactBuilder', ['pact'],
+    function(Pact) {
         var _host = "http://127.0.0.1";
         var _port = "";
 
@@ -24,84 +24,43 @@ define('pactBuilder', ['jquery', 'pact'],
         };
 
         PactBuilder.prototype.clean = function() {
-            $.ajax({
-                url: _host + ":" + _port + "/interactions",
-                type: "DELETE",
-                beforeSend: function(request) {
-                    request.setRequestHeader("X-Pact-Mock-Service", true);
-                },
-                async: false
-            });
+            var xhr = new XMLHttpRequest();
+            xhr.open("DELETE", _host + ":" + _port + "/interactions", false);
+            xhr.setRequestHeader("X-Pact-Mock-Service", true);
+            xhr.send();
         };
 
         PactBuilder.prototype.setup = function() {
-            var self = this,
-                interactions = self.pact.interactions;
-
+            var xhr;
             for (var i = 0; i < this.pact.interactions.length; i++) {
-                $.ajax({
-                    url: _host + ":" + _port + "/interactions",
-                    type: "POST",
-                    beforeSend: function(request) {
-                        request.setRequestHeader("X-Pact-Mock-Service", true);
-                    },
-                    contentType: "application/json",
-                    data: JSON.stringify(this.pact.interactions[i]),
-                    dataType: "json",
-                    async: false
-                });
+                xhr = new XMLHttpRequest();
+                xhr.open("POST", _host + ":" + _port + "/interactions", false);
+                xhr.setRequestHeader("X-Pact-Mock-Service", true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send(JSON.stringify(this.pact.interactions[i]));
             }
         };
 
-        PactBuilder.prototype.verify = function(statePort) {
-            $.ajax({
-                url: _host + ":" + _port + "/interactions/verification",
-                type: "GET",
-                beforeSend: function(request) {
-                    request.setRequestHeader("X-Pact-Mock-Service", true);
-                },
-                async: false
-            });
+        PactBuilder.prototype.verify = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", _host + ":" + _port + "/interactions/verification", false);
+            xhr.setRequestHeader("X-Pact-Mock-Service", true);
+            xhr.send();
         };
 
         PactBuilder.prototype.write = function() {
-            var self = this;
-            var pactCall = $.ajax({
-                url: _host + ":" + _port + "/pact",
-                type: "POST",
-                beforeSend: function(request) {
-                    request.setRequestHeader("X-Pact-Mock-Service", true);
-                },
-                contentType: "application/json",
-                data: JSON.stringify(this.pact),
-                dataType: "json",
-                async: false
-            });
-        };
-
-        PactBuilder.prototype.runAndWait = function(f) {
-            var latch = false;
-            runs(function() {
-                f();
-                latch = true;
-            });
-            waitsFor(function() {
-                return latch;
-            });
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", _host + ":" + _port + "/pact", false);
+            xhr.setRequestHeader("X-Pact-Mock-Service", true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.send(JSON.stringify(this.pact));
         };
 
         PactBuilder.prototype.runInteractions = function(test) {
             var self = this;
 
-            //Cleanup the server 
-            self.runAndWait(function() {
-                self.clean();
-            });
-
-            //Post the interactions
-            self.runAndWait(function() {
-                self.setup();
-            });
+            self.clean();   // Cleanup the server 
+            self.setup();   // Post the interactions
 
             var latch = false;
             var completed = function() {
@@ -110,22 +69,14 @@ define('pactBuilder', ['jquery', 'pact'],
 
             //The real interaction
             runs(function() {
-                test(_port, completed);
+                test(completed);
             });
-
             waitsFor(function() {
                 return latch;
             });
 
-            //Verify
-            self.runAndWait(function() {
-                self.verify(_port);
-            });
-
-            //Write pact file
-            self.runAndWait(function() {
-                self.write();
-            });
+            self.verify();  // Verify
+            self.write();   // Write pact file
         };
         return PactBuilder;
     });

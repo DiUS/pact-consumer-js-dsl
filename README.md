@@ -7,7 +7,6 @@ At the moment the hard requirements are,
 - Jasmine
 - the `pact` ruby gem
 - RequireJS
-- jQuery available via RequireJS
 
 ### Getting Started (with Karma, Jasmine, RequireJS and the pact gem)
 
@@ -37,20 +36,16 @@ At the moment the hard requirements are,
 
   1. Add `pact-js-dsl` to your project by running `npm install DiUS/pact-consumer-js-dsl --save-dev`
 
-  1. Add `jquery` to your project by running `npm install jquery --save-dev`
-
-  1. Tell Karma about `jquery.js` and `pact-js-dsl.js` in `karma.conf.js`. In the `files: [...` section add,
+  1. Tell Karma about `pact-js-dsl.js` in `karma.conf.js`. In the `files: [...` section add,
 
     ```javascript
-        {pattern: 'node_modules/jquery/dist/jquery.js', included: false},
         {pattern: 'node_modules/pact-js-dsl/dist/pact-js-dsl.js', included: false},
     ```
 
-  1. Configure RequireJS to find `jquery` and `pact-js-dsl` by adding the following to the `require.config({...` section of `test-main.js`
+  1. Configure RequireJS to find `pact-js-dsl` by adding the following to the `require.config({...` section of `test-main.js`
 
     ```javascript
       paths: {
-        'jquery':       'node_modules/jquery/dist/jquery',
         'pact-js-dsl':  'node_modules/pact-js-dsl/dist/pact-js-dsl',
       },
       bundles: {
@@ -97,7 +92,7 @@ At the moment the hard requirements are,
                 headers = { "Content-Type": "application/json" },
                 body = { responseMessage: "hello to you too" })
           ]);
-          pactBuilder.runInteractions(function (port, completed) {
+          pactBuilder.runInteractions(function (completed) {
             expect(MyClient.hello().responseMessage).toBe("hello to you too");
             completed();
           });
@@ -121,7 +116,7 @@ At the moment the hard requirements are,
 1. Let's run that bad boy!
 
   * start the pact mock server with `bundle exec pact -p 9427 -l /tmp/pact.logs`
-  * run `karma start`
+  * run `karma start` (in another terminal window)
 
 1. Write some Grunt, Gulp, Rake, etc., tasks to make running easier. As an example, look at the `Gruntfile` in this repo.
   

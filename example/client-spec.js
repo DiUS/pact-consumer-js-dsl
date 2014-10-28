@@ -45,7 +45,7 @@ define(
             });
  
             it("Should say Hello", function() {
-                var clientTest = function(port, completed) {
+                var clientTest = function(completed) {
                     expect(client.sayHello()).toEqual("Hello");
                     completed();
                 };
@@ -54,7 +54,7 @@ define(
             });
 
             it("Should say Bye", function() {
-                var clientTest = function(port, completed) {
+                var clientTest = function(completed) {
                     expect(client.unfriendMe()).toEqual("Bye");
                     completed();
                 };
