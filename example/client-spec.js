@@ -13,29 +13,34 @@ define(
                 //Add an interaction
                 helloProvider
                     .uponReceiving("a request for hello")
-                    .withRequest( path ="/sayHello", 
-                                method = "get")
-                    .willRespondWith(status = 200,
-                                headers = {
-                                    "Content-Type": "application/json"
-                                },
-                                body = {
-                                    reply: "Hello"
-                                });
+                    .withRequest( 
+                        method="get",
+                        path="/sayHello")
+                    .willRespondWith(
+                        status = 200,
+                        headers = {
+                            "Content-Type": "application/json"
+                        },
+                        body = {
+                            reply: "Hello"
+                        });
 
                 //Add another interaction
                 helloProvider
                     .given("I am friends with Fred")
                     .uponReceiving("a request to unfriend")
-                    .withRequest( path = "/unfriendMe", 
-                                method = "put")
-                    .willRespondWith(status = 200,
-                                headers = {
-                                    "Content-Type": "application/json"
-                                },
-                                body = {
-                                    reply: "Bye"
-                                });
+                    .withRequest( 
+                        method = "put",
+                        path = "/unfriendMe"
+                        )
+                    .willRespondWith(
+                        status = 200,
+                        headers = {
+                            "Content-Type": "application/json"
+                        },
+                        body = {
+                            reply: "Bye"
+                        });
             });
  
             it("Should say Hello", function() {
