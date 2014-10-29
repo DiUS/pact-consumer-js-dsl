@@ -9,7 +9,7 @@ define(
 
                 helloProvider
                     .uponReceiving("a request for hello")
-                    .withRequest( path = "/sayHello", 
+                    .withRequest( path ="/sayHello", 
                                 method = "get")
                     .willRespondWith(status = 200,
                                 headers = {
@@ -31,7 +31,7 @@ define(
                                 body = {
                                     reply: "Bye"
                                 });
-            });
+            });// end beforeEach
  
             it("Should say Hello", function() {
                 var clientTest = function(completed) {
@@ -51,5 +51,5 @@ define(
                 helloProvider.runInteractions(clientTest);
             });
 
-        });
-    });
+        });// end describe
+    });// end define

@@ -49,7 +49,7 @@ At the moment the hard requirements are,
         'pact-js-dsl':  'node_modules/pact-js-dsl/dist/pact-js-dsl',
       },
       bundles: {
-        'pact-js-dsl':  ['pact', 'interaction', 'pactBuilder']
+        'pact-js-dsl':  ['pact', 'interaction', 'mockService']
       },
     ```
 
@@ -73,8 +73,8 @@ At the moment the hard requirements are,
 1. Write a Jasmine unit test similar to the following,
 
   ```javascript
-  define(['pactBuilder', 'interaction'],
-    function (PactBuilder, Given) {
+  define(['mockService'],
+    function (MockService) {
 
       describe('my app', function () {
 
@@ -82,22 +82,22 @@ At the moment the hard requirements are,
         MyClient.urlBase = "http://localhost:9427";
 
         it('should behave as expected', function () {
-          var pactBuilder = new PactBuilder('my-client', 'my-service', '9427');
-          pactBuilder.withInteractions([
-            Given("usual state")
-              .uponReceiving("a greeting")
-              .withRequest(
-                path = "/hello",
-                method = "get")
-              .willRespondWith(
-                status = 200,
-                headers = { "Content-Type": "application/json" },
-                body = { responseMessage: "hello to you too" })
-          ]);
-          pactBuilder.runInteractions(function (completed) {
-            expect(MyClient.hello().responseMessage).toBe("hello to you too");
-            completed();
-          });
+            var provider = new MockService('my-client', 'my-service', '9427');
+            provider
+                .given("usual state")
+                .uponReceiving("a greeting")
+                .withRequest(
+                    path = "/hello",
+                    method = "get")
+                .willRespondWith(
+                    status = 200,
+                    headers = { "Content-Type": "application/json" },
+                    body = { responseMessage: "hello to you too" });
+
+            provider.runInteractions(function (completed) {
+                expect(MyClient.hello().responseMessage).toBe("hello to you too");
+                completed();
+            });
         }); // end it
 
       }); // end describe
