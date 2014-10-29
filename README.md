@@ -87,8 +87,8 @@ At the moment the hard requirements are,
                 .given("usual state")
                 .uponReceiving("a greeting")
                 .withRequest(
-                    path = "/hello",
-                    method = "get")
+                    method = "get"
+                    path = "/hello")
                 .willRespondWith(
                     status = 200,
                     headers = { "Content-Type": "application/json" },
