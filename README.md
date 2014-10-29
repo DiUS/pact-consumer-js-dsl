@@ -86,13 +86,14 @@ At the moment the hard requirements are,
             provider
                 .given("usual state")
                 .uponReceiving("a greeting")
-                .withRequest(
-                    method = "get"
-                    path = "/hello")
-                .willRespondWith(
-                    status = 200,
-                    headers = { "Content-Type": "application/json" },
-                    body = { responseMessage: "hello to you too" });
+                .withRequest("GET", "/hello")
+                .willRespondWith({
+                  status: 200,
+                  headers: { "Content-Type": "application/json" },
+                  body: {
+                    responseMessage: "hello to you too"
+                  }
+                });
 
             provider.runInteractions(function (completed) {
                 expect(MyClient.hello().responseMessage).toBe("hello to you too");
