@@ -20,7 +20,7 @@ define('interaction', [], function() {
         return this;
     };
 
-    Interaction.prototype.with = function(path, method, headers, body) {
+    Interaction.prototype.withRequest = function(path, method, headers, body) {
         this.request.path = path;
         this.request.method = method;
         this.request.headers = headers;
@@ -29,7 +29,7 @@ define('interaction', [], function() {
         return this;
     };
 
-    Interaction.prototype.thenRespondWith = function(status, headers, body) {
+    Interaction.prototype.willRespondWith = function(status, headers, body) {
         this.response.status = status;
         this.response.headers = headers;
         this.response.body = body;
@@ -37,35 +37,21 @@ define('interaction', [], function() {
         return this;
     };
 
-    function UponReceiving(option) {
-        var interaction = new Interaction();
-        interaction.uponReceiving(option);
-        return interaction;
-    }
+    // function UponReceiving(option) {
+    //     var interaction = new Interaction();
+    //     interaction.uponReceiving(option);
+    //     return interaction;
+    // }
 
-    return UponReceiving;
+    return Interaction;
 });
 
-define('pact', [], function () {
-	function Pact() {
-		this.provider = {};
-		this.consumer = {};
-		this.interactions = [];
-		this.pact_dir=".";
-		this.metadata = {
-			"pact_gem" : {
-			"version" : "1.0.9"
-			}
-		};
-	}
-	return Pact;
-});
-define('pactBuilder', ['pact'],
-    function(Pact) {
+define('mockService', ['pact', 'interaction'],
+    function(Pact, Interaction) {
         var _host = "http://127.0.0.1";
         var _port = "";
 
-        function PactBuilder(consumerName, providerName, port, pactDir) {
+        function MockService(consumerName, providerName, port, pactDir) {
             _port = port;
             this.pact = new Pact();
             this.pact.consumer.name = consumerName;
@@ -74,25 +60,24 @@ define('pactBuilder', ['pact'],
                 this.pact.pact_dir = pactDir;
             }
             for (var prop in this) {
-                PactBuilder.prototype[prop] = this[prop];
+                MockService.prototype[prop] = this[prop];
             }
         }
 
-        PactBuilder.prototype.withInteractions = function(interactions) {
-            for (var index in interactions) {
-                this.pact.interactions.push(interactions[index]);
-            }
-            return this;
-        };
+        MockService.prototype.addInteraction = function(){
+            var interaction = new Interaction();
+            this.pact.interactions.push(interaction);
+            return interaction;
+        }
 
-        PactBuilder.prototype.clean = function() {
+        MockService.prototype.clean = function() {
             var xhr = new XMLHttpRequest();
             xhr.open("DELETE", _host + ":" + _port + "/interactions", false);
             xhr.setRequestHeader("X-Pact-Mock-Service", true);
             xhr.send();
         };
 
-        PactBuilder.prototype.setup = function() {
+        MockService.prototype.setup = function() {
             var xhr;
             for (var i = 0; i < this.pact.interactions.length; i++) {
                 xhr = new XMLHttpRequest();
@@ -103,14 +88,14 @@ define('pactBuilder', ['pact'],
             }
         };
 
-        PactBuilder.prototype.verify = function() {
+        MockService.prototype.verify = function() {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", _host + ":" + _port + "/interactions/verification", false);
             xhr.setRequestHeader("X-Pact-Mock-Service", true);
             xhr.send();
         };
 
-        PactBuilder.prototype.write = function() {
+        MockService.prototype.write = function() {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", _host + ":" + _port + "/pact", false);
             xhr.setRequestHeader("X-Pact-Mock-Service", true);
@@ -118,7 +103,7 @@ define('pactBuilder', ['pact'],
             xhr.send(JSON.stringify(this.pact));
         };
 
-        PactBuilder.prototype.runInteractions = function(test) {
+        MockService.prototype.runInteractions = function(test) {
             var self = this;
 
             self.clean();   // Cleanup the server 
@@ -140,5 +125,20 @@ define('pactBuilder', ['pact'],
             self.verify();  // Verify
             self.write();   // Write pact file
         };
-        return PactBuilder;
+        return MockService;
     });
+
+define('pact', [], function () {
+	function Pact() {
+		this.provider = {};
+		this.consumer = {};
+		this.interactions = [];
+		this.pact_dir=".";
+		this.metadata = {
+			"pact_gem" : {
+			"version" : "1.0.9"
+			}
+		};
+	}
+	return Pact;
+});

@@ -20,7 +20,7 @@ define('interaction', [], function() {
         return this;
     };
 
-    Interaction.prototype.with = function(path, method, headers, body) {
+    Interaction.prototype.withRequest = function(path, method, headers, body) {
         this.request.path = path;
         this.request.method = method;
         this.request.headers = headers;
@@ -29,7 +29,7 @@ define('interaction', [], function() {
         return this;
     };
 
-    Interaction.prototype.thenRespondWith = function(status, headers, body) {
+    Interaction.prototype.willRespondWith = function(status, headers, body) {
         this.response.status = status;
         this.response.headers = headers;
         this.response.body = body;
@@ -37,11 +37,5 @@ define('interaction', [], function() {
         return this;
     };
 
-    function UponReceiving(option) {
-        var interaction = new Interaction();
-        interaction.uponReceiving(option);
-        return interaction;
-    }
-
-    return UponReceiving;
+    return Interaction;
 });

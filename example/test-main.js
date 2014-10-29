@@ -18,7 +18,7 @@ requirejs.config({
         "client": "example/client"
     },
     bundles: {
-        'pact-js-dsl': ['pact', 'interaction', 'pactBuilder']
+        'pact-js-dsl': ['pact', 'interaction', 'mockService']
     },
 
     // ask Require.js to load these files (all our tests)
