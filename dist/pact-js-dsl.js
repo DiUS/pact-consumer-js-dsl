@@ -20,19 +20,40 @@ define('interaction', [], function() {
         return this;
     };
 
-    Interaction.prototype.withRequest = function(method, path, headers, body) {
-        this.request.path = path;
-        this.request.method = method;
-        this.request.headers = headers;
-        this.request.body = body;
+    Interaction.prototype.withRequest = function(firstParameter, path, headers, body) {
+        if (typeof(firstParameter) == "object") {
+            this.request.method = firstParameter.method;
+            this.request.path = firstParameter.path;
+            this.request.headers = firstParameter.headers;
+            this.request.body = firstParameter.body;
+        }
+        else {
+            this.request.method = firstParameter;
+            this.request.path = path;
+            this.request.headers = headers;
+            this.request.body = body;
+        }
+        if (!this.request.method || !this.request.path) {
+            throw "pact-js-dsl's 'withRequest' function requires 'method' and 'path' parameters";
+        }
 
         return this;
     };
 
-    Interaction.prototype.willRespondWith = function(status, headers, body) {
-        this.response.status = status;
-        this.response.headers = headers;
-        this.response.body = body;
+    Interaction.prototype.willRespondWith = function(firstParameter, headers, body) {
+        if (typeof(firstParameter) == "object") {
+            this.response.status = firstParameter.status;
+            this.response.headers = firstParameter.headers;
+            this.response.body = firstParameter.body;
+        }
+        else {
+            this.response.status = firstParameter;
+            this.response.headers = headers;
+            this.response.body = body;
+        }
+        if (!this.response.status) {
+            throw "pact-js-dsl's 'willRespondWith' function requires 'status' parameter";
+        }
 
         return this;
     };

@@ -13,34 +13,27 @@ define(
                 //Add an interaction
                 helloProvider
                     .uponReceiving("a request for hello")
-                    .withRequest( 
-                        method="get",
-                        path="/sayHello")
-                    .willRespondWith(
-                        status = 200,
-                        headers = {
-                            "Content-Type": "application/json"
-                        },
-                        body = {
+                    .withRequest("get", "/sayHello")
+                    .willRespondWith({
+                        status: 200,
+                        headers: { "Content-Type": "application/json" },
+                        body: {
                             reply: "Hello"
-                        });
+                        }
+                    });
 
                 //Add another interaction
                 helloProvider
                     .given("I am friends with Fred")
                     .uponReceiving("a request to unfriend")
-                    .withRequest( 
-                        method = "put",
-                        path = "/unfriendMe"
-                        )
-                    .willRespondWith(
-                        status = 200,
-                        headers = {
-                            "Content-Type": "application/json"
-                        },
-                        body = {
+                    .withRequest("put", "/unfriendMe")
+                    .willRespondWith({
+                        status: 200,
+                        headers: { "Content-Type": "application/json" },
+                        body: {
                             reply: "Bye"
-                        });
+                        }
+                    });
             });
  
             it("Should say Hello", function() {
