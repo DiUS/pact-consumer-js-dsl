@@ -2,12 +2,12 @@ define('client',
 	['jquery'], 
 	function($) {
 
-	    function Client(){
+	    function Client(baseUrl){
 	        this.sayHello = function (){
 	        	var reply = "";
 	        	
 	        	var request = $.ajax({
-		            url: "http://localhost:1234/sayHello",
+		            url: baseUrl+"/sayHello",
 		            type: "get",
 		            async: false
 		        });
@@ -22,7 +22,7 @@ define('client',
 	        	var reply = "";
 	        	
 	        	var request = $.ajax({
-		            url: "http://localhost:1234/unfriendMe",
+		            url: baseUrl+"/unfriendMe",
 		            type: "put",
 		            async: false
 		        });
