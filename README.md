@@ -68,6 +68,8 @@ At the moment the hard requirements are,
         },
      ```
 
+    Note that running your tests across multiple browsers with one pact mock server will probably conflict with eachother. You will need to either run them sequentially or start multiple pact mock servers. To run them sequentially make multiple calls to karma from the command line with the different browsers passed with the `--browser` option.
+
 1. Write a Jasmine unit test similar to the following,
 
   ```javascript
