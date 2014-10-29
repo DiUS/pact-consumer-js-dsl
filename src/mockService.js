@@ -15,9 +15,16 @@ define('mockService', ['pact', 'interaction'],
                 MockService.prototype[prop] = this[prop];
             }
         }
-
-        MockService.prototype.addInteraction = function(){
+        MockService.prototype.given = function(providerState){
             var interaction = new Interaction();
+            interaction.given(providerState);
+            this.pact.interactions.push(interaction);
+            return interaction; 
+        }
+
+        MockService.prototype.uponReceiving = function(description){
+            var interaction = new Interaction();
+            interaction.uponReceiving(description);
             this.pact.interactions.push(interaction);
             return interaction;
         }

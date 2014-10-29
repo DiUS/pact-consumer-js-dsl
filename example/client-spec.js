@@ -7,7 +7,7 @@ define(
                 //Ceate a new MockService
                 helloProvider = new MockService("hello-consumer", "hello-provider", "1234");
 
-                helloProvider.addInteraction()
+                helloProvider
                     .uponReceiving("a request for hello")
                     .withRequest( path = "/sayHello", 
                                 method = "get")
@@ -19,7 +19,7 @@ define(
                                     reply: "Hello"
                                 });
 
-                helloProvider.addInteraction()
+                helloProvider
                     .given("I am friends with Fred")
                     .uponReceiving("a request to unfriend")
                     .withRequest( path = "/unfriendMe", 
