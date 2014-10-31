@@ -58,8 +58,6 @@ define('mockService', ['pact', 'interaction'],
             xhr.open("GET", _host + ":" + _port + "/interactions/verification", false);
             xhr.setRequestHeader("X-Pact-Mock-Service", true);
             xhr.send();
-            console.log(xhr.responseText);
-            console.log(xhr.status);
             if(200 != xhr.status){
                 throw "pact-js-dsl: Pact verification failed. "+ xhr.responseText;
             }

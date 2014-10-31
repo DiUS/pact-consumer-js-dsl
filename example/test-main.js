@@ -13,7 +13,6 @@ requirejs.config({
     baseUrl: '/base/',
 
     paths: {
-        "jquery": "bower_components/jquery/jquery",
         "pact-js-dsl": "dist/pact-js-dsl",
         "client": "example/client"
     },

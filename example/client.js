@@ -1,36 +1,19 @@
-define('client', 
-	['jquery'], 
+define('client',[], 
 	function($) {
 
 	    function Client(baseUrl){
 	        this.sayHello = function (){
-	        	var reply = "";
-	        	
-	        	var request = $.ajax({
-		            url: baseUrl+"/sayHello",
-		            type: "get",
-		            async: false
-		        });
-
-		        request.always(function(data) { 
-		            reply = data.reply;
-		        });
-		        return reply;
+	        	var xhr = new XMLHttpRequest();
+	            xhr.open("GET", baseUrl + "/sayHello", false);
+	            xhr.send(); 
+	            return JSON.parse(xhr.responseText).reply;
 	        };
 	        
 	        this.unfriendMe = function (){
-	        	var reply = "";
-	        	
-	        	var request = $.ajax({
-		            url: baseUrl+"/unfriendMe",
-		            type: "put",
-		            async: false
-		        });
-
-		        request.always(function(data) { 
-		            reply = data.reply;
-		        });
-		        return reply;
+	        	var xhr = new XMLHttpRequest();
+	            xhr.open("PUT", baseUrl + "/unfriendMe", false);
+	            xhr.send(); 
+	            return JSON.parse(xhr.responseText).reply;
 	        };
 	    }; 
     return Client;
