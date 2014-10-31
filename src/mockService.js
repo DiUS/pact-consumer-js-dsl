@@ -34,6 +34,9 @@ define('mockService', ['pact', 'interaction'],
             xhr.open("DELETE", _host + ":" + _port + "/interactions", false);
             xhr.setRequestHeader("X-Pact-Mock-Service", true);
             xhr.send();
+            if(200 != xhr.status){
+                throw "pact-js-dsl: Pact cleanup failed. "+ xhr.responseText;
+            }
         };
 
         MockService.prototype.setup = function() {
@@ -44,6 +47,9 @@ define('mockService', ['pact', 'interaction'],
                 xhr.setRequestHeader("X-Pact-Mock-Service", true);
                 xhr.setRequestHeader("Content-type", "application/json");
                 xhr.send(JSON.stringify(this.pact.interactions[i]));
+                if(200 != xhr.status){
+                    throw "pact-js-dsl: Pact interaction setup failed. "+ xhr.responseText;
+                }
             }
         };
 
@@ -52,6 +58,11 @@ define('mockService', ['pact', 'interaction'],
             xhr.open("GET", _host + ":" + _port + "/interactions/verification", false);
             xhr.setRequestHeader("X-Pact-Mock-Service", true);
             xhr.send();
+            console.log(xhr.responseText);
+            console.log(xhr.status);
+            if(200 != xhr.status){
+                throw "pact-js-dsl: Pact verification failed. "+ xhr.responseText;
+            }
         };
 
         MockService.prototype.write = function() {
@@ -60,6 +71,9 @@ define('mockService', ['pact', 'interaction'],
             xhr.setRequestHeader("X-Pact-Mock-Service", true);
             xhr.setRequestHeader("Content-type", "application/json");
             xhr.send(JSON.stringify(this.pact));
+            if(200 != xhr.status){
+                throw "pact-js-dsl: Could not write the pact file. "+ xhr.responseText;
+            }
         };
 
         MockService.prototype.runInteractions = function(test) {
@@ -71,6 +85,8 @@ define('mockService', ['pact', 'interaction'],
             var latch = false;
             var completed = function() {
                 latch = true;
+                self.verify();
+                self.pact.interactions = [];
             };
 
             //The real interaction
@@ -81,8 +97,7 @@ define('mockService', ['pact', 'interaction'],
                 return latch;
             });
 
-            self.verify();  // Verify
-            self.write();   // Write pact file
+            
         };
         return MockService;
     });

@@ -1,12 +1,8 @@
 #!/bin/sh
-# This script will run the pact process.  There is no need to edit this file.
+# This script will execute the tests
 
-PORT=$1
-
-echo "Running the pact server on $PORT"
-
-rm /tmp/pact.log
-pact-mock-service  -p $PORT -l /tmp/pact.log >out.txt 2>&1 &
+#Make sure that the pact server is running
+#pact-mock-service  -p $PORT -l /tmp/pact.log >out.txt 2>&1 
 
 echo "\nStart running pact tests \n"
 

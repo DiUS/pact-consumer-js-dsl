@@ -3,26 +3,33 @@ define(
     function(Client, MockService) {
     	//Create your client.
         var client = new Client("http://localhost:1234");
+        //Ceate a new MockService.
+        var helloProvider = new MockService("hello-consumer", "hello-provider", "1234");
 
         //Setup the mock service
         describe("example pact test for hello client", function() {
-            beforeEach(function() {
-                //Ceate a new MockService
-                helloProvider = new MockService("hello-consumer", "hello-provider", "1234");
-
-                //Add an interaction
+            it("Should say Hello", function() {
+                //Add interaction
+                console.log('jasmine-version:' + jasmine.getEnv().versionString());
                 helloProvider
                     .uponReceiving("a request for hello")
                     .withRequest("get", "/sayHello")
                     .willRespondWith({
-                        status: 200,
+                        status: 200, 
                         headers: { "Content-Type": "application/json" },
                         body: {
                             reply: "Hello"
                         }
                     });
+                //Run the test
+                helloProvider.runInteractions(function(completed) {
+                    expect(client.sayHello()).toEqual("Hello");
+                    completed();
+                });
+            });
 
-                //Add another interaction
+            it("Should say Bye", function() {
+                //Add interaction
                 helloProvider
                     .given("I am friends with Fred")
                     .uponReceiving("a request to unfriend")
@@ -34,27 +41,13 @@ define(
                             reply: "Bye"
                         }
                     });
-            });
- 
-            it("Should say Hello", function() {
-                //This is the test function
-                var clientTest = function(completed) {
-                    expect(client.sayHello()).toEqual("Hello");
-                    completed();
-                };
                 //Run the test
-                helloProvider.runInteractions(clientTest);
-            });
-
-            it("Should say Bye", function() {
-                //This is the test function
-                var clientTest = function(completed) {
+                helloProvider.runInteractions(function(completed) {
                     expect(client.unfriendMe()).toEqual("Bye");
                     completed();
-                };
-                //Run the test
-                helloProvider.runInteractions(clientTest);
+                });
             });
 
+ 
         });// end describe
     });// end define
