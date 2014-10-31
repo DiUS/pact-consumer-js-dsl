@@ -8,9 +8,9 @@ define(
 
         //Setup the mock service
         describe("example pact test for hello client", function() {
+
             it("Should say Hello", function() {
                 //Add interaction
-                console.log('jasmine-version:' + jasmine.getEnv().versionString());
                 helloProvider
                     .uponReceiving("a request for hello")
                     .withRequest("get", "/sayHello")
@@ -21,11 +21,13 @@ define(
                             reply: "Hello"
                         }
                     });
-                //Run the test
-                helloProvider.runInteractions(function(completed) {
+
+                //Run the tests
+                helloProvider.run(function(complete){
                     expect(client.sayHello()).toEqual("Hello");
-                    completed();
+                    complete();
                 });
+                
             });
 
             it("Should say Bye", function() {
@@ -41,13 +43,25 @@ define(
                             reply: "Bye"
                         }
                     });
-                //Run the test
-                helloProvider.runInteractions(function(completed) {
-                    expect(client.unfriendMe()).toEqual("Bye");
-                    completed();
+                    
+                //Run the tests
+                helloProvider.run(function(complete){
+                    var done = false;
+                    runs(function(){
+                        client.unfriendMe(
+                            function(val){
+                                expect(val).toEqual("Bye"); 
+                                done=true;
+                                complete();
+                            }
+                        );
+                    });
+
+                    waitsFor(function() {
+                      return done;
+                    }, "Response rcvd", 1000);
                 });
             });
-
- 
+            
         });// end describe
     });// end define

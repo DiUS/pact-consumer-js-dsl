@@ -74,28 +74,18 @@ define('mockService', ['pact', 'interaction'],
             }
         };
 
-        MockService.prototype.runInteractions = function(test) {
+        MockService.prototype.run = function(testFn) {
             var self = this;
-
             self.clean();   // Cleanup the server 
             self.setup();   // Post the interactions
 
-            var latch = false;
-            var completed = function() {
-                latch = true;
-                self.verify();
-                self.pact.interactions = [];
+            var complete = function() { 
+                self.verify();  //Verify with the server
+                self.pact.interactions = []; //Clean the local setup
             };
 
-            //The real interaction
-            runs(function() {
-                test(completed);
-            });
-            waitsFor(function() {
-                return latch;
-            });
-
-            
+            testFn(complete);       // Call the tests
         };
+
         return MockService;
     });
