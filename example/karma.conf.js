@@ -1,78 +1,75 @@
 // Karma configuration
-// Generated on Thu Dec 19 2013 14:43:20 GMT+1100 (EST)
+// Generated on Thu Nov 20 2014 14:51:15 GMT+1100 (AEDT)
 
-module.exports = function (config) {
-    config.set({
+module.exports = function(config) {
+  config.set({
 
-        // base path, that will be used to resolve files and exclude
-        basePath: '../',
-
-
-        // frameworks to use
-        frameworks: ['jasmine', 'requirejs'],
+    // base path that will be used to resolve all patterns (eg. files, exclude)
+    basePath: '',
 
 
-        // list of files / patterns to load in the browser
-        files: [
-            
-            {pattern: 'bower_components/*/*.js', included: false},
-            {pattern: 'dist/*.js', included: false},
-            {pattern: 'example/*-spec.js', included: false},
-            {pattern: 'example/client.js', included: false},
-            'example/test-main.js'
-        ],
+    // frameworks to use
+    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+    frameworks: ['jasmine', 'requirejs'],
 
 
-        // list of files to exclude
-        exclude: [
-
-        ],
-
-        // web server port
-        port: 9877,
-
-
-        // enable / disable colors in the output (reporters and logs)
-        colors: true,
+    // list of files / patterns to load in the browser
+    files: [
+      'test-main.js',
+      {pattern: '*-spec.js', included: false},
+      {pattern: '*.js', included: false},
+      {pattern: 'node_modules/pact-js-dsl/dist/pact-js-dsl.js', included: false}
+    ],
 
 
-        // level of logging
-        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_INFO,
+    // list of files to exclude
+    exclude: [
+    ],
 
 
-        // enable / disable watching file and executing tests whenever any file changes
-        autoWatch: true,
+    // preprocess matching files before serving them to the browser
+    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+    preprocessors: {
+    },
 
 
-        // Start these browsers, currently available:
-        // - Chrome
-        // - ChromeCanary
-        // - Firefox
-        // - Opera (has to be installed with `npm install karma-opera-launcher`)
-        // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
-        // - PhantomJS
-        // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-        browsers: ['Chrome_without_security'],
-
-        customLaunchers: {
-            Chrome_without_security: {
-                base: 'Chrome',
-                flags: ['--disable-web-security']
-            },
-            PhantomJS_without_security: {
-             base: 'PhantomJS',
-             flags: ['--web-security=no']
-            }
-        },
+    // test results reporter to use
+    // possible values: 'dots', 'progress'
+    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+    reporters: ['progress'],
 
 
-        // If browser does not capture in given timeout [ms], kill it
-        captureTimeout: 60000,
+    // web server port
+    port: 9876,
 
 
-        // Continuous Integration mode
-        // if true, it capture browsers, run tests and exit
-        singleRun: false
-    });
+    // enable / disable colors in the output (reporters and logs)
+    colors: true,
+
+
+    // level of logging
+    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+    logLevel: config.LOG_INFO,
+
+
+    // enable / disable watching file and executing tests whenever any file changes
+    autoWatch: true,
+
+
+    // start these browsers
+    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    browsers: ['Chrome_without_security'],
+
+    customLaunchers: {
+      Chrome_without_security: {
+        base: 'Chrome',
+        flags: ['--disable-web-security']
+      }
+    },
+
+
+    // Continuous Integration mode
+    // if true, Karma captures browsers, runs the tests and exits
+    singleRun: false
+  });
 };

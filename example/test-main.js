@@ -1,28 +1,31 @@
-//Constructing the global REA Namespace
-var tests = [];
-for (var file in window.__karma__.files) {
-  if (window.__karma__.files.hasOwnProperty(file)) {
-    if (/spec\.js$/.test(file)) {
-      tests.push(file);
-    }
+var allTestFiles = [];
+var TEST_REGEXP = /(spec|test)\.js$/i;
+
+var pathToModule = function(path) {
+  return path.replace(/^\/base\//, '').replace(/\.js$/, '');
+};
+
+Object.keys(window.__karma__.files).forEach(function(file) {
+  if (TEST_REGEXP.test(file)) {
+    // Normalize paths to RequireJS module names.
+    allTestFiles.push(pathToModule(file));
   }
-}
+});
 
-requirejs.config({
-    // Karma serves files from '/base'
-    baseUrl: '/base/',
+require.config({
+  // Karma serves files under /base, which is the basePath from your config file
+  baseUrl: '/base',
 
-    paths: {
-        "pact-js-dsl": "dist/pact-js-dsl",
-        "client": "example/client"
-    },
-    bundles: {
-        'pact-js-dsl': ['pact', 'interaction', 'mockService']
-    },
+  // dynamically load all test files
+  deps: allTestFiles,
 
-    // ask Require.js to load these files (all our tests)
-    deps: tests,
+  // we have to kickoff jasmine, as it is asynchronous
+  callback: window.__karma__.start,
 
-    // start test run, once Require.js is done
-    callback: window.__karma__.start
+  paths: {
+    'pact-js-dsl':  'node_modules/pact-js-dsl/dist/pact-js-dsl',
+  },
+  bundles: {
+    'pact-js-dsl':  ['pact', 'interaction', 'mockService']
+  }
 });
