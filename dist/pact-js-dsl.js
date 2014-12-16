@@ -61,6 +61,11 @@ define('interaction', [], function() {
     return Interaction;
 });
 
+define('pact', [], function () {
+	function Pact() {
+	}
+	return Pact;
+});
 define('mockService', ['pact', 'interaction'],
     function(Pact, Interaction) {
         var _host = "http://127.0.0.1";
