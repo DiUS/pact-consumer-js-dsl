@@ -15,6 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+        'test-main.js',
         'spec/**/*spec.js'
     ],
 
@@ -55,12 +56,16 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome_without_security'],
+    browsers: ['PhantomJS_without_security'],
 
     customLaunchers: {
       Chrome_without_security: {
         base: 'Chrome',
         flags: ['--disable-web-security']
+      },
+      PhantomJS_without_security: {
+        base: 'PhantomJS',
+        flags: ['--web-security=false']
       }
     },
 

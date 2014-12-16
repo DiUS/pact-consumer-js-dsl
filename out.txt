@@ -1,5 +1,0 @@
-rbenv: pact-mock-service: command not found
-
-The `pact-mock-service' command exists in these Ruby versions:
-  1.9.3-p484
-
