@@ -38,7 +38,7 @@ define(['mockService'], function(MockService) {
 
       var doHttpCall = function() {
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", baseUrl + "/thing", false);
+        xhr.open("POST", baseUrl + "/thing?message=hello", false);
         xhr.setRequestHeader("Content-Type", 'text/plain')
         xhr.send('body');
         return xhr;
@@ -50,6 +50,7 @@ define(['mockService'], function(MockService) {
           .withRequest({
             method: "post",
             path: "/thing",
+            query: "message=hello",
             headers: {'Content-Type': 'text/plain'},
             body:'body'
           })

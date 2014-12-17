@@ -24,6 +24,7 @@ define('interaction', [], function() {
         if (typeof(firstParameter) == "object") {
             this.request.method = firstParameter.method;
             this.request.path = firstParameter.path;
+            this.request.query = firstParameter.query;
             this.request.headers = firstParameter.headers;
             this.request.body = firstParameter.body;
         }
