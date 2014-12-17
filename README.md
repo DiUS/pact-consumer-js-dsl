@@ -12,7 +12,7 @@ At the moment the hard requirements are,
 
 1. Install the ["pact" ruby gem](https://github.com/realestate-com-au/pact)
 
-   The easiest way is to add `gem "pact"` to your `Gemfile` and run `bundle install`
+   The easiest way is to add `gem "pact-mock_service"` to your `Gemfile` and run `bundle install`
    
 1. Install and configure Karma with Jasmine and RequireJS
 
@@ -118,7 +118,7 @@ At the moment the hard requirements are,
   
 1. Let's run that bad boy!
 
-  * start the pact mock server with `bundle exec pact service -p 9427 -l /tmp/pact.logs`
+  * start the pact mock server with `bundle exec pact-mock-service -p 9427 -l /tmp/pact.logs`
   * run `karma start` (in another terminal window)
 
 1. Write some Grunt, Gulp, Rake, etc., tasks to make running easier. As an example, look at the `Gruntfile` in this repo.
