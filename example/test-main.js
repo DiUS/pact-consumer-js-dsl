@@ -26,6 +26,6 @@ require.config({
     'pact-js-dsl':  'node_modules/pact-js-dsl/dist/pact-js-dsl',
   },
   bundles: {
-    'pact-js-dsl':  ['pact', 'interaction', 'mockService']
+    'pact-js-dsl':  ['pactDetails', 'interaction', 'mockService']
   }
 });
