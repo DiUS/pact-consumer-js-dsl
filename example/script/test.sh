@@ -8,7 +8,7 @@ sleep 5 #wip! Need a nicer way to wait for the service to start up
 echo $PACT_PID
 
 # Run tests
-grunt karma
+node_modules/karma/bin/karma start
 
 # Shutdown mock service
 kill -2 $PACT_PID
