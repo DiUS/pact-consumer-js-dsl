@@ -1,6 +1,8 @@
 Pact JS DSL
 =========
 
+_This DSL is in very early stages of development, please bear with us as we give it some polish. Please raise any problems you have in the github issues._
+
 This codebase is to create the JS version DSL for Pact
 
 At the moment the hard requirements are,
