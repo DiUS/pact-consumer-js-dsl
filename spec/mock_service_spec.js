@@ -3,7 +3,7 @@ define(['mockService'], function(MockService) {
   describe("MockService", function () {
 
     var baseUrl = "http://localhost:1234";
-    var mockService = new MockService('Consumer', 'Provider', 1234, './pacts');
+    var mockService = new MockService('Consumer', 'Provider', 1234, './tmp/pacts');
 
     beforeEach(function () {
       mockService.clean();
@@ -190,7 +190,12 @@ define(['mockService'], function(MockService) {
       });
     });
 
+    describe("writing the pact", function () {
 
+      it("doesn't blow up", function () {
+        mockService.write();
+      });
+
+    });
   });
-
 });

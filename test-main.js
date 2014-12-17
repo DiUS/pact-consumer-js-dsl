@@ -23,7 +23,7 @@ require.config({
   callback: window.__karma__.start,
 
   paths: {
-    'pact':  'src/pact',
+    'pactDetails':  'src/pactDetails',
     'mockService':  'src/mockService',
     'interaction':  'src/interaction',
   }
