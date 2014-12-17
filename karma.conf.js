@@ -16,9 +16,8 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'test-main.js',
-      {pattern: '*-spec.js', included: false},
-      {pattern: '*.js', included: false},
-      {pattern: 'node_modules/pact-js-dsl/dist/pact-js-dsl.js', included: false}
+      {pattern: 'spec/**/*spec.js', included: false},
+      {pattern: 'src/**/*.js', included: false}
     ],
 
 
@@ -58,18 +57,22 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome_without_security'],
+    browsers: ['PhantomJS_without_security'],
 
     customLaunchers: {
       Chrome_without_security: {
         base: 'Chrome',
         flags: ['--disable-web-security']
+      },
+      PhantomJS_without_security: {
+        base: 'PhantomJS',
+        flags: ['--web-security=false']
       }
     },
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true
+    singleRun: false
   });
 };

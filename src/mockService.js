@@ -1,15 +1,15 @@
-define('mockService', ['pact', 'interaction'],
-    function(Pact, Interaction) {
-        var _host = "http://127.0.0.1";
-        var _port = "";
+define('mockService', ['pactDetails', 'interaction'],
+    function(PactDetails, Interaction) {
+        var _baseURL = "";
 
         function MockService(consumerName, providerName, port, pactDir) {
-            _port = port;
-            this.pact = new Pact();
-            this.pact.consumer.name = consumerName;
-            this.pact.provider.name = providerName;
+            _baseURL = "http://127.0.0.1:" + port;
+            this.interactions = [];
+            this.pactDetails = new PactDetails();
+            this.pactDetails.consumer.name = consumerName;
+            this.pactDetails.provider.name = providerName;
             if (pactDir) {
-                this.pact.pact_dir = pactDir;
+                this.pactDetails.pact_dir = pactDir;
             }
             for (var prop in this) {
                 MockService.prototype[prop] = this[prop];
@@ -18,20 +18,20 @@ define('mockService', ['pact', 'interaction'],
         MockService.prototype.given = function(providerState){
             var interaction = new Interaction();
             interaction.given(providerState);
-            this.pact.interactions.push(interaction);
-            return interaction; 
+            this.interactions.push(interaction);
+            return interaction;
         }
 
         MockService.prototype.uponReceiving = function(description){
             var interaction = new Interaction();
             interaction.uponReceiving(description);
-            this.pact.interactions.push(interaction);
+            this.interactions.push(interaction);
             return interaction;
         }
 
         MockService.prototype.clean = function() {
             var xhr = new XMLHttpRequest();
-            xhr.open("DELETE", _host + ":" + _port + "/interactions", false);
+            xhr.open("DELETE", _baseURL + "/interactions", false);
             xhr.setRequestHeader("X-Pact-Mock-Service", true);
             xhr.send();
             if(200 != xhr.status){
@@ -41,12 +41,14 @@ define('mockService', ['pact', 'interaction'],
 
         MockService.prototype.setup = function() {
             var xhr;
-            for (var i = 0; i < this.pact.interactions.length; i++) {
+            var interactions = this.interactions;
+            this.interactions = []; //Clean the local setup
+            for (var i = 0; i < interactions.length; i++) {
                 xhr = new XMLHttpRequest();
-                xhr.open("POST", _host + ":" + _port + "/interactions", false);
+                xhr.open("POST", _baseURL + "/interactions", false);
                 xhr.setRequestHeader("X-Pact-Mock-Service", true);
                 xhr.setRequestHeader("Content-type", "application/json");
-                xhr.send(JSON.stringify(this.pact.interactions[i]));
+                xhr.send(JSON.stringify(interactions[i]));
                 if(200 != xhr.status){
                     throw "pact-js-dsl: Pact interaction setup failed. "+ xhr.responseText;
                 }
@@ -55,7 +57,7 @@ define('mockService', ['pact', 'interaction'],
 
         MockService.prototype.verify = function() {
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", _host + ":" + _port + "/interactions/verification", false);
+            xhr.open("GET", _baseURL + "/interactions/verification", false);
             xhr.setRequestHeader("X-Pact-Mock-Service", true);
             xhr.send();
             if(200 != xhr.status){
@@ -65,10 +67,10 @@ define('mockService', ['pact', 'interaction'],
 
         MockService.prototype.write = function() {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", _host + ":" + _port + "/pact", false);
+            xhr.open("POST", _baseURL + "/pact", false);
             xhr.setRequestHeader("X-Pact-Mock-Service", true);
             xhr.setRequestHeader("Content-type", "application/json");
-            xhr.send(JSON.stringify(this.pact));
+            xhr.send(JSON.stringify(this.pactDetails));
             if(200 != xhr.status){
                 throw "pact-js-dsl: Could not write the pact file. "+ xhr.responseText;
             }
@@ -76,15 +78,14 @@ define('mockService', ['pact', 'interaction'],
 
         MockService.prototype.run = function(testFn) {
             var self = this;
-            self.clean();   // Cleanup the server 
-            self.setup();   // Post the interactions
+            self.clean();       // Cleanup the interactions from the previous test
+            self.setup();       // Post the new interactions
 
-            var complete = function() { 
-                self.verify();  //Verify with the server
-                self.pact.interactions = []; //Clean the local setup
+            var complete = function() {
+                self.verify();  //Verify that the expected interactions have occurred
             };
 
-            testFn(complete);       // Call the tests
+            testFn(complete);   // Call the tests
         };
 
         return MockService;
