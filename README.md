@@ -156,7 +156,7 @@ Install other dependencies
 ### Running tests
 
     npm install
-    grunt karma
+    script/test.sh
 
 ### Run example test
 
