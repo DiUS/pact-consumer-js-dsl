@@ -87,7 +87,7 @@ define('mockService', ['pact', 'interaction'],
             var interaction = new Interaction();
             interaction.given(providerState);
             this.pact.interactions.push(interaction);
-            return interaction; 
+            return interaction;
         }
 
         MockService.prototype.uponReceiving = function(description){
@@ -144,10 +144,10 @@ define('mockService', ['pact', 'interaction'],
 
         MockService.prototype.run = function(testFn) {
             var self = this;
-            self.clean();   // Cleanup the server 
+            self.clean();   // Cleanup the server
             self.setup();   // Post the interactions
 
-            var complete = function() { 
+            var complete = function() {
                 self.verify();  //Verify with the server
                 self.pact.interactions = []; //Clean the local setup
             };

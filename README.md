@@ -95,7 +95,7 @@ At the moment the hard requirements are,
                   }
                 });
 
-            provider.runInteractions(function (completed) {
+            provider.run(function (completed) {
                 expect(MyClient.hello().responseMessage).toBe("hello to you too");
                 completed();
             });
