@@ -71,6 +71,33 @@ define(['mockService'], function(MockService) {
       });
     });
 
+    describe("a successful match using a query hash", function () {
+
+      var doHttpCall = function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", baseUrl + "/thing?lastName=Smith&firstName=Mary+Jane", false);
+        xhr.send();
+        return xhr;
+      };
+
+      it("returns the mocked response", function () {
+        mockService
+          .uponReceiving("a request with a query hash")
+          .withRequest({
+            method: "post",
+            path: "/thing",
+            query: {firstName: 'Mary Jane', lastName: 'Smith'} //Don't URL encode
+          })
+          .willRespondWith(201);
+
+        mockService.setup();
+        var response = doHttpCall();
+
+        expect(response.status).toEqual(201);
+
+      });
+    });
+
     describe("multiple interactions mocked at the same time", function () {
 
       var doHttpCall = function() {
