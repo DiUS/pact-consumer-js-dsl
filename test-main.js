@@ -23,9 +23,8 @@ require.config({
   callback: window.__karma__.start,
 
   paths: {
-    'pact-js-dsl':  'dist/pact-js-dsl',
-  },
-  bundles: {
-    'pact-js-dsl':  ['pact', 'interaction', 'mockService']
+    'pact':  'src/pact',
+    'mockService':  'src/mockService',
+    'interaction':  'src/interaction',
   }
 });

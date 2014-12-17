@@ -19,7 +19,7 @@ define('mockService', ['pact', 'interaction'],
             var interaction = new Interaction();
             interaction.given(providerState);
             this.pact.interactions.push(interaction);
-            return interaction; 
+            return interaction;
         }
 
         MockService.prototype.uponReceiving = function(description){
@@ -41,12 +41,14 @@ define('mockService', ['pact', 'interaction'],
 
         MockService.prototype.setup = function() {
             var xhr;
-            for (var i = 0; i < this.pact.interactions.length; i++) {
+            var interactions = this.pact.interactions;
+            this.pact.interactions = []; //Clean the local setup
+            for (var i = 0; i < interactions.length; i++) {
                 xhr = new XMLHttpRequest();
                 xhr.open("POST", _host + ":" + _port + "/interactions", false);
                 xhr.setRequestHeader("X-Pact-Mock-Service", true);
                 xhr.setRequestHeader("Content-type", "application/json");
-                xhr.send(JSON.stringify(this.pact.interactions[i]));
+                xhr.send(JSON.stringify(interactions[i]));
                 if(200 != xhr.status){
                     throw "pact-js-dsl: Pact interaction setup failed. "+ xhr.responseText;
                 }
@@ -76,12 +78,11 @@ define('mockService', ['pact', 'interaction'],
 
         MockService.prototype.run = function(testFn) {
             var self = this;
-            self.clean();   // Cleanup the server 
+            self.clean();   // Cleanup the server
             self.setup();   // Post the interactions
 
-            var complete = function() { 
+            var complete = function() {
                 self.verify();  //Verify with the server
-                self.pact.interactions = []; //Clean the local setup
             };
 
             testFn(complete);       // Call the tests
