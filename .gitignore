@@ -10,6 +10,7 @@ pact-consumer-pact-provider.json
 hello-consumer-hello-provider.json
 tmp
 
+log/
 *.log
 
 # samples
