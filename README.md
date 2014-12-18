@@ -71,12 +71,12 @@ At the moment the hard requirements are
                     reply: "Hello"
                   });
 
-          helloProvider.run(function(complete) {
-            expect(client.sayHello()).toEqual("Hello");
-              complete();
+                  helloProvider.run(function(complete) {
+                    expect(client.sayHello()).toEqual("Hello");
+                    complete();
+                  });
             });
-        });
-      });
+         });
 
     Make sure the source and test files are included by Karma in the `karma.conf.js` in the files array.
 
