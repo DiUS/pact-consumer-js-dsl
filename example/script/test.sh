@@ -7,7 +7,7 @@ sleep 5 #wip! Need a nicer way to wait for the service to start up
 
 echo $PACT_PID
 
-# Run tests
+# Run tests - is this the right way to call karma?!
 node_modules/karma/bin/karma start
 
 # Shutdown mock service
