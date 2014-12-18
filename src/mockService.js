@@ -26,13 +26,13 @@ Pact.MockService = Pact.MockService || {};
   };
 
   this.given = function(providerState) {
-    var interaction = Pact.createGivenInteraction(providerState);
+    var interaction = Pact.givenInteraction(providerState);
     this.interactions.push(interaction);
     return interaction;
   };
 
   this.uponReceiving = function(description) {
-    var interaction = Pact.createUponReceivingInteraction(description);
+    var interaction = Pact.receivingInteraction(description);
     this.interactions.push(interaction);
     return interaction;
   };

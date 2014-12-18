@@ -7,7 +7,7 @@
     // ugly but works... guess would be good to bring jasmine-beforeAll
     beforeEach(function() {
       client = pact.createClient('http://localhost:1234');
-      helloProvider = helloProvider ? helloProvider : Pact.createMockService({
+      helloProvider = helloProvider ? helloProvider : Pact.mockService({
         consumerName: 'hello-consumer',
         providerName: 'hello-provider',
         port: 1234
