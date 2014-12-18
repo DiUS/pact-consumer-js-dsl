@@ -1,0 +1,19 @@
+{
+  "name": "pact-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "karma": "^0.12.24",
+    "karma-chrome-launcher": "^0.1.5",
+    "karma-jasmine": "^0.1.5",
+    "karma-requirejs": "^0.2.2",
+    "pact-js-dsl": "git://github.com/DiUS/pact-consumer-js-dsl",
+    "requirejs": "^2.1.15"
+  }
+}
