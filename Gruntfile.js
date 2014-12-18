@@ -1,4 +1,4 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -8,18 +8,18 @@ module.exports = function (grunt) {
     clean: ['<%= dest %>'],
     concat: {
       dist: {
-        src: ['src/pactDetails.js', 'src/interaction.js', 'src/mockService.js'],
+        src: ['src/pact.js', 'src/interaction.js', 'src/mockService.js'],
         dest: '<%= distDir %>/<%= distName %>.js'
 
       }
     },
     karma: {
       spec: {
-        configFile: 'karma.conf.js',
+        configFile: 'spec/karma.conf.js',
         singleRun: true
       },
       ci: {
-        configFile: 'ci.conf.js',
+        configFile: 'spec/ci.conf.js',
         singleRun: true
       }
     },
