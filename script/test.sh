@@ -3,7 +3,7 @@ mkdir -p tmp/pacts
 bundle exec pact-mock-service -p 1234 -l tmp/pact.log &
 PACT_PID=$!
 
-sleep 5 #wip! Need a nicer way to wait for the service to start up
+sleep 0.5 #wip! Need a nicer way to wait for the service to start up
 
 echo $PACT_PID
 

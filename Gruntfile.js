@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     clean: ['<%= dest %>'],
     concat: {
       dist: {
-        src: ['<%= srcDir %>/*.js'],
+        src: ['src/pactDetails.js', 'src/interaction.js', 'src/mockService.js'],
         dest: '<%= distDir %>/<%= distName %>.js'
 
       }
