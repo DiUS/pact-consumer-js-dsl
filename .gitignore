@@ -9,3 +9,9 @@ pact_tests/*.txt
 pact-consumer-pact-provider.json
 hello-consumer-hello-provider.json
 tmp
+
+*.log
+
+# samples
+example-*/log
+example-*/tmp
