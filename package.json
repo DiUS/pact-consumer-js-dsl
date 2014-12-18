@@ -1,33 +1,35 @@
 {
   "name": "pact-js-dsl",
   "version": "0.0.1",
-  "description": "DSL for write pact test in JS",
-  "main": "Gruntfile.js",
+  "description": "DSL to write pact tests in Javascript",
+  "main": "gulpfile.js",
   "dependencies": {},
   "devDependencies": {
-    "grunt": "0.4.2",
-    "grunt-cli": "*",
-    "grunt-contrib-clean": "0.5.0",
-    "grunt-contrib-concat": "0.3.0",
-    "grunt-karma": "0.7.3",
-    "grunt-shell": "0.6.1",
+    "gulp": "^3.6.0",
+    "gulp-cache": "^0.1.1",
+    "gulp-clean": "^0.2.4",
+    "gulp-concat": "^2.4.2",
+    "gulp-jshint": "^1.5.3",
+    "gulp-load-plugins": "^0.5.0",
+    "gulp-size": "^0.3.0",
+    "gulp-uglify": "^0.2.1",
+    "jshint-checkstyle-file-reporter": "0.0.1",
+    "jshint-stylish": "^0.2.0",
     "karma": "0.12.24",
+    "karma-jasmine": "^0.1.5",
     "karma-chrome-launcher": "0.1.2",
     "karma-firefox-launcher": "^0.1.3",
-    "karma-jasmine": "^0.1.5",
     "karma-phantomjs-launcher": "^0.1.4",
-    "karma-safari-launcher": "~0.1",
-    "load-grunt-tasks": "0.4.0"
+    "karma-safari-launcher": "~0.1"
   },
-  "scripts": {},
-  "contributors": [
-    {
-      "name": "Fu Ying",
-      "email": "fu.ying.er@rea-group.com"
-    },
-    {
-      "name": "Malinda Kapuruge",
-      "email": "mkapuruge@dius.com.au"
-    }
-  ]
+  "contributors": [{
+    "name": "Fu Ying",
+    "email": "fu.ying.er@rea-group.com"
+  }, {
+    "name": "Malinda Kapuruge",
+    "email": "mkapuruge@dius.com.au"
+  }, {
+    "name": "Tarcio Saraiva",
+    "email": "tsaraiva@dius.com.au"
+  }]
 }
