@@ -162,7 +162,9 @@ Install other dependencies
 
 ### Run example test
 
-- grunt test (this will run the example test in the example folder)
+    cd example
+    npm install
+    script/test.sh
 
 ### Create the pact-js-dsl.js
 
