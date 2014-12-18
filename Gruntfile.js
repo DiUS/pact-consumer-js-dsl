@@ -17,6 +17,10 @@ module.exports = function (grunt) {
       spec: {
         configFile: 'karma.conf.js',
         singleRun: true
+      },
+      ci: {
+        configFile: 'ci.conf.js',
+        singleRun: true
       }
     },
     shell: {
@@ -33,6 +37,8 @@ module.exports = function (grunt) {
   require("load-grunt-tasks")(grunt);
   grunt.registerTask('test', ['shell:pact']);
   grunt.registerTask('package', ['concat']);
+
+  grunt.registerTask('testdist', ['package', 'karma:ci']);
   grunt.loadNpmTasks('grunt-karma');
 
 };
