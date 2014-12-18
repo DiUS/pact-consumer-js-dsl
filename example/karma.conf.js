@@ -14,8 +14,13 @@ module.exports = function(config) {
 
 
     // list of files / patterns to load in the browser
-    files: ['client.js', 'client-spec.js', 'node_modules/pact-js-dsl/dist/pact-js-dsl.js'],
-
+    files: [
+      'client.js',
+      'client-spec.js',
+      '../src/pact.js',
+      '../src/interaction.js',
+      '../src/mockService.js',
+    ],
 
     // list of files to exclude
     exclude: [],
