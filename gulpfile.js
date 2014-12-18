@@ -21,7 +21,6 @@ gulp.task('build', ['clean'], function() {
     .pipe($.jshint())
     .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
     .pipe($.concat('pact-js-dsl.js'))
-    .pipe($.uglify())
     .pipe(gulp.dest('dist'))
     .pipe($.size());
 });
