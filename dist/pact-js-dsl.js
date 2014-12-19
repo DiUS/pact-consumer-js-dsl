@@ -178,8 +178,11 @@ Pact.MockService = Pact.MockService || {};
     self.clean(); // Cleanup the interactions from the previous test
     self.setup(); // Post the new interactions
 
-    var complete = function() {
+    var complete = function(testComplete) {
       self.verify(); //Verify that the expected interactions have occurred
+      if (typeof(testComplete) === "function") {
+        testComplete();
+      }
     };
 
     testFn(complete); // Call the tests

@@ -1,4 +1,4 @@
-var pact = pact || {};
+var example = example || {};
 
 (function() {
 
@@ -30,13 +30,19 @@ var pact = pact || {};
     return JSON.parse(xhr.responseText).friends;
   };
 
-  this.unfriendMe = function(callback) {
+  this.unfriendMe = function(success, error) {
     //Makes an asynchronous request
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
-      if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-        callback(JSON.parse(xmlhttp.responseText).reply);
+      if (xmlhttp.readyState === 4) {
+        if (xmlhttp.status === 200) {
+          success(JSON.parse(xmlhttp.responseText).reply);
+        } else if (xmlhttp.status === 404) {
+          error("No friends :(");
+        } else {
+          error(xmlhttp.responseText);
+        }
       }
     }
 
@@ -44,4 +50,4 @@ var pact = pact || {};
     xmlhttp.send();
   };
 
-}).apply(pact);
+}).apply(example);
