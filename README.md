@@ -1,7 +1,7 @@
 Pact JS DSL
 =========
 
-_This DSL is in very early stages of development, please bear with us as we give it some polish. Please raise any problems you have in the github issues. Check out the [Development Roadmap](#development-roadmap) to see where we are headed._
+_This DSL is in very early stages of development, please bear with us as we give it some polish. Please raise any problems you have in the github issues. Check out the [Development Roadmap](/ROADMAP.md) to see where we are headed._
 
 This codebase is to create the JS version DSL for Pact.
 
@@ -12,7 +12,7 @@ At the moment the hard requirements are
 
 ### Getting Started (with Karma, Jasmine and the pact gem)
 
-1. Install the [Pact](https://github.com/realestate-com-au/pact) ruby gem
+1. Install the [pact-mock_service](https://github.com/bethesque/pact-mock_service) ruby gem
 
    The easiest way is to add `gem 'pact-mock_service'` to your `Gemfile` and run `bundle install`
 
@@ -48,7 +48,7 @@ At the moment the hard requirements are
          }
          ````
 
-   Note that running your tests across multiple browsers with one pact mock server will probably conflict with eachother. You will need to either run them sequentially or start multiple pact mock servers. To run them sequentially make multiple calls to karma from the command line with the different browsers passed with the `--browser` option.
+   Note that running your tests across multiple browsers with one pact mock server will probably conflict with each other. You will need to either run them sequentially or start multiple pact mock servers. To run them sequentially make multiple calls to karma from the command line with the different browsers passed with the `--browser` option.
 
 1. Write a Jasmine unit test similar to the following,
 
@@ -79,6 +79,8 @@ At the moment the hard requirements are
             });
          });
 
+    See the spec in the example directory for examples of asynchronous callbacks, how to expect error responses, and how to use query params.
+
     Make sure the source and test files are included by Karma in the `karma.conf.js` in the files array.
 
 1. Let's run that bad boy!
@@ -88,4 +90,4 @@ At the moment the hard requirements are
 
 ### Example
 
-Have a look at the `example` folder. If you use RequireJS look under the `example-requirejs` folder.
+Have a look at the `example` folder.
