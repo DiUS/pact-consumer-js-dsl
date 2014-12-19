@@ -180,7 +180,8 @@ Pact.MockService = Pact.MockService || {};
 
     var complete = function(testComplete) {
       self.verify(); //Verify that the expected interactions have occurred
-      if (typeof(testComplete) === "function") {
+
+      if (typeof(testComplete) === 'function') {
         testComplete();
       }
     };

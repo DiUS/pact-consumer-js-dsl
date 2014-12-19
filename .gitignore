@@ -16,3 +16,4 @@ log/
 # samples
 example-*/log
 example-*/tmp
+checkstyle.xml
