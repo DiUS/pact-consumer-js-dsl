@@ -90,7 +90,11 @@ At the moment the hard requirements are
 
 ### Example
 
-Have a look at the `example` folder.
+Have a look at the [example](/example) folder. Ensure you have Google Chrome installed.
+
+  $ cd example
+  $ npm install
+  $ script/test.sh
 
 # Contributing
 
