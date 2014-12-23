@@ -58,7 +58,15 @@ At the moment the hard requirements are
 
             beforeEach(function() {
               client = pact.createClient('http://localhost:1234');
-              helloProvider = MockService.create('hello-consumer', 'hello-provider', '1234');
+              helloProvider = MockService.create(
+                consumer: 'hello-consumer',
+                provider: 'hello-provider',
+                port: 1234,
+                pactDir: './pacts');
+            });
+
+            afterEach(function()) {
+                helloProvider.write();
             });
 
             it("should say hello", function() {

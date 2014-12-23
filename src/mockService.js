@@ -11,10 +11,10 @@ Pact.MockService = Pact.MockService || {};
 
     var _pactDetails = {
       consumer: {
-        name: opts.consumerName
+        name: opts.consumer
       },
       provider: {
-        name: opts.providerName
+        name: opts.provider
       },
       pact_dir: opts.pactDir ? opts.pactDir : '.'
     };
