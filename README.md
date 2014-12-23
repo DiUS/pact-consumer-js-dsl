@@ -91,3 +91,7 @@ At the moment the hard requirements are
 ### Example
 
 Have a look at the `example` folder.
+
+# Contributing
+
+Please read [CONTRIBUTING.md](/CONTRIBUTING.md)
