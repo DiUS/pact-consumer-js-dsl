@@ -92,9 +92,9 @@ At the moment the hard requirements are
 
 Have a look at the [example](/example) folder. Ensure you have Google Chrome installed.
 
-  $ cd example
-  $ npm install
-  $ script/test.sh
+    $ cd example
+    $ npm install
+    $ script/test.sh
 
 # Contributing
 
