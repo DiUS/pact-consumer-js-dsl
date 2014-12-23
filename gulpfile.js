@@ -17,7 +17,7 @@ gulp.task('clean', ['clear'], function() {
 });
 
 gulp.task('build', ['clean'], function() {
-  return gulp.src(['src/pact.js', 'src/interaction.js', 'src/mockService.js'])
+  return gulp.src(['src/pact.js', 'src/interaction.js', 'src/mockServiceRequests.js', 'src/mockService.js'])
     .pipe($.jshint())
     .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
     .pipe($.concat('pact-consumer-js-dsl.js'))

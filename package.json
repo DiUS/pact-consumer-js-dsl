@@ -17,7 +17,7 @@
     "jshint-checkstyle-file-reporter": "0.0.1",
     "jshint-stylish": "^0.2.0",
     "karma": "0.12.24",
-    "karma-jasmine": "^0.1.5",
+    "karma-jasmine": "^0.2.0",
     "karma-chrome-launcher": "0.1.2",
     "karma-firefox-launcher": "^0.1.3",
     "karma-phantomjs-launcher": "^0.1.4",

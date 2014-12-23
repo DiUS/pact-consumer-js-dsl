@@ -15,6 +15,7 @@ module.exports = function(config) {
     files: [
       'src/pact.js',
       'src/interaction.js',
+      'src/mockServiceRequests.js',
       'src/mockService.js',
       'spec/**/*spec.js'
     ],

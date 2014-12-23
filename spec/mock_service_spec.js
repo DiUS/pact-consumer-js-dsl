@@ -9,8 +9,6 @@ describe('MockService', function() {
       provider: 'Provider',
       port: 1234
     });
-
-    mockService.clean();
   });
 
   describe('a successful match using argument lists', function() {
@@ -18,12 +16,12 @@ describe('MockService', function() {
     var doHttpCall = function() {
       var xhr = new XMLHttpRequest();
       xhr.open('POST', baseUrl + '/thing', false);
-      xhr.setRequestHeader('Content-Type', 'text/plain')
+      xhr.setRequestHeader('Content-Type', 'text/plain');
       xhr.send('body');
       return xhr;
     };
 
-    it('returns the mocked response', function() {
+    it('returns the mocked response', function(done) {
       mockService
         .uponReceiving('a request for hello')
         .withRequest('post', '/thing', {
@@ -35,14 +33,17 @@ describe('MockService', function() {
           reply: 'Hello'
         });
 
-      mockService.setup();
-      var response = doHttpCall();
+      mockService.run(function(runComplete) {
+        var response = doHttpCall();
 
-      expect(JSON.parse(response.responseText)).toEqual({
-        reply: 'Hello'
+        expect(JSON.parse(response.responseText)).toEqual({
+          reply: 'Hello'
+        });
+        expect(response.status).toEqual(201);
+        expect(response.getResponseHeader('Content-Type')).toEqual('application/json');
+        runComplete(done);
       });
-      expect(response.status).toEqual(201);
-      expect(response.getResponseHeader('Content-Type')).toEqual('application/json')
+
     });
   });
 
@@ -51,12 +52,12 @@ describe('MockService', function() {
     var doHttpCall = function() {
       var xhr = new XMLHttpRequest();
       xhr.open('POST', baseUrl + '/thing?message=hello', false);
-      xhr.setRequestHeader('Content-Type', 'text/plain')
+      xhr.setRequestHeader('Content-Type', 'text/plain');
       xhr.send('body');
       return xhr;
     };
 
-    it('returns the mocked response', function() {
+    it('returns the mocked response', function(done) {
       mockService
         .uponReceiving('another request for hello')
         .withRequest({
@@ -78,14 +79,17 @@ describe('MockService', function() {
           }
         });
 
-      mockService.setup();
-      var response = doHttpCall();
+      mockService.run(function(runComplete) {
+        var response = doHttpCall();
 
-      expect(JSON.parse(response.responseText)).toEqual({
-        reply: 'Hello'
+        expect(JSON.parse(response.responseText)).toEqual({
+          reply: 'Hello'
+        });
+        expect(response.status).toEqual(201);
+        expect(response.getResponseHeader('Content-Type')).toEqual('application/json');
+        runComplete(done);
       });
-      expect(response.status).toEqual(201);
-      expect(response.getResponseHeader('Content-Type')).toEqual('application/json')
+
     });
   });
 
@@ -98,7 +102,7 @@ describe('MockService', function() {
       return xhr;
     };
 
-    it('returns the mocked response', function() {
+    it('returns the mocked response', function(done) {
       mockService
         .uponReceiving('a request with a query hash')
         .withRequest({
@@ -111,11 +115,12 @@ describe('MockService', function() {
         })
         .willRespondWith(201);
 
-      mockService.setup();
-      var response = doHttpCall();
+      mockService.run(function(runComplete) {
+        var response = doHttpCall();
 
-      expect(response.status).toEqual(201);
-
+        expect(response.status).toEqual(201);
+        runComplete(done);
+      });
     });
   });
 
@@ -135,7 +140,7 @@ describe('MockService', function() {
       return xhr;
     };
 
-    it('returns the correct mocked response', function() {
+    it('returns the correct mocked response', function(done) {
       mockService
         .uponReceiving('a request for a thing')
         .withRequest('get', '/thing')
@@ -146,12 +151,14 @@ describe('MockService', function() {
         .withRequest('get', '/different-thing')
         .willRespondWith(200, {}, 'different thing response');
 
-      mockService.setup();
-      var response = doHttpCall();
-      var differentResponse = doDifferentHttpCall();
+      mockService.run(function(runComplete) {
+        var response = doHttpCall();
+        var differentResponse = doDifferentHttpCall();
 
-      expect(response.responseText).toEqual('thing response');
-      expect(differentResponse.responseText).toEqual('different thing response');
+        expect(response.responseText).toEqual('thing response');
+        expect(differentResponse.responseText).toEqual('different thing response');
+        runComplete(done);
+      });
     });
   });
 
@@ -164,17 +171,19 @@ describe('MockService', function() {
       return xhr;
     };
 
-    it('does not raise an error', function() {
+    it('does not raise an error', function(done) {
       mockService
         .uponReceiving('a response that will be verified')
         .withRequest('post', '/thing')
         .willRespondWith(201);
 
-      mockService.setup();
-      var response = doHttpCall();
+      mockService.run(function(runComplete) {
+        var response = doHttpCall();
 
-      expect(response.status).toEqual(201);
-      mockService.verify();
+        expect(response.status).toEqual(201);
+        runComplete(done);
+      });
+
     });
   });
 
@@ -187,38 +196,21 @@ describe('MockService', function() {
       return xhr;
     };
 
-    var verify = function() {
-      mockService.verify();
-    };
-
-    it('raises an error', function() {
-
+    it('raises an error', function(done) {
       mockService
         .uponReceiving('a response that will be verified')
         .withRequest('post', '/thing')
         .willRespondWith(201);
 
-      mockService.setup();
-      var response = doHttpCall();
-      expect(response.status).toEqual(500);
+      mockService.run(function(runComplete) {
+        var response = doHttpCall();
+        expect(response.status).toEqual(500);
 
-      var errorRaised = false;
-      try {
-        verify();
-      } catch (e) {
-        errorRaised = true;
-        expect(e.toString()).toMatch(/verification failed/);
-      }
-      expect(errorRaised).toBe(true);
+        runComplete(function(error) {
+          expect(error).toMatch(/verification failed/)
+          done();
+        });
+      });
     });
   });
-
-  describe('writing the pact', function() {
-
-    it('doesn\'t blow up ', function() {
-      mockService.write();
-    });
-
-  });
-
 });
