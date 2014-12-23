@@ -93,13 +93,12 @@ Pact.MockService = Pact.MockService || {};
 
 (function() {
 
-  var _baseURL = 'http://127.0.0.1:';
-
+  var _baseURL;
   this.interactions = [];
   this.pactDetails = {};
 
   this.init = function(opts) {
-    _baseURL += opts.port;
+    _baseURL = 'http://127.0.0.1:' + opts.port;
 
     this.pactDetails = {
       consumer: {

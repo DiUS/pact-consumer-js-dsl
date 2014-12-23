@@ -4,7 +4,7 @@ describe('MockService', function() {
     mockService;
 
   beforeEach(function() {
-    mockService = mockService ? mockService : Pact.mockService({
+    mockService = Pact.mockService({
       consumerName: 'Consumer',
       providerName: 'Provider',
       port: 1234,
