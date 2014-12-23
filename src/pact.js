@@ -6,7 +6,7 @@ var Pact = Pact || {};
 
   // consumerName, providerName, port, pactDir
   this.mockService = function(opts) {
-    return Pact.MockService.init(opts);
+    return Pact.MockService.create(opts);
   };
 
   this.givenInteraction = function(providerState) {
