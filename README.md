@@ -3,14 +3,11 @@ Pact JS DSL
 
 _This DSL is in very early stages of development, please bear with us as we give it some polish. Please raise any problems you have in the github issues. Check out the [Development Roadmap](/ROADMAP.md) to see where we are headed._
 
-This codebase is to create the JS version DSL for Pact.
+This codebase provides a Javascript DSL for creating pacts. If you are new to Pact, please read the Pact [README](pact-readme) first.
 
-At the moment the hard requirements are
+For the moment, the DSL relies on the Ruby `pact-mock_service` gem to provide the mock service for the Javascript tests.
 
-- Jasmine
-- the `pact` ruby gem
-
-### Getting Started (with Karma, Jasmine and the pact gem)
+### Getting Started (with Karma, Jasmine and the pact-mock_service gem)
 
 1. Install the [pact-mock_service](https://github.com/bethesque/pact-mock_service) ruby gem
 
@@ -52,12 +49,13 @@ At the moment the hard requirements are
 
 1. Write a Jasmine unit test similar to the following,
 
-        describe("Client", function() {
+        describe("Client", function(done) {
 
             var client, helloProvider;
 
             beforeEach(function() {
-              client = pact.createClient('http://localhost:1234');
+
+              client = new ProviderClient('http://localhost:1234');
               helloProvider = MockService.create(
                 consumer: 'hello-consumer',
                 provider: 'hello-provider',
@@ -80,9 +78,9 @@ At the moment the hard requirements are
                     reply: "Hello"
                   });
 
-                  helloProvider.run(function(complete) {
+                  helloProvider.run(function(runComplete) {
                     expect(client.sayHello()).toEqual("Hello");
-                    complete();
+                    runComplete(done);
                   });
             });
          });
@@ -98,8 +96,14 @@ At the moment the hard requirements are
 
 ### Example
 
-Have a look at the `example` folder.
+Have a look at the [example](/example) folder. Ensure you have Google Chrome installed.
+
+    $ cd example
+    $ npm install
+    $ script/test.sh
 
 # Contributing
 
 Please read [CONTRIBUTING.md](/CONTRIBUTING.md)
+
+[pact-readme]: https://github.com/realestate-com-au/pact
