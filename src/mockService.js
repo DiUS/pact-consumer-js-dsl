@@ -85,6 +85,7 @@ Pact.MockService = Pact.MockService || {};
 
       var runComplete = function(testComplete) {
         self.verify(); //Verify that the expected interactions have occurred
+        self.write();  //Write the pact file
 
         if (typeof(testComplete) === 'function') {
           testComplete();

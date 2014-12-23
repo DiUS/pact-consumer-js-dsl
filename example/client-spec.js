@@ -15,10 +15,6 @@
       });
     });
 
-    afterEach(function() {
-      helloProvider.write();
-    });
-
     describe("sayHello", function () {
       it("should say hello", function() {
 

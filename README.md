@@ -57,14 +57,10 @@ For the moment, the DSL relies on the Ruby `pact-mock_service` gem to provide th
 
               client = new ProviderClient('http://localhost:1234');
               helloProvider = MockService.create(
-                consumer: 'hello-consumer',
-                provider: 'hello-provider',
+                consumer: 'Hello Consumer',
+                provider: 'Hello Provider',
                 port: 1234,
-                pactDir: './pacts');
-            });
-
-            afterEach(function()) {
-                helloProvider.write();
+                pactDir: '.');
             });
 
             it("should say hello", function() {
@@ -93,6 +89,7 @@ For the moment, the DSL relies on the Ruby `pact-mock_service` gem to provide th
 
    * start the pact mock server with `bundle exec pact-mock-service -p 1234 -l /tmp/pact.logs`
    * run `karma start` (in another terminal window)
+   * inspect the pact file that has been written to "hello_consumer-hello_provider.json"
 
 ### Example
 
