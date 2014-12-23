@@ -32,10 +32,7 @@ Pact.MockService = Pact.MockService || {};
     };
 
     this.clean = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('DELETE', _baseURL + '/interactions', false);
-      xhr.setRequestHeader('X-Pact-Mock-Service', true);
-      xhr.send();
+      var xhr = this.request('DELETE', _baseURL + '/interactions', null);
       if (200 !== xhr.status) {
         throw 'pact-js-dsl: Pact cleanup failed. ' + xhr.responseText;
       }
@@ -44,13 +41,10 @@ Pact.MockService = Pact.MockService || {};
     this.setup = function() {
       var interactions = _interactions;
       _interactions = []; //Clean the local setup
+      var self = this;
 
       interactions.forEach(function(interaction) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', _baseURL + '/interactions', false);
-        xhr.setRequestHeader('X-Pact-Mock-Service', true);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.send(JSON.stringify(interaction));
+        var xhr = self.request('POST', _baseURL + '/interactions', JSON.stringify(interaction));
         if (200 !== xhr.status) {
           throw 'pact-js-dsl: Pact interaction setup failed. ' + xhr.responseText;
         }
@@ -58,21 +52,14 @@ Pact.MockService = Pact.MockService || {};
     };
 
     this.verify = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', _baseURL + '/interactions/verification', false);
-      xhr.setRequestHeader('X-Pact-Mock-Service', true);
-      xhr.send();
+      var xhr = this.request('GET', _baseURL + '/interactions/verification', null);
       if (200 !== xhr.status) {
         throw 'pact-js-dsl: Pact verification failed. ' + xhr.responseText;
       }
     };
 
     this.write = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', _baseURL + '/pact', false);
-      xhr.setRequestHeader('X-Pact-Mock-Service', true);
-      xhr.setRequestHeader('Content-type', 'application/json');
-      xhr.send(JSON.stringify(_pactDetails));
+      var xhr = this.request('POST', _baseURL + '/pact', JSON.stringify(_pactDetails));
       if (200 !== xhr.status) {
         throw 'pact-js-dsl: Could not write the pact file. ' + xhr.responseText;
       }
@@ -93,6 +80,15 @@ Pact.MockService = Pact.MockService || {};
       };
 
       testFunction(runComplete); // Call the tests
+    };
+
+    this.request = function(method, url, body) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, url, false);
+      xhr.setRequestHeader('X-Pact-Mock-Service', 'true');
+      xhr.setRequestHeader('Content-type', 'application/json');
+      xhr.send(body);
+      return xhr;
     };
   }
 
