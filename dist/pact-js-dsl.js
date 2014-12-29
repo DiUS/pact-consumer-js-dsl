@@ -89,6 +89,8 @@ Pact.Interaction = Pact.Interaction || {};
 
 'use strict';
 
+if (!XMLHttpRequest) { var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest; }
+
 Pact.MockService = Pact.MockService || {};
 
 (function() {
@@ -186,3 +188,5 @@ Pact.MockService = Pact.MockService || {};
   };
 
 }).apply(Pact.MockService);
+
+module.exports = Pact;

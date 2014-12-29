@@ -1,5 +1,7 @@
 'use strict';
 
+if (!XMLHttpRequest) { var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest; }
+
 Pact.MockService = Pact.MockService || {};
 
 (function() {
