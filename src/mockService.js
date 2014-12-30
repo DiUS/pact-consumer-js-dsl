@@ -35,7 +35,7 @@ Pact.MockService = Pact.MockService || {};
 
     this.clean = function() {
       var xhr = this.request('DELETE', _baseURL + '/interactions', null);
-      if (200 !== xhr.status) {
+      if (200 !== parseInt(xhr.status)) {
         throw 'pact-js-dsl: Pact cleanup failed. ' + xhr.responseText;
       }
     };
@@ -47,7 +47,7 @@ Pact.MockService = Pact.MockService || {};
 
       interactions.forEach(function(interaction) {
         var xhr = self.request('POST', _baseURL + '/interactions', JSON.stringify(interaction));
-        if (200 !== xhr.status) {
+        if (200 !== parseInt(xhr.status)) {
           throw 'pact-js-dsl: Pact interaction setup failed. ' + xhr.responseText;
         }
       });
@@ -55,14 +55,14 @@ Pact.MockService = Pact.MockService || {};
 
     this.verify = function() {
       var xhr = this.request('GET', _baseURL + '/interactions/verification', null);
-      if (200 !== xhr.status) {
+      if (200 !== parseInt(xhr.status)) {
         throw 'pact-js-dsl: Pact verification failed. ' + xhr.responseText;
       }
     };
 
     this.write = function() {
       var xhr = this.request('POST', _baseURL + '/pact', JSON.stringify(_pactDetails));
-      if (200 !== xhr.status) {
+      if (200 !== parseInt(xhr.status)) {
         throw 'pact-js-dsl: Could not write the pact file. ' + xhr.responseText;
       }
     };
