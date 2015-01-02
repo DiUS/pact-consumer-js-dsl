@@ -121,9 +121,9 @@ Pact.MockService = Pact.MockService || {};
     };
 
     this.clean = function() {
-      var xhr = this.request('DELETE', _baseURL + '/interactions', null);
-      if (200 !== xhr.status) {
-        throw 'pact-js-dsl: Pact cleanup failed. ' + xhr.responseText;
+      var response = this.request('DELETE', _baseURL + '/interactions', null);
+      if (_isNotSuccess(response)) {
+        throw 'pact-js-dsl: Pact cleanup failed. ' + response.responseText;
       }
     };
 
@@ -133,24 +133,24 @@ Pact.MockService = Pact.MockService || {};
       var self = this;
 
       interactions.forEach(function(interaction) {
-        var xhr = self.request('POST', _baseURL + '/interactions', JSON.stringify(interaction));
-        if (200 !== xhr.status) {
-          throw 'pact-js-dsl: Pact interaction setup failed. ' + xhr.responseText;
+        var response = self.request('POST', _baseURL + '/interactions', JSON.stringify(interaction));
+        if (_isNotSuccess(response)) {
+          throw 'pact-js-dsl: Pact interaction setup failed. ' + response.responseText;
         }
       });
     };
 
     this.verify = function() {
-      var xhr = this.request('GET', _baseURL + '/interactions/verification', null);
-      if (200 !== xhr.status) {
-        throw 'pact-js-dsl: Pact verification failed. ' + xhr.responseText;
+      var response = this.request('GET', _baseURL + '/interactions/verification', null);
+      if (_isNotSuccess(response)) {
+        throw 'pact-js-dsl: Pact verification failed. ' + response.responseText;
       }
     };
 
     this.write = function() {
-      var xhr = this.request('POST', _baseURL + '/pact', JSON.stringify(_pactDetails));
-      if (200 !== xhr.status) {
-        throw 'pact-js-dsl: Could not write the pact file. ' + xhr.responseText;
+      var response = this.request('POST', _baseURL + '/pact', JSON.stringify(_pactDetails));
+      if (_isNotSuccess(response)) {
+        throw 'pact-js-dsl: Could not write the pact file. ' + response.responseText;
       }
     };
 
@@ -172,13 +172,17 @@ Pact.MockService = Pact.MockService || {};
     };
 
     this.request = function(method, url, body) {
-      var xhr = new XMLHttpRequest();
-      xhr.open(method, url, false);
-      xhr.setRequestHeader('X-Pact-Mock-Service', 'true');
-      xhr.setRequestHeader('Content-type', 'application/json');
-      xhr.send(body);
-      return xhr;
+      var response = new XMLHttpRequest();
+      response.open(method, url, false);
+      response.setRequestHeader('X-Pact-Mock-Service', 'true');
+      response.setRequestHeader('Content-type', 'application/json');
+      response.send(body);
+      return response;
     };
+
+    function _isNotSuccess(response) {
+      return parseInt(response.status, 10) !== 200;
+    }
   }
 
   this.create = function(opts) {
