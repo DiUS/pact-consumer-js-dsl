@@ -15,21 +15,25 @@ In Mac OS X:
 
 You need to install grunt-cli, bower and karma first
 
-    npm install -g grunt-cli bower karma
+    $ npm install -g grunt-cli bower karma
 
 Inside the project folder, simply run `npm install` to install the other dependencies.
 
 ### Running tests
 
-  gulp run-tests
+    $ gulp run-tests
+
+or
+
+    $ node_modules/.bin/gulp run-tests
 
 ### Run example test
 
-    cd example
-    npm install
-    script/test.sh
+    $ cd example
+    $ npm install
+    $ script/test.sh
 
 ### Create the pact-js-dsl.js
 The `pact-js-dsl.js` is a minified and concatenated version of the Pact Javascript source. In order to generate it just run...
 
-    gulp
+    $ gulp
