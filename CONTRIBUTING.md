@@ -43,6 +43,13 @@ The `pact-consumer-js-dsl.js` is a minified and concatenated version of the Pact
 When a stable version X.Y.Z can be released:
 
 * Increment the version in package.json
+* Update the CHANGELOG.md with the commits since the last release using the command:
+
+    $ git log --pretty=format:'  * %h - %s (%an, %ad)'
+
+Do not include commit messages that will not affect end users (eg. refactoring, updates to README files etc.)
+
+* Commit
 
     $ git commit -am "Releasing version X.Y.Z"
     $ git push
