@@ -27,7 +27,7 @@ Pact.Interaction = Pact.Interaction || {};
 
   this.create = function() {
     return {
-      provider_state: '',
+      providerState: null,
       description: '',
       request: {},
       response: {},
