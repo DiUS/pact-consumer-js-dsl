@@ -1,7 +1,5 @@
 'use strict';
 
-var VERSION = '0.0.2';
-
 var gulp = require('gulp'),
   fs = require('fs'),
   spawn = require('child_process').spawn,
@@ -22,7 +20,7 @@ gulp.task('build', ['clean'], function() {
   return gulp.src(['src/pact.js', 'src/interaction.js', 'src/mockService.js'])
     .pipe($.jshint())
     .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
-    .pipe($.concat('pact-js-dsl-' + VERSION + '.js'))
+    .pipe($.concat('pact-js-dsl.js'))
     .pipe(gulp.dest('dist'))
     .pipe($.size());
 });

@@ -1,6 +1,6 @@
 {
   "name": "pact-js-dsl",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "DSL to write pact tests in Javascript",
   "main": "gulpfile.js",
   "dependencies": {},
@@ -31,5 +31,8 @@
   }, {
     "name": "Tarcio Saraiva",
     "email": "tsaraiva@dius.com.au"
+  }, {
+    "name" : "Beth Skurrie",
+    "email" : "bskurrie@dius.com.au"
   }]
 }
