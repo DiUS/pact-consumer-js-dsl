@@ -4,7 +4,7 @@ _This DSL is in very early stages of development, please bear with us as we give
 
 This codebase provides a Javascript DSL for creating pacts. If you are new to Pact, please read the Pact [README](pact-readme) first.
 
-For the moment, the DSL relies on the Ruby `pact-mock_service` gem to provide the mock service for the Javascript tests.
+This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provide the mock service for the Javascript tests. If you do not want to use Ruby in your project, please read about using a standalone Pact mock service [here][pact-mock-service-without-ruby].
 
 ### Getting Started (with Karma, Jasmine and the pact-mock_service gem)
 
@@ -104,3 +104,5 @@ Please read [CONTRIBUTING.md](/CONTRIBUTING.md)
 
 [pact-readme]: https://github.com/realestate-com-au/pact
 [releases]: https://github.com/DiUS/pact-consumer-js-dsl/releases
+[pact-mock-service]: https://github.com/bethesque/pact-mock_service
+[pact-mock-service-without-ruby]: https://github.com/DiUS/pact-consumer-js-dsl/wiki/Using-the-Pact-Mock-Service-without-Ruby
