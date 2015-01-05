@@ -1,6 +1,6 @@
 'use strict';
 
-var VERSION = '0.0.2.rc1';
+var VERSION = '0.0.2';
 
 var gulp = require('gulp'),
   fs = require('fs'),
