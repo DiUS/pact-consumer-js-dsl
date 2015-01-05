@@ -28,7 +28,7 @@ For the moment, the DSL relies on the Ruby `pact-mock_service` gem to provide th
 
     Run `karma init`. Answer **jasmine** for *testing framework* and **no** for *use require.js*.
 
-  1. Add `pact-consumer-js-dsl` to your project by running `npm install DiUS/pact-consumer-js-dsl#0.0.2 --save-dev`
+  1. Add `pact-consumer-js-dsl` to your project by running `npm install DiUS/pact-consumer-js-dsl#X.Y.Z --save-dev`, where `X.Y.Z` is the latest stable version, according to the [releases][releases] page.
 
   1. Tell Karma about `pact-consumer-js-dsl.js` in `karma.conf.js`. In the `files: []` section add a new entry for `node_modules/pact-consumer-js-dsl/dist/pact-consumer-js-dsl.js`.
 
@@ -103,3 +103,4 @@ Have a look at the [example](/example) folder. Ensure you have Google Chrome ins
 Please read [CONTRIBUTING.md](/CONTRIBUTING.md)
 
 [pact-readme]: https://github.com/realestate-com-au/pact
+[releases]: https://github.com/DiUS/pact-consumer-js-dsl/releases
