@@ -1,6 +1,8 @@
+#!/bin/bash
+
 # Start mock service
 mkdir -p tmp/pacts
-bundle exec pact-mock-service -p 1234 -l tmp/pact.log &
+bundle exec pact-mock-service -p 1234 -l tmp/pact.log --pact-dir tmp/pacts &
 PACT_PID=$!
 
 sleep 5 #wip! Need a nicer way to wait for the service to start up

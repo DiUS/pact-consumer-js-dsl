@@ -1,5 +1,4 @@
-Pact JS DSL
-=========
+# Pact Consumer Javascript DSL
 
 _This DSL is in very early stages of development, please bear with us as we give it some polish. Please raise any problems you have in the github issues. Check out the [Development Roadmap](/ROADMAP.md) to see where we are headed._
 
@@ -11,7 +10,7 @@ For the moment, the DSL relies on the Ruby `pact-mock_service` gem to provide th
 
 1. Install the [pact-mock_service](https://github.com/bethesque/pact-mock_service) ruby gem
 
-   The easiest way is to add `gem 'pact-mock_service'` to your `Gemfile` and run `bundle install`
+   The easiest way is to add `gem 'pact-mock_service', '~> 0.2.3.pre.rc1'` to your `Gemfile` and run `bundle install`
 
 1. Install and configure Karma with Jasmine
 

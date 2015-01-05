@@ -1,6 +1,6 @@
 'use strict';
 
-var VERSION = '0.0.1';
+var VERSION = '0.0.2.rc1';
 
 var gulp = require('gulp'),
   fs = require('fs'),
@@ -36,7 +36,7 @@ gulp.task('run-tests', ['build'], function() {
   fs.mkdirSync('tmp/pacts');
   fs.mkdirSync('log');
 
-  var child = spawn('bundle', ['exec', 'pact-mock-service', '-p', '1234', '-l', 'tmp/pact.log']);
+  var child = spawn('bundle', ['exec', 'pact-mock-service', '-p', '1234', '-l', 'tmp/pact.log', '--pact-dir', './tmp/pacts']);
 
   karma.start({
     configFile: __dirname + '/spec/' + karmaConf + '.conf.js',

@@ -15,8 +15,7 @@ Pact.MockService = Pact.MockService || {};
       },
       provider: {
         name: opts.provider
-      },
-      pact_dir: opts.pactDir ? opts.pactDir : '.'
+      }
     };
 
     this.given = function(providerState) {

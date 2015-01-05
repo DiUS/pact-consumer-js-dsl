@@ -10,8 +10,7 @@
       helloProvider = Pact.mockService({
         consumer: 'Hello Consumer',
         provider: 'Hello Provider',
-        port: 1234,
-        pactDir: './tmp/pacts'
+        port: 1234
       });
     });
 

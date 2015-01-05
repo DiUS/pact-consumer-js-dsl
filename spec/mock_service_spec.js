@@ -7,8 +7,7 @@ describe('MockService', function() {
     mockService = Pact.mockService({
       consumer: 'Consumer',
       provider: 'Provider',
-      port: 1234,
-      pactDir: './tmp/pacts'
+      port: 1234
     });
 
     mockService.clean();
