@@ -13,7 +13,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'dist/pact-js-dsl.js',
+      'dist/pact-consumer-js-dsl.js',
       'spec/**/*spec.js',
     ],
 

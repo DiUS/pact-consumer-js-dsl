@@ -32,8 +32,8 @@ or
     $ script/setup.sh
     $ script/test.sh
 
-### Create the pact-js-dsl.js
+### Create the pact-consumer-js-dsl.js
 
-The `pact-js-dsl.js` is a minified and concatenated version of the Pact Javascript source. In order to generate it just run...
+The `pact-consumer-js-dsl.js` is a minified and concatenated version of the Pact Javascript source. In order to generate it just run...
 
     $ gulp

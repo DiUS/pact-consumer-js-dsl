@@ -20,7 +20,7 @@ gulp.task('build', ['clean'], function() {
   return gulp.src(['src/pact.js', 'src/interaction.js', 'src/mockService.js'])
     .pipe($.jshint())
     .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
-    .pipe($.concat('pact-js-dsl.js'))
+    .pipe($.concat('pact-consumer-js-dsl.js'))
     .pipe(gulp.dest('dist'))
     .pipe($.size());
 });

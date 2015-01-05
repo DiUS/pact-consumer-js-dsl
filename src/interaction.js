@@ -37,7 +37,7 @@ Pact.Interaction = Pact.Interaction || {};
         }
 
         if (!this.request.method || !this.request.path) {
-          throw 'pact-js-dsl\'s "withRequest" function requires "method" and "path" parameters';
+          throw 'pact-consumer-js-dsl\'s "withRequest" function requires "method" and "path" parameters';
         }
 
         return this;
@@ -56,7 +56,7 @@ Pact.Interaction = Pact.Interaction || {};
         }
 
         if (!this.response.status) {
-          throw 'pact-js-dsl\'s "willRespondWith" function requires "status" parameter';
+          throw 'pact-consumer-js-dsl\'s "willRespondWith" function requires "status" parameter';
         }
 
         return this;

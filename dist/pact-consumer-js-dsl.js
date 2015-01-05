@@ -58,7 +58,7 @@ Pact.Interaction = Pact.Interaction || {};
         }
 
         if (!this.request.method || !this.request.path) {
-          throw 'pact-js-dsl\'s "withRequest" function requires "method" and "path" parameters';
+          throw 'pact-consumer-js-dsl\'s "withRequest" function requires "method" and "path" parameters';
         }
 
         return this;
@@ -77,7 +77,7 @@ Pact.Interaction = Pact.Interaction || {};
         }
 
         if (!this.response.status) {
-          throw 'pact-js-dsl\'s "willRespondWith" function requires "status" parameter';
+          throw 'pact-consumer-js-dsl\'s "willRespondWith" function requires "status" parameter';
         }
 
         return this;
@@ -122,7 +122,7 @@ Pact.MockService = Pact.MockService || {};
     this.clean = function() {
       var response = this.request('DELETE', _baseURL + '/interactions', null);
       if (_isNotSuccess(response)) {
-        throw 'pact-js-dsl: Pact cleanup failed. ' + response.responseText;
+        throw 'pact-consumer-js-dsl: Pact cleanup failed. ' + response.responseText;
       }
     };
 
@@ -134,7 +134,7 @@ Pact.MockService = Pact.MockService || {};
       interactions.forEach(function(interaction) {
         var response = self.request('POST', _baseURL + '/interactions', JSON.stringify(interaction));
         if (_isNotSuccess(response)) {
-          throw 'pact-js-dsl: Pact interaction setup failed. ' + response.responseText;
+          throw 'pact-consumer-js-dsl: Pact interaction setup failed. ' + response.responseText;
         }
       });
     };
@@ -142,14 +142,14 @@ Pact.MockService = Pact.MockService || {};
     this.verify = function() {
       var response = this.request('GET', _baseURL + '/interactions/verification', null);
       if (_isNotSuccess(response)) {
-        throw 'pact-js-dsl: Pact verification failed. ' + response.responseText;
+        throw 'pact-consumer-js-dsl: Pact verification failed. ' + response.responseText;
       }
     };
 
     this.write = function() {
       var response = this.request('POST', _baseURL + '/pact', JSON.stringify(_pactDetails));
       if (_isNotSuccess(response)) {
-        throw 'pact-js-dsl: Could not write the pact file. ' + response.responseText;
+        throw 'pact-consumer-js-dsl: Could not write the pact file. ' + response.responseText;
       }
     };
 
