@@ -1,20 +1,25 @@
 'use strict';
 
-var Pact = Pact || {};
+var mockService = require('./mockService');
+var interaction = require('./interaction');
+
+var Pact = {};
 
 (function() {
 
   // consumerName, providerName, port, pactDir
   this.mockService = function(opts) {
-    return Pact.MockService.create(opts);
+    return mockService.create(opts);
   };
 
   this.givenInteraction = function(providerState) {
-    return Pact.Interaction.create().given(providerState);
+    return interaction.create().given(providerState);
   };
 
   this.receivingInteraction = function(description) {
-    return Pact.Interaction.create().uponReceiving(description);
+    return interaction.create().uponReceiving(description);
   };
 
 }).apply(Pact);
+
+module.exports = Pact;

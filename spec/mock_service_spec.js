@@ -1,10 +1,12 @@
+var pact = require('../src/pact');
+
 describe('MockService', function() {
 
   var baseUrl = 'http://localhost:1234',
     mockService;
 
   beforeEach(function() {
-    mockService = Pact.mockService({
+    mockService = pact.mockService({
       consumer: 'Consumer',
       provider: 'Provider',
       port: 1234

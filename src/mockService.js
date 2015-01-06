@@ -1,6 +1,8 @@
 'use strict';
 
-Pact.MockService = Pact.MockService || {};
+var interaction = require('./interaction');
+
+var mockService = {};
 
 (function() {
 
@@ -19,15 +21,15 @@ Pact.MockService = Pact.MockService || {};
     };
 
     this.given = function(providerState) {
-      var interaction = Pact.givenInteraction(providerState);
-      _interactions.push(interaction);
-      return interaction;
+      var i = interaction.create().given(providerState);
+      _interactions.push(i);
+      return i;
     };
 
     this.uponReceiving = function(description) {
-      var interaction = Pact.receivingInteraction(description);
-      _interactions.push(interaction);
-      return interaction;
+      var i = interaction.create().uponReceiving(description);
+      _interactions.push(i);
+      return i;
     };
 
     this.clean = function() {
@@ -99,4 +101,6 @@ Pact.MockService = Pact.MockService || {};
     return new MockService(opts);
   };
 
-}).apply(Pact.MockService);
+}).apply(mockService);
+
+module.exports = mockService;

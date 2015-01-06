@@ -2,9 +2,11 @@
   "name": "pact-consumer-js-dsl",
   "version": "0.0.4",
   "description": "DSL to write pact tests in Javascript",
-  "main": "gulpfile.js",
+  "main": "src/pact.js",
   "dependencies": {},
   "devDependencies": {
+    "browserify": "^8.0.3",
+    "bundle-collapser": "^1.1.1",
     "gulp": "^3.6.0",
     "gulp-cache": "^0.1.1",
     "gulp-clean": "^0.2.4",
@@ -16,11 +18,17 @@
     "jshint-checkstyle-file-reporter": "0.0.1",
     "jshint-stylish": "^0.2.0",
     "karma": "0.12.24",
-    "karma-jasmine": "^0.1.5",
+    "karma-browserify": "^2.0.0",
     "karma-chrome-launcher": "0.1.2",
     "karma-firefox-launcher": "^0.1.3",
+    "karma-jasmine": "^0.1.5",
     "karma-phantomjs-launcher": "^0.1.4",
-    "karma-safari-launcher": "~0.1"
+    "karma-safari-launcher": "~0.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.0.0"
+  },
+  "scripts": {
+    "test": "gulp run-tests"
   },
   "contributors": [{
     "name": "Fu Ying",
