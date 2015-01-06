@@ -1,5 +1,3 @@
-'use strict';
-
 Pact.MockService = Pact.MockService || {};
 
 (function() {
@@ -18,25 +16,25 @@ Pact.MockService = Pact.MockService || {};
       }
     };
 
-    var setupInteractionsSequentially = function (interactions, index, callback) {
+    var setupInteractionsSequentially = function(interactions, index, callback) {
       if (index >= interactions.length) {
         callback();
         return;
       }
 
-      Pact.MockServiceRequests.postInteraction(interactions[index], _baseURL, function (error) {
+      Pact.MockServiceRequests.postInteraction(interactions[index], _baseURL, function(error) {
         if (error) {
           callback(error);
           return;
         }
 
-        setupInteractionsSequentially(interactions, index + 1, callback)
+        setupInteractionsSequentially(interactions, index + 1, callback);
       });
     };
 
-    var cleanAndSetup = function (callback) {
+    var cleanAndSetup = function(callback) {
       // Cleanup the interactions from the previous test
-      Pact.MockServiceRequests.deleteInteractions(_baseURL, function (deleteInteractionsError) {
+      Pact.MockServiceRequests.deleteInteractions(_baseURL, function(deleteInteractionsError) {
         if (deleteInteractionsError) {
           callback(deleteInteractionsError);
           return;
@@ -49,9 +47,9 @@ Pact.MockService = Pact.MockService || {};
       });
     };
 
-    var verifyAndWrite = function (callback) {
+    var verifyAndWrite = function(callback) {
       //Verify that the expected interactions have occurred
-      Pact.MockServiceRequests.getVerification(_baseURL, function (verifyError) {
+      Pact.MockServiceRequests.getVerification(_baseURL, function(verifyError) {
         if (verifyError) {
           callback(verifyError);
           return;
@@ -62,7 +60,7 @@ Pact.MockService = Pact.MockService || {};
       });
     };
 
-    var throwOnError = function (error) {
+    var throwOnError = function(error) {
       if (error) {
         throw error;
       }
@@ -81,7 +79,7 @@ Pact.MockService = Pact.MockService || {};
     };
 
     this.run = function(testFunction) {
-      cleanAndSetup(function (error) {
+      cleanAndSetup(function(error) {
         if (error) {
           throw error;
         }

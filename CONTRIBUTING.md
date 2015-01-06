@@ -18,13 +18,19 @@ You need to install grunt-cli, bower and karma first
 
 Inside the project folder, simply run `npm install` and `bundle install` to install the other dependencies.
 
-### Running tests
+### During Development
 
-    $ gulp run-tests
+To run gulp tasks:
 
-or
+    $ gulp
+
+or if you don't want to install the gulp-cli globally:
 
     $ node_modules/.bin/gulp run-tests
+
+Useful gulp tasks:
+- `gulp run-tests` will build the distribution file, spin up the pact server and run the tests in a browser and in nodejs.
+- `gulp watch` will spin up the pact server and automatically rerun the tests in a browser every time a relevant file is changed.
 
 ### Run example test
 

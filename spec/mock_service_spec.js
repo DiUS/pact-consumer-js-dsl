@@ -1,7 +1,55 @@
-describe('MockService', function() {
+'use strict';
 
-  var baseUrl = 'http://localhost:1234',
-    mockService;
+describe('MockService', function() {
+  var baseUrl, isNodeJs, mockService, Pact;
+
+  baseUrl = 'http://localhost:1234';
+  isNodeJs = typeof module === 'object' && typeof module.exports === 'object';
+  Pact = (isNodeJs) ? require('../dist/pact-consumer-js-dsl.js') : window.Pact;
+
+  var makeRequestForNode = function (options, callback) {
+    var request = require('request');
+    var requestOptions = {
+      body: options.body,
+      headers: options.headers,
+      method: options.method,
+      url: baseUrl + options.path
+    };
+    request(requestOptions, function (error, response, body) {
+      if (error) {
+        callback(new Error('Error calling ' + options.path + ' - ' + err.message));
+      } else {
+        callback(null, {
+          getResponseHeader: function (header) {
+            return response.headers[header.toLowerCase()];
+          },
+          responseText: body,
+          status: response.statusCode
+        });
+      }
+    });
+  };
+
+  var makeRequestForBrowser = function (options, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function(event) {
+      callback(null, event.target);
+    };
+    xhr.onerror = function() {
+      callback(new Error('Error calling ' + options.path));
+    };
+    xhr.open(options.method, baseUrl + options.path, false);
+
+    if (options.headers) {
+      Object.keys(options.headers).forEach(function (header) {
+        xhr.setRequestHeader(header, options.headers[header]);
+      });
+    }
+
+    xhr.send(options.body);
+  };
+
+  var makeRequest = (isNodeJs) ? makeRequestForNode : makeRequestForBrowser;
 
   beforeEach(function() {
     mockService = Pact.mockService({
@@ -13,12 +61,15 @@ describe('MockService', function() {
 
   describe('a successful match using argument lists', function() {
 
-    var doHttpCall = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', baseUrl + '/thing', false);
-      xhr.setRequestHeader('Content-Type', 'text/plain');
-      xhr.send('body');
-      return xhr;
+    var doHttpCall = function(callback) {
+      return makeRequest({
+        body: 'body',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        method: 'POST',
+        path: '/thing'
+      }, callback);
     };
 
     it('returns the mocked response', function(done) {
@@ -34,14 +85,13 @@ describe('MockService', function() {
         });
 
       mockService.run(function(runComplete) {
-        var response = doHttpCall();
-
-        expect(JSON.parse(response.responseText)).toEqual({
-          reply: 'Hello'
+        doHttpCall(function (error, response) {
+          expect(error).toBe(null, 'error');
+          expect(JSON.parse(response.responseText)).toEqual({reply: 'Hello'}, 'responseText');
+          expect(response.status).toEqual(201, 'status');
+          expect(response.getResponseHeader('Content-Type')).toEqual('application/json', 'Content-Type header');
+          runComplete(done);
         });
-        expect(response.status).toEqual(201);
-        expect(response.getResponseHeader('Content-Type')).toEqual('application/json');
-        runComplete(done);
       });
 
     });
@@ -49,12 +99,15 @@ describe('MockService', function() {
 
   describe('a successful match using hash arguments', function() {
 
-    var doHttpCall = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', baseUrl + '/thing?message=hello', false);
-      xhr.setRequestHeader('Content-Type', 'text/plain');
-      xhr.send('body');
-      return xhr;
+    var doHttpCall = function(callback) {
+      makeRequest({
+        body: 'body',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        method: 'POST',
+        path: '/thing?message=hello'
+      }, callback);
     };
 
     it('returns the mocked response', function(done) {
@@ -80,14 +133,13 @@ describe('MockService', function() {
         });
 
       mockService.run(function(runComplete) {
-        var response = doHttpCall();
-
-        expect(JSON.parse(response.responseText)).toEqual({
-          reply: 'Hello'
+        doHttpCall(function (error, response) {
+          expect(error).toBe(null, 'error');
+          expect(JSON.parse(response.responseText)).toEqual({reply: 'Hello'}, 'responseText');
+          expect(response.status).toEqual(201, 'status');
+          expect(response.getResponseHeader('Content-Type')).toEqual('application/json', 'Content-Type header');
+          runComplete(done);
         });
-        expect(response.status).toEqual(201);
-        expect(response.getResponseHeader('Content-Type')).toEqual('application/json');
-        runComplete(done);
       });
 
     });
@@ -95,11 +147,11 @@ describe('MockService', function() {
 
   describe('a successful match using a query hash', function() {
 
-    var doHttpCall = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', baseUrl + '/thing?lastName=Smith&firstName=Mary+Jane', false);
-      xhr.send();
-      return xhr;
+    var doHttpCall = function(callback) {
+      makeRequest({
+        method: 'POST',
+        path: '/thing?lastName=Smith&firstName=Mary+Jane'
+      }, callback);
     };
 
     it('returns the mocked response', function(done) {
@@ -116,28 +168,31 @@ describe('MockService', function() {
         .willRespondWith(201);
 
       mockService.run(function(runComplete) {
-        var response = doHttpCall();
-
-        expect(response.status).toEqual(201);
-        runComplete(done);
+        doHttpCall(function (error, response) {
+          expect(error).toBe(null, 'error');
+          expect(response.status).toEqual(201, 'status');
+          runComplete(done);
+        });
       });
     });
   });
 
   describe('multiple interactions mocked at the same time', function() {
 
-    var doHttpCall = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', baseUrl + '/thing', false);
-      xhr.send('body');
-      return xhr;
+    var doHttpCall = function(callback) {
+      makeRequest({
+        body: 'body',
+        method: 'GET',
+        path: '/thing'
+      }, callback);
     };
 
-    var doDifferentHttpCall = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', baseUrl + '/different-thing', false);
-      xhr.send('body');
-      return xhr;
+    var doDifferentHttpCall = function(callback) {
+      makeRequest({
+        body: 'body',
+        method: 'GET',
+        path: '/different-thing'
+      }, callback);
     };
 
     it('returns the correct mocked response', function(done) {
@@ -152,23 +207,26 @@ describe('MockService', function() {
         .willRespondWith(200, {}, 'different thing response');
 
       mockService.run(function(runComplete) {
-        var response = doHttpCall();
-        var differentResponse = doDifferentHttpCall();
-
-        expect(response.responseText).toEqual('thing response');
-        expect(differentResponse.responseText).toEqual('different thing response');
-        runComplete(done);
+        doHttpCall(function (responseError, response) {
+          doDifferentHttpCall(function (differentResponseError, differentResponse) {
+            expect(responseError).toBe(null, 'responseError');
+            expect(differentResponseError).toBe(null, 'differentResponseError');
+            expect(response.responseText).toEqual('thing response', 'response.responseText');
+            expect(differentResponse.responseText).toEqual('different thing response', 'differentResponse.responseText');
+            runComplete(done);
+          });
+        });
       });
     });
   });
 
   describe('verifying a successful match', function() {
 
-    var doHttpCall = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', baseUrl + '/thing', false);
-      xhr.send();
-      return xhr;
+    var doHttpCall = function(callback) {
+      makeRequest({
+        method: 'POST',
+        path: '/thing'
+      }, callback);
     };
 
     it('does not raise an error', function(done) {
@@ -178,22 +236,22 @@ describe('MockService', function() {
         .willRespondWith(201);
 
       mockService.run(function(runComplete) {
-        var response = doHttpCall();
-
-        expect(response.status).toEqual(201);
-        runComplete(done);
+        doHttpCall(function (error, response) {
+          expect(error).toBe(null, 'error');
+          expect(response.status).toEqual(201, 'status');
+          runComplete(done);
+        });
       });
-
     });
   });
 
   describe('verifying an unsuccessful match', function() {
 
-    var doHttpCall = function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', baseUrl + '/wrongThing', false);
-      xhr.send();
-      return xhr;
+    var doHttpCall = function(callback) {
+      makeRequest({
+        method: 'POST',
+        path: '/wrongThing'
+      }, callback);
     };
 
     it('raises an error', function(done) {
@@ -203,12 +261,13 @@ describe('MockService', function() {
         .willRespondWith(201);
 
       mockService.run(function(runComplete) {
-        var response = doHttpCall();
-        expect(response.status).toEqual(500);
-
-        runComplete(function(error) {
-          expect(error).toMatch(/verification failed/)
-          done();
+        doHttpCall(function (error, response) {
+          expect(error).toBe(null, 'error');
+          expect(response.status).toEqual(500, 'status');
+          runComplete(function(pactError) {
+            expect(pactError).toMatch(/verification failed/, 'pactError');
+            done();
+          });
         });
       });
     });

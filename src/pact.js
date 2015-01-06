@@ -1,7 +1,3 @@
-'use strict';
-
-var Pact = Pact || {};
-
 (function() {
 
   // consumerName, providerName, port, pactDir

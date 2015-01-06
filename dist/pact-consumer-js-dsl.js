@@ -1,6 +1,11 @@
 'use strict';
 
 var Pact = Pact || {};
+Pact.IsNodeJs = typeof module === 'object' && typeof module.exports === 'object';
+
+if (Pact.IsNodeJs) {
+  module.exports = Pact;
+}
 
 (function() {
 
@@ -18,8 +23,6 @@ var Pact = Pact || {};
   };
 
 }).apply(Pact);
-
-'use strict';
 
 Pact.Interaction = Pact.Interaction || {};
 
@@ -87,8 +90,116 @@ Pact.Interaction = Pact.Interaction || {};
 
 }).apply(Pact.Interaction);
 
-'use strict';
+Pact.Http = Pact.Http || {};
 
+(function() {
+  var makeRequestForNode = function(method, url, body, callback) {
+    var http = require('http');
+    var parse = require('url').parse;
+
+    var parsedUrl = parse(url);
+    var requestOptions = {
+      hostname: parsedUrl.hostname,
+      port: parsedUrl.port,
+      method: method,
+      path: parsedUrl.path,
+      headers: {
+        'X-Pact-Mock-Service': 'true',
+        'Content-Type': 'application/json'
+      }
+    };
+
+    var request = http.request(requestOptions, function (response) {
+      var responseText = '';
+
+      response.on('data', function (chunk) {
+        responseText += chunk.toString();
+      });
+
+      response.on('error', function (err) {
+        callback(new Error('Error calling ' + url + ' - ' + err.message));
+      });
+
+      response.on('end', function () {
+        callback(null, {responseText: responseText, status: response.statusCode});
+      });
+    });
+
+    request.on('error', function (err) {
+      callback(new Error('Error calling ' + url + ' - ' + err.message));
+    });
+
+    request.end(body || '');
+  };
+
+  var makeRequestForBrowser = function(method, url, body, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function(event) {
+      callback(null, event.target);
+    };
+    xhr.onerror = function() {
+      callback(new Error('Error calling ' + url));
+    };
+    xhr.open(method, url, true);
+    xhr.setRequestHeader('X-Pact-Mock-Service', 'true');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(body);
+  };
+
+  this.makeRequest = (Pact.IsNodeJs) ? makeRequestForNode : makeRequestForBrowser;
+
+}).apply(Pact.Http);
+Pact.MockServiceRequests = Pact.MockServiceRequests || {};
+
+(function() {
+  this.getVerification = function(baseUrl, callback) {
+    Pact.Http.makeRequest('GET', baseUrl + '/interactions/verification', null, function(error, response) {
+      if (error) {
+        callback(error);
+      } else if (200 !== response.status) {
+        callback(new Error('pact-js-dsl: Pact verification failed. ' + response.responseText));
+      } else {
+        callback(null);
+      }
+    });
+  };
+
+  this.deleteInteractions = function(baseUrl, callback) {
+    Pact.Http.makeRequest('DELETE', baseUrl + '/interactions', null, function(error, response) {
+      if (error) {
+        callback(error);
+      } else if (200 !== response.status) {
+        callback(new Error('pact-js-dsl: Pact cleanup failed. ' + response.responseText));
+      } else {
+        callback(null);
+      }
+    });
+  };
+
+  this.postInteraction = function(interaction, baseUrl, callback) {
+    Pact.Http.makeRequest('POST', baseUrl + '/interactions', JSON.stringify(interaction), function(error, response) {
+      if (error) {
+        callback(error);
+      } else if (200 !== response.status) {
+        callback(new Error('pact-js-dsl: Pact interaction setup failed. ' + response.responseText));
+      } else {
+        callback(null);
+      }
+    });
+  };
+
+  this.postPact = function(pactDetails, baseUrl, callback) {
+    Pact.Http.makeRequest('POST', baseUrl + '/pact', JSON.stringify(pactDetails), function(error, response) {
+      if (error) {
+        callback(error);
+      } else if (200 !== response.status) {
+        throw 'pact-js-dsl: Could not write the pact file. ' + response.responseText;
+      } else {
+        callback(null);
+      }
+    });
+  };
+}).apply(Pact.MockServiceRequests);
 Pact.MockService = Pact.MockService || {};
 
 (function() {
@@ -107,6 +218,56 @@ Pact.MockService = Pact.MockService || {};
       }
     };
 
+    var setupInteractionsSequentially = function(interactions, index, callback) {
+      if (index >= interactions.length) {
+        callback();
+        return;
+      }
+
+      Pact.MockServiceRequests.postInteraction(interactions[index], _baseURL, function(error) {
+        if (error) {
+          callback(error);
+          return;
+        }
+
+        setupInteractionsSequentially(interactions, index + 1, callback);
+      });
+    };
+
+    var cleanAndSetup = function(callback) {
+      // Cleanup the interactions from the previous test
+      Pact.MockServiceRequests.deleteInteractions(_baseURL, function(deleteInteractionsError) {
+        if (deleteInteractionsError) {
+          callback(deleteInteractionsError);
+          return;
+        }
+
+        // Post the new interactions
+        var interactions = _interactions;
+        _interactions = []; //Clean the local setup
+        setupInteractionsSequentially(interactions, 0, callback);
+      });
+    };
+
+    var verifyAndWrite = function(callback) {
+      //Verify that the expected interactions have occurred
+      Pact.MockServiceRequests.getVerification(_baseURL, function(verifyError) {
+        if (verifyError) {
+          callback(verifyError);
+          return;
+        }
+
+        //Write the pact file
+        Pact.MockServiceRequests.postPact(_pactDetails, _baseURL, callback);
+      });
+    };
+
+    var throwOnError = function(error) {
+      if (error) {
+        throw error;
+      }
+    };
+
     this.given = function(providerState) {
       var interaction = Pact.givenInteraction(providerState);
       _interactions.push(interaction);
@@ -119,69 +280,20 @@ Pact.MockService = Pact.MockService || {};
       return interaction;
     };
 
-    this.clean = function() {
-      var response = this.request('DELETE', _baseURL + '/interactions', null);
-      if (_isNotSuccess(response)) {
-        throw 'pact-consumer-js-dsl: Pact cleanup failed. ' + response.responseText;
-      }
-    };
-
-    this.setup = function() {
-      var interactions = _interactions;
-      _interactions = []; //Clean the local setup
-      var self = this;
-
-      interactions.forEach(function(interaction) {
-        var response = self.request('POST', _baseURL + '/interactions', JSON.stringify(interaction));
-        if (_isNotSuccess(response)) {
-          throw 'pact-consumer-js-dsl: Pact interaction setup failed. ' + response.responseText;
+    this.run = function(testFunction) {
+      cleanAndSetup(function(error) {
+        if (error) {
+          throw error;
         }
+
+        var runComplete = function(testComplete) {
+          testComplete = (typeof testComplete === 'function') ? testComplete : throwOnError;
+          verifyAndWrite(testComplete);
+        };
+
+        testFunction(runComplete); // Call the tests
       });
     };
-
-    this.verify = function() {
-      var response = this.request('GET', _baseURL + '/interactions/verification', null);
-      if (_isNotSuccess(response)) {
-        throw 'pact-consumer-js-dsl: Pact verification failed. ' + response.responseText;
-      }
-    };
-
-    this.write = function() {
-      var response = this.request('POST', _baseURL + '/pact', JSON.stringify(_pactDetails));
-      if (_isNotSuccess(response)) {
-        throw 'pact-consumer-js-dsl: Could not write the pact file. ' + response.responseText;
-      }
-    };
-
-    this.run = function(testFunction) {
-      var self = this;
-      self.clean(); // Cleanup the interactions from the previous test
-      self.setup(); // Post the new interactions
-
-      var runComplete = function(testComplete) {
-        self.verify(); //Verify that the expected interactions have occurred
-        self.write();  //Write the pact file
-
-        if (typeof(testComplete) === 'function') {
-          testComplete();
-        }
-      };
-
-      testFunction(runComplete); // Call the tests
-    };
-
-    this.request = function(method, url, body) {
-      var response = new XMLHttpRequest();
-      response.open(method, url, false);
-      response.setRequestHeader('X-Pact-Mock-Service', 'true');
-      response.setRequestHeader('Content-type', 'application/json');
-      response.send(body);
-      return response;
-    };
-
-    function _isNotSuccess(response) {
-      return parseInt(response.status, 10) !== 200;
-    }
   }
 
   this.create = function(opts) {
