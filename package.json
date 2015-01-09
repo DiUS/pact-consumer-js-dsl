@@ -4,6 +4,7 @@
   "description": "DSL to write pact tests in Javascript",
   "main": "gulpfile.js",
   "dependencies": {},
+  "browserDependencies": {},
   "devDependencies": {
     "gulp": "^3.6.0",
     "gulp-cache": "^0.1.1",
@@ -22,17 +23,35 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-safari-launcher": "~0.1"
   },
-  "contributors": [{
-    "name": "Fu Ying",
-    "email": "fu.ying.er@rea-group.com"
-  }, {
-    "name": "Malinda Kapuruge",
-    "email": "mkapuruge@dius.com.au"
-  }, {
-    "name": "Tarcio Saraiva",
-    "email": "tsaraiva@dius.com.au"
-  }, {
-    "name" : "Beth Skurrie",
-    "email" : "bskurrie@dius.com.au"
-  }]
+  "contributors": [
+    "Fu Ying <fu.ying.er@rea-group.com>",
+    "Malinda Kapuruge <mkapuruge@dius.com.au>",
+    "Tarcio Saraiva <tsaraiva@dius.com.au>",
+    "Beth Skurrie <bskurrie@dius.com.au>"
+  ],
+  "directories": {
+    "lib": "src",
+    "example": "example"
+  },
+  "scripts": {
+    "test": "gulp run-tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DiUS/pact-consumer-js-dsl.git"
+  },
+  "keywords": [
+    "pact",
+    "consumer",
+    "driven",
+    "contracts",
+    "mock",
+    "service"
+  ],
+  "author": "Beth Skurrie <beth@bethesque.com> (https://github.com/bethesque)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DiUS/pact-consumer-js-dsl/issues"
+  },
+  "homepage": "https://github.com/DiUS/pact-consumer-js-dsl"
 }
