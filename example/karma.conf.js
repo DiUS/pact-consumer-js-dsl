@@ -15,11 +15,11 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      // if you are using this example to setup your own project load pact from the node_modules directory
+      // i.e. node_modules/pact-consumer-js-dsl/dist/pact-consumer-js-dsl.js
+      '../dist/pact-consumer-js-dsl.js',
       'client.js',
-      'client-spec.js',
-      '../src/pact.js',
-      '../src/interaction.js',
-      '../src/mockService.js',
+      'client-spec.js'
     ],
 
     // list of files to exclude

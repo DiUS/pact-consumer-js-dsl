@@ -35,8 +35,9 @@ Useful gulp tasks:
 ### Run example test
 
     $ cd example
-    $ script/setup.sh
-    $ script/test.sh
+    $ bundle install
+    $ npm install
+    $ npm test
 
 ### Create the pact-consumer-js-dsl.js
 

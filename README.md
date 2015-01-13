@@ -110,8 +110,9 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 Have a look at the [example](/example) folder. Ensure you have Google Chrome installed.
 
     $ cd example
+    $ bundle install
     $ npm install
-    $ script/test.sh
+    $ npm test
 
 # Contributing
 

@@ -2,7 +2,7 @@
   "name": "pact-consumer-js-dsl",
   "version": "0.0.4",
   "description": "DSL to write pact tests in Javascript",
-  "main": "gulpfile.js",
+  "main": "dist/pact-consumer-js-dsl.js",
   "dependencies": {},
   "browserDependencies": {},
   "devDependencies": {
