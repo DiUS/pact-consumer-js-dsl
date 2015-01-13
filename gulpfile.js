@@ -60,7 +60,7 @@ var withServer = function(action) {
     actionStream.on('end', actionDone);
     actionStream.on('error', actionDone);
     actionStream.resume();
-  });
+  }, deferred.reject);
 
   return deferred.promise;
 };
