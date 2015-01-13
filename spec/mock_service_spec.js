@@ -1,11 +1,17 @@
 'use strict';
 
 describe('MockService', function() {
-  var baseUrl, isNodeJs, mockService, Pact;
+  var baseUrl, isNodeJs, mockService, Pact, withNoError;
 
   baseUrl = 'http://localhost:1234';
   isNodeJs = typeof module === 'object' && typeof module.exports === 'object';
   Pact = (isNodeJs) ? require('../dist/pact-consumer-js-dsl.js') : window.Pact;
+  withNoError = function (doneCallback) {
+    return function (error) {
+      expect(error).toBe(null);
+      doneCallback();
+    };
+  };
 
   var makeRequestForNode = function (options, callback) {
     var request = require('request');
@@ -90,7 +96,7 @@ describe('MockService', function() {
           expect(JSON.parse(response.responseText)).toEqual({reply: 'Hello'}, 'responseText');
           expect(response.status).toEqual(201, 'status');
           expect(response.getResponseHeader('Content-Type')).toEqual('application/json', 'Content-Type header');
-          runComplete(done);
+          runComplete(withNoError(done));
         });
       });
 
@@ -138,7 +144,7 @@ describe('MockService', function() {
           expect(JSON.parse(response.responseText)).toEqual({reply: 'Hello'}, 'responseText');
           expect(response.status).toEqual(201, 'status');
           expect(response.getResponseHeader('Content-Type')).toEqual('application/json', 'Content-Type header');
-          runComplete(done);
+          runComplete(withNoError(done));
         });
       });
 
@@ -171,7 +177,7 @@ describe('MockService', function() {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(response.status).toEqual(201, 'status');
-          runComplete(done);
+          runComplete(withNoError(done));
         });
       });
     });
@@ -213,7 +219,7 @@ describe('MockService', function() {
             expect(differentResponseError).toBe(null, 'differentResponseError');
             expect(response.responseText).toEqual('thing response', 'response.responseText');
             expect(differentResponse.responseText).toEqual('different thing response', 'differentResponse.responseText');
-            runComplete(done);
+            runComplete(withNoError(done));
           });
         });
       });
@@ -239,7 +245,7 @@ describe('MockService', function() {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(response.status).toEqual(201, 'status');
-          runComplete(done);
+          runComplete(withNoError(done));
         });
       });
     });

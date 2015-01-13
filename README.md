@@ -64,7 +64,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
 1. Write a Jasmine unit test similar to the following,
 
-        describe("Client", function(done) {
+        describe("Client", function() {
 
             var client, helloProvider;
 
@@ -77,7 +77,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
                 port: 1234 });
             });
 
-            it("should say hello", function() {
+            it("should say hello", function(done) {
 
                 helloProvider
                   .uponReceiving("a request for hello")
@@ -90,7 +90,10 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
                   helloProvider.run(function(runComplete) {
                     expect(client.sayHello()).toEqual("Hello");
-                    runComplete(done);
+                    runComplete(function (pactError) {
+                        expect(pactError).toBe(null);
+                        done();
+                    });
                   });
             });
          });
