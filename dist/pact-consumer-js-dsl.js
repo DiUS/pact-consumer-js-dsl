@@ -207,6 +207,11 @@ Pact.MockService = Pact.MockService || {};
 
   function MockService(opts) {
     var _baseURL = 'http://127.0.0.1:' + opts.port;
+    var _doneCallback = function(error) {
+      if (error) {
+        throw error;
+      }
+    };
     var _interactions = [];
 
     var _pactDetails = {
@@ -262,12 +267,6 @@ Pact.MockService = Pact.MockService || {};
       });
     };
 
-    var throwOnError = function(error) {
-      if (error) {
-        throw error;
-      }
-    };
-
     this.given = function(providerState) {
       var interaction = Pact.givenInteraction(providerState);
       _interactions.push(interaction);
@@ -283,16 +282,20 @@ Pact.MockService = Pact.MockService || {};
     this.run = function(testFunction) {
       cleanAndSetup(function(error) {
         if (error) {
-          throw error;
+          _doneCallback(error);
+          return;
         }
 
-        var runComplete = function(testComplete) {
-          testComplete = (typeof testComplete === 'function') ? testComplete : throwOnError;
-          verifyAndWrite(testComplete);
+        var runComplete = function() {
+          verifyAndWrite(_doneCallback);
         };
 
         testFunction(runComplete); // Call the tests
       });
+    };
+
+    this.done = function(callback) {
+      _doneCallback = callback;
     };
   }
 

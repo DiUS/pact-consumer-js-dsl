@@ -64,41 +64,43 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
 1. Write a Jasmine unit test similar to the following,
 
-        describe("Client", function() {
+    ```
+    describe("Client", function() {
+      var client, helloProvider;
 
-            var client, helloProvider;
+      beforeEach(function() {
+        client = new ProviderClient('http://localhost:1234');
+        helloProvider = MockService.create({
+          consumer: 'Hello Consumer',
+          provider: 'Hello Provider',
+          port: 1234
+        });
+      });
 
-            beforeEach(function() {
+      it("should say hello", function(done) {
+        helloProvider
+          .uponReceiving("a request for hello")
+          .withRequest("get", "/sayHello")
+          .willRespondWith(200, {
+            "Content-Type": "application/json"
+          }, {
+            reply: "Hello"
+          });
 
-              client = new ProviderClient('http://localhost:1234');
-              helloProvider = MockService.create({
-                consumer: 'Hello Consumer',
-                provider: 'Hello Provider',
-                port: 1234 });
-            });
+        helloProvider.done(function(pactError) {
+          expect(pactError).toBe(null);
+          done();
+        });
 
-            it("should say hello", function(done) {
+        helloProvider.run(function(runComplete) {
+          expect(client.sayHello()).toEqual("Hello");
+          runComplete();
+        });
+      });
+    });
+    ```
 
-                helloProvider
-                  .uponReceiving("a request for hello")
-                  .withRequest("get", "/sayHello")
-                  .willRespondWith(200, {
-                    "Content-Type": "application/json"
-                  }, {
-                    reply: "Hello"
-                  });
-
-                  helloProvider.run(function(runComplete) {
-                    expect(client.sayHello()).toEqual("Hello");
-                    runComplete(function (pactError) {
-                        expect(pactError).toBe(null);
-                        done();
-                    });
-                  });
-            });
-         });
-
-    See the spec in the example directory for examples of asynchronous callbacks, how to expect error responses, and how to use query params.
+    See the spec in the example directory for more examples of asynchronous callbacks, how to expect error responses, and how to use query params.
 
     Make sure the source and test files are included by Karma in the `karma.conf.js` in the files array.
 

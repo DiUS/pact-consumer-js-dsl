@@ -2,11 +2,11 @@
 
   describe("Client", function() {
 
-    var client, helloProvider, withNoError;
+    var client, expectNoErrors, helloProvider;
 
-    withNoError = function (doneCallback) {
-      return function (error) {
-        expect(error).toBe(null);
+    expectNoErrors = function (doneCallback) {
+      return function (pactError) {
+        expect(pactError).toBe(null);
         doneCallback();
       };
     };
@@ -33,10 +33,12 @@
             reply: "Hello"
           });
 
+        helloProvider.done(expectNoErrors(done));
+
         //Run the tests
         helloProvider.run(function(runComplete) {
           expect(client.sayHello()).toEqual("Hello");
-          runComplete(withNoError(done));
+          runComplete();
         });
 
       });
@@ -70,12 +72,14 @@
             }
           });
 
+        helloProvider.done(expectNoErrors(done));
+
         //Run the tests
         helloProvider.run(function(runComplete) {
           expect(client.findFriendsByAgeAndChildren('30', ['Mary Jane', 'James'])).toEqual([{
             name: 'Sue'
           }]);
-          runComplete(withNoError(done));
+          runComplete();
         });
 
       });
@@ -100,17 +104,18 @@
             }
           });
 
+        helloProvider.done(expectNoErrors(done));
 
         //Run the tests
         helloProvider.run(function(runComplete) {
 
           function success(message) {
             expect(message).toEqual("Bye");
-            runComplete(withNoError(done));
+            runComplete();
           }
 
           function error(response) {
-            runComplete(withNoError(done));
+            runComplete();
             expect(true).toEqual(false);
           }
 
@@ -128,19 +133,21 @@
             .withRequest("put", "/unfriendMe")
             .willRespondWith(404);
 
+          helloProvider.done(expectNoErrors(done));
+
           //Run the tests
           helloProvider.run(function(runComplete) {
 
             function success(message) {
               //The success callback should *not* be invoked!
               expect(true).toEqual(false);
-              runComplete(withNoError(done));
+              runComplete();
             }
 
             function error(message) {
               //The error callback *should* be invoked
               expect(message).toEqual("No friends :(");
-              runComplete(withNoError(done));
+              runComplete();
             }
 
             client.unfriendMe(success, error);

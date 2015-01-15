@@ -1,14 +1,14 @@
 'use strict';
 
 describe('MockService', function() {
-  var baseUrl, isNodeJs, mockService, Pact, withNoError;
+  var baseUrl, expectNoErrors, isNodeJs, mockService, Pact;
 
   baseUrl = 'http://localhost:1234';
   isNodeJs = typeof module === 'object' && typeof module.exports === 'object';
   Pact = (isNodeJs) ? require('../dist/pact-consumer-js-dsl.js') : window.Pact;
-  withNoError = function (doneCallback) {
-    return function (error) {
-      expect(error).toBe(null);
+  expectNoErrors = function (doneCallback) {
+    return function (pactError) {
+      expect(pactError).toBe(null);
       doneCallback();
     };
   };
@@ -90,16 +90,17 @@ describe('MockService', function() {
           reply: 'Hello'
         });
 
+      mockService.done(expectNoErrors(done));
+
       mockService.run(function(runComplete) {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(JSON.parse(response.responseText)).toEqual({reply: 'Hello'}, 'responseText');
           expect(response.status).toEqual(201, 'status');
           expect(response.getResponseHeader('Content-Type')).toEqual('application/json', 'Content-Type header');
-          runComplete(withNoError(done));
+          runComplete();
         });
       });
-
     });
   });
 
@@ -138,16 +139,17 @@ describe('MockService', function() {
           }
         });
 
+      mockService.done(expectNoErrors(done));
+
       mockService.run(function(runComplete) {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(JSON.parse(response.responseText)).toEqual({reply: 'Hello'}, 'responseText');
           expect(response.status).toEqual(201, 'status');
           expect(response.getResponseHeader('Content-Type')).toEqual('application/json', 'Content-Type header');
-          runComplete(withNoError(done));
+          runComplete();
         });
       });
-
     });
   });
 
@@ -173,11 +175,13 @@ describe('MockService', function() {
         })
         .willRespondWith(201);
 
+      mockService.done(expectNoErrors(done));
+
       mockService.run(function(runComplete) {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(response.status).toEqual(201, 'status');
-          runComplete(withNoError(done));
+          runComplete();
         });
       });
     });
@@ -212,6 +216,8 @@ describe('MockService', function() {
         .withRequest('get', '/different-thing')
         .willRespondWith(200, {}, 'different thing response');
 
+      mockService.done(expectNoErrors(done));
+
       mockService.run(function(runComplete) {
         doHttpCall(function (responseError, response) {
           doDifferentHttpCall(function (differentResponseError, differentResponse) {
@@ -219,7 +225,7 @@ describe('MockService', function() {
             expect(differentResponseError).toBe(null, 'differentResponseError');
             expect(response.responseText).toEqual('thing response', 'response.responseText');
             expect(differentResponse.responseText).toEqual('different thing response', 'differentResponse.responseText');
-            runComplete(withNoError(done));
+            runComplete();
           });
         });
       });
@@ -241,11 +247,13 @@ describe('MockService', function() {
         .withRequest('post', '/thing')
         .willRespondWith(201);
 
+      mockService.done(expectNoErrors(done));
+
       mockService.run(function(runComplete) {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(response.status).toEqual(201, 'status');
-          runComplete(withNoError(done));
+          runComplete();
         });
       });
     });
@@ -266,14 +274,16 @@ describe('MockService', function() {
         .withRequest('post', '/thing')
         .willRespondWith(201);
 
+      mockService.done(function (pactError) {
+        expect(pactError).toMatch(/verification failed/, 'pactError');
+        done();
+      });
+
       mockService.run(function(runComplete) {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(response.status).toEqual(500, 'status');
-          runComplete(function(pactError) {
-            expect(pactError).toMatch(/verification failed/, 'pactError');
-            done();
-          });
+          runComplete();
         });
       });
     });
