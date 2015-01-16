@@ -45,13 +45,13 @@ Pact.Interaction = Pact.Interaction || {};
       withRequest: function(firstParameter, path, headers, body) {
 
         if (typeof(firstParameter) === 'object') {
-          this.request.method = firstParameter.method;
+          this.request.method = firstParameter.method.toLowerCase();
           this.request.path = firstParameter.path;
           this.request.query = firstParameter.query;
           this.request.headers = firstParameter.headers;
           this.request.body = firstParameter.body;
         } else {
-          this.request.method = firstParameter;
+          this.request.method = firstParameter.toLowerCase();
           this.request.path = path;
           this.request.headers = headers;
           this.request.body = body;
