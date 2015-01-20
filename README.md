@@ -6,6 +6,14 @@ This codebase provides a Javascript DSL for creating pacts. If you are new to Pa
 
 This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provide the mock service for the Javascript tests. If you do not want to use Ruby in your project, please read about using a standalone Pact mock service [here][pact-mock-service-without-ruby].
 
+### Getting Help
+
+* Please see the [wiki](https://github.com/DiUS/pact-consumer-js-dsl/wiki) for documentation (eg. using CORS, using the DSL on Windows).
+* Google users group: https://groups.google.com/forum/#!forum/pact-support
+* Twitter: [@pact_up](https://twitter.com/pact_up)
+
+https://github.com/bethesque/pact-mock_service/wiki/Using-the-mock-service-with-CORS
+
 ### Getting Started (with Karma, Jasmine and the pact-mock_service gem)
 
 1. Install the [pact-mock_service](https://github.com/bethesque/pact-mock_service) ruby gem
