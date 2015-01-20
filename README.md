@@ -38,7 +38,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
   1. Tell Karma about `pact-consumer-js-dsl.js` in `karma.conf.js`. In the `files: []` section add a new entry for `node_modules/pact-consumer-js-dsl/dist/pact-consumer-js-dsl.js`.
 
-  1. Allow tests to load resources from `pact` mock server. One way to do this is in the `karma.conf.js`, change `browsers: ['Chrome'],` to,
+  1. Allow tests to load resources from `pact` mock server. One way to do this is in the `karma.conf.js`, change `browsers: ['Chrome'],` or `browsers: ['PhantomJS'],` to,
 
          ````
          browsers: ['Chrome_without_security'],
@@ -49,6 +49,18 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
             }
          }
          ````
+
+Or:
+
+         ````
+         browsers: ['PhantomJS_without_security'],
+         customLaunchers: {
+            PhantomJS_without_security: {
+              base: 'PhantomJS',
+              flags: ['--web-security=false']
+            }
+         }
+         ````         
 
    Note that running your tests across multiple browsers with one pact mock server will probably conflict with each other. You will need to either run them sequentially or start multiple pact mock servers. To run them sequentially make multiple calls to karma from the command line with the different browsers passed with the `--browser` option.
 
