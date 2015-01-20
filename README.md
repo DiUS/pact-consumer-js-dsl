@@ -12,8 +12,6 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 * Google users group: https://groups.google.com/forum/#!forum/pact-support
 * Twitter: [@pact_up](https://twitter.com/pact_up)
 
-https://github.com/bethesque/pact-mock_service/wiki/Using-the-mock-service-with-CORS
-
 ### Getting Started (with Karma, Jasmine and the pact-mock_service gem)
 
 1. Install the [pact-mock_service](https://github.com/bethesque/pact-mock_service) ruby gem
