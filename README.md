@@ -48,11 +48,9 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
                 flags: ['--disable-web-security']
             }
          }
-         ````
-
-Or:
-
-         ````
+         
+         or:
+         
          browsers: ['PhantomJS_without_security'],
          customLaunchers: {
             PhantomJS_without_security: {
