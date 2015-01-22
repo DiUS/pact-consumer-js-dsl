@@ -31,7 +31,7 @@ var waitForServerToStart = function () {
     });
   };
 
-  checkIfServerHasStarted();
+  setTimeout(checkIfServerHasStarted, 1000);
 
   return deferred.promise;
 };
