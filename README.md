@@ -71,11 +71,11 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
             beforeEach(function() {
 
               client = new ProviderClient('http://localhost:1234');
-              helloProvider = MockService.create(
+              helloProvider = MockService.create({
                 consumer: 'Hello Consumer',
                 provider: 'Hello Provider',
                 port: 1234,
-                pactDir: '.');
+                pactDir: '.'});
             });
 
             it("should say hello", function() {
