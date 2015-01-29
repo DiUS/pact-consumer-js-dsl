@@ -24,12 +24,12 @@ gulp.task('build-javascript', ['clean'], function() {
         .pipe($.jshint())
         .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
         .pipe($.concat('pact-consumer-js-dsl.js'))
-        .pipe(gulp.dest('dist/js'))
+        .pipe(gulp.dest('dist/web'))
         .pipe($.size());
 });
 
 gulp.task('build-node', ['clean', 'build-javascript'], function() {
-    return gulp.src(['node.prefix', 'dist/js/pact-consumer-js-dsl.js', 'node.suffix'])
+    return gulp.src(['node.prefix', 'dist/web/pact-consumer-js-dsl.js', 'node.suffix'])
         .pipe($.jshint())
         .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
         .pipe($.concat('pact-consumer-js-dsl.js'))

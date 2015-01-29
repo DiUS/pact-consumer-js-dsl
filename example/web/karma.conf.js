@@ -17,9 +17,7 @@ module.exports = function(config) {
     files: [
       'client.js',
       'client-spec.js',
-      '../src/pact.js',
-      '../src/interaction.js',
-      '../src/mockService.js',
+      '../dist/web/pact-consumer-js-dsl.js'
     ],
 
     // list of files to exclude
