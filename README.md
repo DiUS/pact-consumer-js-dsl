@@ -18,7 +18,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
 1. You must install [Ruby](https://www.ruby-lang.org/en/downloads/) and [RubyGems](https://rubygems.org/pages/download) first.
 
-1. After these binaries as available in the console, you can install the mock service easily using this command: `gem i pact-mock_service -v 0.2.3.pre.rc2` * Windows users must run this command after following Wiki instructions *
+1. After these binaries as available in the console, you can install the mock service easily using this command: `gem i pact-mock_service -v 0.2.3.pre.rc1` * Windows users must run this command after following Wiki instructions *
 
 ### Getting Started (with Karma, Jasmine and pact-mock-service)
 
