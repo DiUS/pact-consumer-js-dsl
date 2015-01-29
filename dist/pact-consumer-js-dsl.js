@@ -1,27 +1,34 @@
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.Pact=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var Pact = Pact || {};
+var mockService = require(3);
+var interaction = require(2);
+
+var Pact = {};
 
 (function() {
 
   // consumerName, providerName, port, pactDir
   this.mockService = function(opts) {
-    return Pact.MockService.create(opts);
+    return mockService.create(opts);
   };
 
   this.givenInteraction = function(providerState) {
-    return Pact.Interaction.create().given(providerState);
+    return interaction.create().given(providerState);
   };
 
   this.receivingInteraction = function(description) {
-    return Pact.Interaction.create().uponReceiving(description);
+    return interaction.create().uponReceiving(description);
   };
 
 }).apply(Pact);
 
+module.exports = Pact;
+
+},{}],2:[function(require,module,exports){
 'use strict';
 
-Pact.Interaction = Pact.Interaction || {};
+var interaction = {};
 
 (function() {
 
@@ -85,11 +92,16 @@ Pact.Interaction = Pact.Interaction || {};
     };
   };
 
-}).apply(Pact.Interaction);
+}).apply(interaction);
 
+module.exports = interaction;
+
+},{}],3:[function(require,module,exports){
 'use strict';
 
-Pact.MockService = Pact.MockService || {};
+var interaction = require(2);
+
+var mockService = {};
 
 (function() {
 
@@ -108,15 +120,15 @@ Pact.MockService = Pact.MockService || {};
     };
 
     this.given = function(providerState) {
-      var interaction = Pact.givenInteraction(providerState);
-      _interactions.push(interaction);
-      return interaction;
+      var i = interaction.create().given(providerState);
+      _interactions.push(i);
+      return i;
     };
 
     this.uponReceiving = function(description) {
-      var interaction = Pact.receivingInteraction(description);
-      _interactions.push(interaction);
-      return interaction;
+      var i = interaction.create().uponReceiving(description);
+      _interactions.push(i);
+      return i;
     };
 
     this.clean = function() {
@@ -188,4 +200,9 @@ Pact.MockService = Pact.MockService || {};
     return new MockService(opts);
   };
 
-}).apply(Pact.MockService);
+}).apply(mockService);
+
+module.exports = mockService;
+
+},{}]},{},[1])(1)
+});

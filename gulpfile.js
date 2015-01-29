@@ -1,9 +1,13 @@
 'use strict';
 
 var gulp = require('gulp'),
+  pkg = require('./package.json'),
   fs = require('fs'),
   spawn = require('child_process').spawn,
   karma = require('karma').server,
+  browserify = require('browserify'),
+  source = require('vinyl-source-stream'),
+  buffer = require('vinyl-buffer'),
   $ = require('gulp-load-plugins')();
 
 gulp.task('clear', function(done) {
@@ -17,7 +21,14 @@ gulp.task('clean', ['clear'], function() {
 });
 
 gulp.task('build', ['clean'], function() {
-  return gulp.src(['src/pact.js', 'src/interaction.js', 'src/mockService.js'])
+  return browserify({
+      entries: ['./src/pact.js'],
+      plugin: require('bundle-collapser/plugin'),
+      standalone: 'Pact'
+    })
+    .bundle()
+    .pipe(source(pkg.name + '.js'))
+    .pipe(buffer())
     .pipe($.jshint())
     .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
     .pipe($.concat('pact-consumer-js-dsl.js'))
