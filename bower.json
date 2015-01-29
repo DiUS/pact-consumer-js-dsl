@@ -1,13 +1,14 @@
 {
   "name": "pact-consumer-js-dsl",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "authors": [
     "Fu Ying <fu.ying.er@rea-group.com>",
-    "Malinda Kapuruge <mkapuruge@dius.com.au>"
+    "Malinda Kapuruge <mkapuruge@dius.com.au>",
+    "Tarcio Saraiva <tsaraiva@dius.com.au>",
+    "Beth Skurrie <bskurrie@dius.com.au>",
+    "Michel Boudreau <michelboudreau@gmail.com>"
   ],
-  "main": ["dist/pact-consumer-js-dsl.js"],
-  "dependencies": {
-    "jquery": "~1.8.3"
-  },
+  "main": ["dist/js/pact-consumer-js-dsl.js"],
+  "dependencies": {},
   "devDependencies": {}
 }
