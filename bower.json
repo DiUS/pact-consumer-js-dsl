@@ -1,6 +1,19 @@
 {
   "name": "pact-consumer-js-dsl",
   "version": "0.0.5",
+  "ignore": [
+      ".gitignore",
+      ".jshintrc",
+      ".ruby-gemset",
+      ".travis.yml",
+      "checkstyle.xml",
+      "gulpfile.js",
+      "node.prefix",
+      "node.suffix",
+      "package.json",
+      "src",
+      "spec"
+  ],
   "authors": [
     "Fu Ying <fu.ying.er@rea-group.com>",
     "Malinda Kapuruge <mkapuruge@dius.com.au>",
