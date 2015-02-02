@@ -2,14 +2,7 @@
 
   describe("Client", function() {
 
-    var client, expectNoErrors, helloProvider;
-
-    expectNoErrors = function (doneCallback) {
-      return function (pactError) {
-        expect(pactError).toBe(null);
-        doneCallback();
-      };
-    };
+    var client, helloProvider;
 
     // ugly but works... guess would be good to bring jasmine-beforeAll
     beforeEach(function() {
@@ -17,7 +10,10 @@
       helloProvider = Pact.mockService({
         consumer: 'Hello Consumer',
         provider: 'Hello Provider',
-        port: 1234
+        port: 1234,
+        done: function (error) {
+          expect(error).toBe(null);
+        }
       });
     });
 
@@ -33,10 +29,8 @@
             reply: "Hello"
           });
 
-        helloProvider.done(expectNoErrors(done));
-
         //Run the tests
-        helloProvider.run(function(runComplete) {
+        helloProvider.run(done, function(runComplete) {
           expect(client.sayHello()).toEqual("Hello");
           runComplete();
         });
@@ -72,10 +66,8 @@
             }
           });
 
-        helloProvider.done(expectNoErrors(done));
-
         //Run the tests
-        helloProvider.run(function(runComplete) {
+        helloProvider.run(done, function(runComplete) {
           expect(client.findFriendsByAgeAndChildren('30', ['Mary Jane', 'James'])).toEqual([{
             name: 'Sue'
           }]);
@@ -104,10 +96,8 @@
             }
           });
 
-        helloProvider.done(expectNoErrors(done));
-
         //Run the tests
-        helloProvider.run(function(runComplete) {
+        helloProvider.run(done, function(runComplete) {
 
           function success(message) {
             expect(message).toEqual("Bye");
@@ -133,10 +123,8 @@
             .withRequest("put", "/unfriendMe")
             .willRespondWith(404);
 
-          helloProvider.done(expectNoErrors(done));
-
           //Run the tests
-          helloProvider.run(function(runComplete) {
+          helloProvider.run(done, function(runComplete) {
 
             function success(message) {
               //The success callback should *not* be invoked!

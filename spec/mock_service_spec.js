@@ -1,17 +1,11 @@
 'use strict';
 
 describe('MockService', function() {
-  var baseUrl, expectNoErrors, isNodeJs, mockService, Pact;
+  var baseUrl, doneCallback, isNodeJs, mockService, Pact;
 
   baseUrl = 'http://localhost:1234';
   isNodeJs = typeof module === 'object' && typeof module.exports === 'object';
   Pact = (isNodeJs) ? require('../dist/pact-consumer-js-dsl.js') : window.Pact;
-  expectNoErrors = function (doneCallback) {
-    return function (pactError) {
-      expect(pactError).toBe(null);
-      doneCallback();
-    };
-  };
 
   var makeRequestForNode = function (options, callback) {
     var request = require('request');
@@ -58,10 +52,15 @@ describe('MockService', function() {
   var makeRequest = (isNodeJs) ? makeRequestForNode : makeRequestForBrowser;
 
   beforeEach(function() {
+    doneCallback = jasmine.createSpy('doneCallback').and.callFake(function (error) {
+      expect(error).toBe(null);
+    });
+
     mockService = Pact.mockService({
       consumer: 'Consumer',
       provider: 'Provider',
-      port: 1234
+      port: 1234,
+      done: doneCallback
     });
   });
 
@@ -90,9 +89,7 @@ describe('MockService', function() {
           reply: 'Hello'
         });
 
-      mockService.done(expectNoErrors(done));
-
-      mockService.run(function(runComplete) {
+      mockService.run(done, function(runComplete) {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(JSON.parse(response.responseText)).toEqual({reply: 'Hello'}, 'responseText');
@@ -139,9 +136,7 @@ describe('MockService', function() {
           }
         });
 
-      mockService.done(expectNoErrors(done));
-
-      mockService.run(function(runComplete) {
+      mockService.run(done, function(runComplete) {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(JSON.parse(response.responseText)).toEqual({reply: 'Hello'}, 'responseText');
@@ -175,9 +170,7 @@ describe('MockService', function() {
         })
         .willRespondWith(201);
 
-      mockService.done(expectNoErrors(done));
-
-      mockService.run(function(runComplete) {
+      mockService.run(done, function(runComplete) {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(response.status).toEqual(201, 'status');
@@ -216,9 +209,7 @@ describe('MockService', function() {
         .withRequest('get', '/different-thing')
         .willRespondWith(200, {}, 'different thing response');
 
-      mockService.done(expectNoErrors(done));
-
-      mockService.run(function(runComplete) {
+      mockService.run(done, function(runComplete) {
         doHttpCall(function (responseError, response) {
           doDifferentHttpCall(function (differentResponseError, differentResponse) {
             expect(responseError).toBe(null, 'responseError');
@@ -247,9 +238,7 @@ describe('MockService', function() {
         .withRequest('post', '/thing')
         .willRespondWith(201);
 
-      mockService.done(expectNoErrors(done));
-
-      mockService.run(function(runComplete) {
+      mockService.run(done, function(runComplete) {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(response.status).toEqual(201, 'status');
@@ -274,12 +263,16 @@ describe('MockService', function() {
         .withRequest('post', '/thing')
         .willRespondWith(201);
 
-      mockService.done(function (pactError) {
+      doneCallback.and.returnValue(undefined);
+
+      var onRunComplete = function () {
+        expect(doneCallback).toHaveBeenCalled();
+        var pactError = doneCallback.calls.mostRecent().args[0];
         expect(pactError).toMatch(/verification failed/, 'pactError');
         done();
-      });
+      };
 
-      mockService.run(function(runComplete) {
+      mockService.run(onRunComplete, function(runComplete) {
         doHttpCall(function (error, response) {
           expect(error).toBe(null, 'error');
           expect(response.status).toEqual(500, 'status');

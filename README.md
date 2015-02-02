@@ -73,7 +73,10 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
         helloProvider = MockService.create({
           consumer: 'Hello Consumer',
           provider: 'Hello Provider',
-          port: 1234
+          port: 1234,
+          done: function (error) {
+            expect(error).toBe(null);
+          }
         });
       });
 
@@ -87,12 +90,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
             reply: "Hello"
           });
 
-        helloProvider.done(function(pactError) {
-          expect(pactError).toBe(null);
-          done();
-        });
-
-        helloProvider.run(function(runComplete) {
+        helloProvider.run(done, function(runComplete) {
           expect(client.sayHello()).toEqual("Hello");
           runComplete();
         });
