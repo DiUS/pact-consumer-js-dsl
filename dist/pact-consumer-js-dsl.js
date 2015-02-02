@@ -3,7 +3,7 @@
         define([], factory);
     } else if (typeof exports === 'object') {
         global.XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-           module.exports = factory();
+        module.exports = factory();
     } else {
         root.Pact = factory();
     }
