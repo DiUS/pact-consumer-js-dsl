@@ -1,4 +1,14 @@
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([], factory);
+    } else if (typeof exports === 'object') {
+        global.XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+           module.exports = factory();
+    } else {
+        root.Pact = factory();
+    }
+}(this, function() {
+
 'use strict';
 
 var Pact = Pact || {};
@@ -191,4 +201,6 @@ Pact.MockService = Pact.MockService || {};
 
 }).apply(Pact.MockService);
 
-module.exports = Pact;
+return Pact;
+
+}));

@@ -4,6 +4,8 @@ var gulp = require('gulp'),
   fs = require('fs'),
   spawn = require('child_process').spawn,
   gutil = require('gulp-util'),
+  umd = require('gulp-umd'),
+  path = require('path'),
   karma = require('karma').server,
   $ = require('gulp-load-plugins')();
 
@@ -17,7 +19,23 @@ gulp.task('clean', ['clear'], function() {
   }).pipe($.clean());
 });
 
-gulp.task('build', ['clean', 'build-javascript', 'build-node']);
+gulp.task('build', ['clean'/*, 'build-javascript', 'build-node'*/], function() {
+    return gulp.src(['src/pact.js', 'src/interaction.js', 'src/mockService.js'])
+        .pipe($.jshint())
+        .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
+        .pipe($.concat('pact-consumer-js-dsl.js'))
+        .pipe(umd({
+            exports: function(file) {
+                return 'Pact';
+            },
+            namespace: function(file) {
+                return 'Pact';
+            },
+            template: path.join(__dirname, 'umd-template.js')
+        }))
+        .pipe(gulp.dest('dist'))
+        .pipe($.size())
+});
 
 gulp.task('build-javascript', ['clean'], function() {
     return gulp.src(['src/pact.js', 'src/interaction.js', 'src/mockService.js'])
