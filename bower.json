@@ -21,7 +21,7 @@
     "Beth Skurrie <bskurrie@dius.com.au>",
     "Michel Boudreau <michelboudreau@gmail.com>"
   ],
-  "main": ["dist/js/pact-consumer-js-dsl.js"],
+  "main": ["dist/pact-consumer-js-dsl.js"],
   "dependencies": {},
   "devDependencies": {}
 }

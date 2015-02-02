@@ -37,24 +37,6 @@ gulp.task('build', ['clean'/*, 'build-javascript', 'build-node'*/], function() {
         .pipe($.size())
 });
 
-gulp.task('build-javascript', ['clean'], function() {
-    return gulp.src(['src/pact.js', 'src/interaction.js', 'src/mockService.js'])
-        .pipe($.jshint())
-        .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
-        .pipe($.concat('pact-consumer-js-dsl.js'))
-        .pipe(gulp.dest('dist/web'))
-        .pipe($.size());
-});
-
-gulp.task('build-node', ['clean', 'build-javascript'], function() {
-    return gulp.src(['node.prefix', 'dist/web/pact-consumer-js-dsl.js', 'node.suffix'])
-        .pipe($.jshint())
-        .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
-        .pipe($.concat('pact-consumer-js-dsl.js'))
-        .pipe(gulp.dest('dist/node'))
-        .pipe($.size());
-});
-
 gulp.task('default', ['build', 'run-tests']);
 
 gulp.task('run-tests', ['build'], function() {

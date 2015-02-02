@@ -2,7 +2,7 @@
   "name": "pact-consumer-js-dsl",
   "version": "0.0.5",
   "description": "DSL to write pact tests in Javascript",
-  "main": "dist/node/pact-consumer-js-dsl.js",
+  "main": "dist/pact-consumer-js-dsl.js",
   "dependencies": {
     "xhr2": "^0.1.1"
   },
