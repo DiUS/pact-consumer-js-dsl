@@ -48,9 +48,9 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
                 flags: ['--disable-web-security']
             }
          }
-         
+
          or:
-         
+
          browsers: ['PhantomJS_without_security'],
          customLaunchers: {
             PhantomJS_without_security: {
@@ -58,7 +58,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
               flags: ['--web-security=false']
             }
          }
-         ````         
+         ````
 
    Note that running your tests across multiple browsers with one pact mock server will probably conflict with each other. You will need to either run them sequentially or start multiple pact mock servers. To run them sequentially make multiple calls to karma from the command line with the different browsers passed with the `--browser` option.
 
