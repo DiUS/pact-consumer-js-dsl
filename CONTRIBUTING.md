@@ -2,6 +2,8 @@
 
 ### Prepare development environment
 
+#### Nodejs
+
 You need to install nodejs in your computer.
 
 In Mac OS X:
@@ -9,26 +11,53 @@ In Mac OS X:
     $ brew install node
     $ export PATH=$PATH:/usr/local/share/npm/bin
     $ source .bash_profile
+    
+In Linux:
+
+    $ apt-get install nodejs
+    
+In Windows: [Download the 32-bit version of Nodejs installer.](http://nodejs.org/download/)
+
+#### Installing Ruby
+
+In Mac OS X:
+
+    $ brew install ruby
+    $ export PATH=$PATH:/usr/local/opt/ruby/bin
+    $ source .bash_profile
+    
+In Linux:
+
+    $ apt-get install ruby1.9.3 rubygems
+    
+In Windows: [Follow the installation instructions here to install Ruby and RubyGems](https://github.com/bethesque/pact-mock_service/wiki/Installing-the-pact-mock_service-gem-on-Windows)
+
+#### Installing Bundle & pact-mock-service
+
+Run the following commands (works in all OS'):
+
+    $ gem i bundler
 
 ### To start development
 
-You need to install grunt-cli, bower and karma first
+You need to install global binaries to build and test the code:
 
-    $ npm install -g grunt-cli bower karma
+    $ npm install -g gulp bower karma
 
-Inside the project folder, simply run `npm install` and `bundle install` to install the other dependencies.
+While inside the project folder, setup the dependencies needed by running:
+
+    bundle install
+    npm install
+    bower install
 
 ### During Development
 
-To run gulp tasks:
+To build and test:
 
     $ gulp
 
-or if you don't want to install the gulp-cli globally:
-
-    $ node_modules/.bin/gulp run-tests
-
 Useful gulp tasks:
+- `gulp build` creates the distribution version of the code, which sits in the 'dist' folder.
 - `gulp run-tests` will build the distribution file, spin up the pact server and run the tests in a browser and in nodejs.
 - `gulp watch` will spin up the pact server and automatically rerun the tests in a browser every time a relevant file is changed.
 
@@ -42,7 +71,7 @@ Useful gulp tasks:
 
 The `pact-consumer-js-dsl.js` is a minified and concatenated version of the Pact Javascript source. In order to generate it just run...
 
-    $ gulp
+    $ gulp build
 
 ### Release process
 

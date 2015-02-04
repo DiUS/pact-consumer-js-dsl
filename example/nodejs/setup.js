@@ -1,11 +1,15 @@
 module.exports = function () {
 
     var path = require('path');
+
+    // Retrieve the mock service needed for our tests
     var mockService = require(path.resolve(__dirname, 'mock-service.js'));
 
-    mockService.clean(); // Remove all interactions first
+    // Remove all interactions first, in case there are 'old' interactions still on the server
+    mockService.clean();
 
-    mockService // Setup interaction when calling the root url with GET
+    // Setup interaction when calling the root url with GET
+    mockService
         .given('the root url')
         .uponReceiving('a GET request for all data')
         .withRequest('get', '/')
@@ -17,7 +21,8 @@ module.exports = function () {
             ]
         });
 
-    mockService // Setup interaction when calling the root url with POST
+    // Setup interaction when calling the root url with POST
+    mockService
         .given('the root url')
         .uponReceiving('a POST request with json data')
         .withRequest('post', '/', null, { text: 'different text' })

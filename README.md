@@ -18,7 +18,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
 1. You must install [Ruby](https://www.ruby-lang.org/en/downloads/) and [RubyGems](https://rubygems.org/pages/download) first.
 
-1. After these binaries as available in the console, you can install the mock service easily using this command: `gem i pact-mock_service -v 0.2.3.pre.rc1` * Windows users must run this command after following Wiki instructions *
+1. After these binaries as available in the console, you can install the mock service easily using this command: `gem i pact-mock_service -v 0.2.4` * Windows users must run this command after following Wiki instructions *
 
 ### Getting Started (with Karma, Jasmine and pact-mock-service)
 
@@ -125,6 +125,8 @@ Have a look at the [example](/example/web) folder. Ensure you have Google Chrome
     
 #### Nodejs Example
 
+This is only an example on how to use the pact-consumer-js-dsl within Node.  This is not best practice, but is a good starting point without creating a lengthy example using Grunt or Gulp with Protractor or Karma.
+
 1. Start pact-mock-service with `pact-mock-service -p 1234 -l tmp/pact.log --pact-dir tmp/pacts`
 
 1. Run nodejs command to setup pact consumer `node example/nodejs/setup.js`
@@ -132,7 +134,6 @@ Have a look at the [example](/example/web) folder. Ensure you have Google Chrome
 1. Run your tests here with whatever you want, like Protractor for e2e testing
 
 1. Run nodejs command to verify interactions and write pact files `node example/nodejs/teardown.js`
-    $ npm test
 
 # Contributing
 
