@@ -22,6 +22,10 @@ Pact.MockService = Pact.MockService || {};
       }
     };
 
+    var setupInteractions = function(interactions, callback) {
+      Pact.MockServiceRequests.putInteractions({interactions: interactions}, _baseURL, callback);
+    };
+
     var setupInteractionsSequentially = function(interactions, index, callback) {
       if (index >= interactions.length) {
         callback();
@@ -39,18 +43,10 @@ Pact.MockService = Pact.MockService || {};
     };
 
     var cleanAndSetup = function(callback) {
-      // Cleanup the interactions from the previous test
-      Pact.MockServiceRequests.deleteInteractions(_baseURL, function(deleteInteractionsError) {
-        if (deleteInteractionsError) {
-          callback(deleteInteractionsError);
-          return;
-        }
-
-        // Post the new interactions
-        var interactions = _interactions;
-        _interactions = []; //Clean the local setup
-        setupInteractionsSequentially(interactions, 0, callback);
-      });
+      // PUT the new interactions
+      var interactions = _interactions;
+      _interactions = []; //Clean the local setup
+      setupInteractions(interactions, callback);
     };
 
     var verifyAndWrite = function(callback) {
