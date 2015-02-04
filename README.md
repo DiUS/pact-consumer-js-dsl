@@ -16,7 +16,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
 1. Install the [pact-mock_service](https://github.com/bethesque/pact-mock_service) ruby gem
 
-   The easiest way is to add `gem 'pact-mock_service', '~> 0.2.3.pre.rc1'` to your `Gemfile` and run `bundle install`
+   The easiest way is to add `gem 'pact-mock_service', '~> 0.3.0'` to your `Gemfile` and run `bundle install`
 
 1. Install and configure Karma with Jasmine
 
