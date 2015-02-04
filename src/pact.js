@@ -1,5 +1,3 @@
-'use strict';
-
 var Pact = Pact || {};
 
 (function() {

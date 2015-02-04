@@ -1,8 +1,8 @@
 {
-  "name": "pact-js-example",
+  "name": "pact-consumer-js-dsl-example",
   "version": "1.0.0",
   "scripts": {
-    "test": "karma start"
+    "test": "script/test.sh"
   },
   "devDependencies": {
     "karma": "^0.12.24",

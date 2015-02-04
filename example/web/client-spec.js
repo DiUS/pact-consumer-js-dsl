@@ -10,12 +10,15 @@
       helloProvider = Pact.mockService({
         consumer: 'Hello Consumer',
         provider: 'Hello Provider',
-        port: 1234
+        port: 1234,
+        done: function (error) {
+          expect(error).toBe(null);
+        }
       });
     });
 
     describe("sayHello", function () {
-      it("should say hello", function() {
+      it("should say hello", function(done) {
 
         helloProvider
           .uponReceiving("a request for hello")
@@ -27,16 +30,16 @@
           });
 
         //Run the tests
-        helloProvider.run(function(complete) {
+        helloProvider.run(done, function(runComplete) {
           expect(client.sayHello()).toEqual("Hello");
-          complete();
+          runComplete();
         });
 
       });
     });
 
     describe("findFriendsByAgeAndChildren", function () {
-      it("should return some friends", function() {
+      it("should return some friends", function(done) {
         //Add interaction
         helloProvider
           .uponReceiving("a request friends")
@@ -64,11 +67,11 @@
           });
 
         //Run the tests
-        helloProvider.run(function(complete) {
+        helloProvider.run(done, function(runComplete) {
           expect(client.findFriendsByAgeAndChildren('30', ['Mary Jane', 'James'])).toEqual([{
             name: 'Sue'
           }]);
-          complete();
+          runComplete();
         });
 
       });
@@ -77,7 +80,7 @@
 
     describe("unfriendMe", function () {
 
-      it("should unfriend me", function(jasmineDone) {
+      it("should unfriend me", function(done) {
         //Add interaction
         helloProvider
           .given("I am friends with Fred")
@@ -93,17 +96,16 @@
             }
           });
 
-
         //Run the tests
-        helloProvider.run(function(pactDone) {
+        helloProvider.run(done, function(runComplete) {
 
           function success(message) {
             expect(message).toEqual("Bye");
-            pactDone(jasmineDone);
+            runComplete();
           }
 
           function error(response) {
-            pactDone(jasmineDone);
+            runComplete();
             expect(true).toEqual(false);
           }
 
@@ -113,7 +115,7 @@
       });
 
       describe("when there are no friends", function () {
-        it("returns an error message", function (jasmineDone) {
+        it("returns an error message", function (done) {
           //Add interaction
           helloProvider
             .given("I have no friends")
@@ -122,18 +124,18 @@
             .willRespondWith(404);
 
           //Run the tests
-          helloProvider.run(function(pactDone) {
+          helloProvider.run(done, function(runComplete) {
 
             function success(message) {
               //The success callback should *not* be invoked!
               expect(true).toEqual(false);
-              pactDone(jasmineDone);
+              runComplete();
             }
 
             function error(message) {
               //The error callback *should* be invoked
-              expect(message).toEqual("No friends :(")
-              pactDone(jasmineDone);
+              expect(message).toEqual("No friends :(");
+              runComplete();
             }
 
             client.unfriendMe(success, error);

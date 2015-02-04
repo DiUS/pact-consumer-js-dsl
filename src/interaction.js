@@ -1,5 +1,3 @@
-'use strict';
-
 Pact.Interaction = Pact.Interaction || {};
 
 (function() {

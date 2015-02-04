@@ -1,6 +1,6 @@
 {
   "name": "pact-consumer-js-dsl",
-  "version": "0.0.5",
+  "version": "0.1.1",
   "ignore": [
       ".gitignore",
       ".jshintrc",
@@ -19,7 +19,8 @@
     "Malinda Kapuruge <mkapuruge@dius.com.au>",
     "Tarcio Saraiva <tsaraiva@dius.com.au>",
     "Beth Skurrie <bskurrie@dius.com.au>",
-    "Michel Boudreau <michelboudreau@gmail.com>"
+    "Michel Boudreau <michelboudreau@gmail.com>",
+      "Ben Sayers <bpsayers@gmail.com>"
   ],
   "main": ["dist/pact-consumer-js-dsl.js"],
   "dependencies": {},

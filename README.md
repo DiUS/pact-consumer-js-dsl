@@ -53,9 +53,9 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
                 flags: ['--disable-web-security']
             }
          }
-         
+
          or:
-         
+
          browsers: ['PhantomJS_without_security'],
          customLaunchers: {
             PhantomJS_without_security: {
@@ -63,44 +63,47 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
               flags: ['--web-security=false']
             }
          }
-         ````         
+         ````
 
    Note that running your tests across multiple browsers with one pact mock server will probably conflict with each other. You will need to either run them sequentially or start multiple pact mock servers. To run them sequentially make multiple calls to karma from the command line with the different browsers passed with the `--browser` option.
 
 1. Write a Jasmine unit test similar to the following,
 
-        describe("Client", function(done) {
+    ```
+    describe("Client", function() {
+      var client, helloProvider;
 
-            var client, helloProvider;
+      beforeEach(function() {
+        client = new ProviderClient('http://localhost:1234');
+        helloProvider = MockService.create({
+          consumer: 'Hello Consumer',
+          provider: 'Hello Provider',
+          port: 1234,
+          done: function (error) {
+            expect(error).toBe(null);
+          }
+        });
+      });
 
-            beforeEach(function() {
+      it("should say hello", function(done) {
+        helloProvider
+          .uponReceiving("a request for hello")
+          .withRequest("get", "/sayHello")
+          .willRespondWith(200, {
+            "Content-Type": "application/json"
+          }, {
+            reply: "Hello"
+          });
 
-              client = new ProviderClient('http://localhost:1234');
-              helloProvider = MockService.create({
-                consumer: 'Hello Consumer',
-                provider: 'Hello Provider',
-                port: 1234 });
-            });
+        helloProvider.run(done, function(runComplete) {
+          expect(client.sayHello()).toEqual("Hello");
+          runComplete();
+        });
+      });
+    });
+    ```
 
-            it("should say hello", function() {
-
-                helloProvider
-                  .uponReceiving("a request for hello")
-                  .withRequest("get", "/sayHello")
-                  .willRespondWith(200, {
-                    "Content-Type": "application/json"
-                  }, {
-                    reply: "Hello"
-                  });
-
-                  helloProvider.run(function(runComplete) {
-                    expect(client.sayHello()).toEqual("Hello");
-                    runComplete(done);
-                  });
-            });
-         });
-
-    See the spec in the example directory for examples of asynchronous callbacks, how to expect error responses, and how to use query params.
+    See the spec in the example directory for more examples of asynchronous callbacks, how to expect error responses, and how to use query params.
 
     Make sure the source and test files are included by Karma in the `karma.conf.js` in the files array.
 
@@ -115,8 +118,10 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 Have a look at the [example](/example/web) folder. Ensure you have Google Chrome installed.
 
     $ cd example
+    $ bundle install
     $ npm install
     $ script/test.sh
+
     
 #### Nodejs Example
 
@@ -127,6 +132,7 @@ Have a look at the [example](/example/web) folder. Ensure you have Google Chrome
 1. Run your tests here with whatever you want, like Protractor for e2e testing
 
 1. Run nodejs command to verify interactions and write pact files `node example/nodejs/teardown.js`
+    $ npm test
 
 # Contributing
 

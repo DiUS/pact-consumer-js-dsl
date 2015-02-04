@@ -1,38 +1,41 @@
 {
   "name": "pact-consumer-js-dsl",
-  "version": "0.0.5",
+  "version": "0.1.1",
   "description": "DSL to write pact tests in Javascript",
-  "main": "dist/pact-consumer-js-dsl.js",
   "dependencies": {
-    "xhr2": "^0.1.1"
+    "xhr2": "^0.1.2"
   },
-  "browserDependencies": {},
   "devDependencies": {
+    "fs-extra": "^0.13.0",
     "gulp": "^3.6.0",
     "gulp-cache": "^0.1.1",
     "gulp-clean": "^0.2.4",
     "gulp-concat": "^2.4.2",
+    "gulp-jasmine": "^1.0.1",
     "gulp-jshint": "^1.5.3",
+    "gulp-karma": "0.0.4",
     "gulp-load-plugins": "^0.5.0",
     "gulp-size": "^0.3.0",
     "gulp-uglify": "^0.2.1",
     "gulp-umd": "^0.1.3",
     "gulp-util": "^3.0.2",
-    "jshint-checkstyle-file-reporter": "0.0.1",
     "jshint-stylish": "^0.2.0",
     "karma": "0.12.24",
     "karma-chrome-launcher": "0.1.2",
     "karma-firefox-launcher": "^0.1.3",
-    "karma-jasmine": "^0.1.5",
+    "karma-jasmine": "^0.2.0",
     "karma-phantomjs-launcher": "^0.1.4",
-    "karma-safari-launcher": "~0.1"
+    "karma-safari-launcher": "~0.1",
+    "q": "^1.1.2",
+    "request": "^2.51.0"
   },
   "contributors": [
     "Fu Ying <fu.ying.er@rea-group.com>",
     "Malinda Kapuruge <mkapuruge@dius.com.au>",
     "Tarcio Saraiva <tsaraiva@dius.com.au>",
     "Beth Skurrie <bskurrie@dius.com.au>",
-    "Michel Boudreau <michelboudreau@gmail.com>"
+    "Michel Boudreau <michelboudreau@gmail.com>",
+    "Ben Sayers <bpsayers@gmail.com>"
   ],
   "directories": {
     "lib": "src",

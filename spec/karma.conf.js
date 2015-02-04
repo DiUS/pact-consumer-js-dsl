@@ -13,8 +13,11 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        'dist/pact-consumer-js-dsl.js',
-        'spec/**/*spec.js'
+      'src/pact.js',
+      'src/interaction.js',
+      'src/mockServiceRequests.js',
+      'src/mockService.js',
+      'spec/**/*spec.js'
     ],
 
     // list of files to exclude

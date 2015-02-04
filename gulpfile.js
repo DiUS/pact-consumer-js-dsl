@@ -1,34 +1,100 @@
 'use strict';
 
 var gulp = require('gulp'),
-  fs = require('fs'),
-  spawn = require('child_process').spawn,
-  gutil = require('gulp-util'),
-  umd = require('gulp-umd'),
-  path = require('path'),
-  karma = require('karma').server,
-  $ = require('gulp-load-plugins')();
+    fs = require('fs-extra'),
+    q = require('q'),
+    request = require('request'),
+    spawn = require('child_process').spawn,
+    gutil = require('gulp-util'),
+    umd = require('gulp-umd'),
+    path = require('path'),
+    karma = require('karma').server,
+    $ = require('gulp-load-plugins')();
 
-gulp.task('clear', function(done) {
-  return $.cache.clearAll(done);
+// FILES
+var srcFiles = ['src/pact.js', 'src/interaction.js', 'src/http.js', 'src/mockServiceRequests.js', 'src/mockService.js'];
+var specFiles = ['spec/**/*spec.js'];
+var distFiles = ['dist/pact-consumer-js-dsl.js'];
+var karmaConfig = 'spec/karma.conf.js';
+
+var cleanDirectories = function (directories) {
+    directories.forEach(function (directory) {
+        fs.removeSync(directory);
+        fs.mkdirsSync(directory);
+    });
+};
+
+var waitForServerToStart = function () {
+    var deferred = q.defer();
+    var attempts = 0;
+
+    var checkIfServerHasStarted = function () {
+        attempts += 1;
+        request('http://localhost:1234', function (error) {
+            if (attempts > 100) {
+                deferred.reject(new Error('Timed out waiting for the pact-mock-service to start'));
+            } else if (error) {
+                setTimeout(checkIfServerHasStarted, 100);
+            } else {
+                deferred.resolve();
+            }
+        });
+    };
+
+    setTimeout(checkIfServerHasStarted, 1000);
+
+    return deferred.promise;
+};
+
+var withServer = function (action) {
+    var deferred = q.defer();
+
+    cleanDirectories(['tmp/pacts', 'log']);
+    var child = spawn('bundle', ['exec', 'pact-mock-service', '-p', '1234', '-l', 'tmp/pact.log', '--pact-dir', './tmp/pacts']);
+    child.on('error', function (error) {
+        console.log('pact-mock-service:', error.toString());
+    });
+
+    waitForServerToStart().then(function () {
+        var actionDone = function (error) {
+            child.kill();
+
+            if (error) {
+                deferred.reject(error);
+            } else {
+                deferred.resolve();
+            }
+        };
+
+        var actionStream = action();
+        actionStream.on('end', actionDone);
+        actionStream.on('error', actionDone);
+        actionStream.resume();
+    }, deferred.reject);
+
+    return deferred.promise;
+};
+
+gulp.task('clear', function (done) {
+    return $.cache.clearAll(done);
 });
 
-gulp.task('clean', ['clear'], function() {
-  return gulp.src(['tmp', 'dist', 'log'], {
-    read: false
-  }).pipe($.clean());
+gulp.task('clean', ['clear'], function () {
+    return gulp.src(['dist'], {
+        read: false
+    }).pipe($.clean());
 });
 
-gulp.task('build', ['clean'/*, 'build-javascript', 'build-node'*/], function() {
-    return gulp.src(['src/pact.js', 'src/interaction.js', 'src/mockService.js'])
+gulp.task('build', ['clean'], function () {
+    return gulp.src(srcFiles)
         .pipe($.jshint())
-        .pipe($.jshint.reporter(require('jshint-checkstyle-file-reporter')))
+        .pipe($.jshint.reporter('default'))
         .pipe($.concat('pact-consumer-js-dsl.js'))
         .pipe(umd({
-            exports: function(file) {
+            exports: function (file) {
                 return 'Pact';
             },
-            namespace: function(file) {
+            namespace: function (file) {
                 return 'Pact';
             },
             template: path.join(__dirname, 'umd-template.js')
@@ -39,39 +105,26 @@ gulp.task('build', ['clean'/*, 'build-javascript', 'build-node'*/], function() {
 
 gulp.task('default', ['build', 'run-tests']);
 
-gulp.task('run-tests', ['build'], function() {
-  var karmaConf = process.argv[3] ? process.argv[3] : 'karma';
-
-  fs.mkdirSync('tmp');
-  fs.mkdirSync('tmp/pacts');
-  fs.mkdirSync('log');
-
-  // Start pact-mock-service, listen for errors/ouputs
-  var child = spawn('pact-mock-service', ['-p', '1234', '-l', 'tmp/pact.log', '--pact-dir', './tmp/pacts']);
-
-    var out = function (data) {
-        gutil.log('pact-mock-service output: \n'+data);
-    };
-
-    child.stdout.setEncoding('utf8');
-    child.stderr.setEncoding('utf8');
-    child.stdout.on('data', out);
-    child.stderr.on('data', out);
-
-    child.on('close', function(code) {
-        gutil.log("Done with exit code", code);
-        if(code !== 0) {
-            gutil.log(gutil.colors.red('An error occured with pact-mock-service'));
-            gutil.beep();
-        }
+gulp.task('run-browser-tests', ['build'], function () {
+    return withServer(function () {
+        return gulp.src(distFiles.concat(specFiles))
+            .pipe($.karma({configFile: karmaConfig}));
     });
-
-  karma.start({
-    configFile: __dirname + '/spec/' + karmaConf + '.conf.js',
-    singleRun: true
-  }, function(code) {
-    process.kill(child.pid, 'SIGKILL');
-    process.exit(code);
-  });
-
 });
+
+gulp.task('run-node-tests', ['build'], function () {
+    return withServer(function () {
+        return gulp.src(distFiles.concat(specFiles))
+            .pipe($.jasmine());
+    });
+});
+
+gulp.task('run-tests', ['run-browser-tests', 'run-node-tests']);
+
+gulp.task('watch', ['clean'], function () {
+    return withServer(function () {
+        return gulp.src(srcFiles.concat(specFiles))
+            .pipe($.karma({configFile: 'spec/karma.conf.js', action: 'watch'}));
+    });
+});
+
