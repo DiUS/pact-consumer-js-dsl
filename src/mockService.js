@@ -6,12 +6,11 @@ Pact.MockService = Pact.MockService || {};
   function MockService(opts) {
     var _baseURL = 'http://127.0.0.1:' + opts.port;
     var _interactions = [];
+    var _doneCallback = opts.done || function(){};
 
-    if (typeof(opts.done) !== 'function') {
-      throw new Error('Error creating MockService. Please provide an option called "done", that is a function that asserts (using your test framework of choice) that the first argument, error, is null.');
+    if (typeof(_doneCallback) !== 'function') {
+        throw new Error('Error creating MockService. \'Done\' option must be a function.');
     }
-
-    var _doneCallback = opts.done;
 
     var _pactDetails = {
       consumer: {
@@ -79,6 +78,9 @@ Pact.MockService = Pact.MockService || {};
     };
 
     this.run = function(onRunComplete, testFunction) {
+      onRunComplete = onRunComplete || function(){};
+      testFunction = testFunction || function(){};
+
       var done = function (error) {
         _doneCallback(error);
         onRunComplete();
