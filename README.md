@@ -64,7 +64,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
 1. Write a Jasmine unit test similar to the following,
 
-    ```
+    ```javascript
     describe("Client", function() {
       var client, helloProvider;
 
