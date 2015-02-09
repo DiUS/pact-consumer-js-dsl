@@ -2,14 +2,13 @@ Pact.MockService = Pact.MockService || {};
 
 (function() {
 
-
   function MockService(opts) {
     var _baseURL = 'http://127.0.0.1:' + opts.port;
     var _interactions = [];
     var _doneCallback = opts.done || function(){};
 
     if (typeof(_doneCallback) !== 'function') {
-        throw new Error('Error creating MockService. \'Done\' option must be a function.');
+      throw new Error('Error creating MockService. \'Done\' option must be a function.');
     }
 
     var _pactDetails = {
@@ -52,17 +51,29 @@ Pact.MockService = Pact.MockService || {};
       });
     };
 
-    var verifyAndWrite = function(callback) {
+    this.verifyAndWrite = function(callback) {
+      callback = callback || function(){};
+      var that = this;
       //Verify that the expected interactions have occurred
-      Pact.MockServiceRequests.getVerification(_baseURL, function(verifyError) {
+      this.verify(function(verifyError) {
         if (verifyError) {
           callback(verifyError);
           return;
         }
 
-        //Write the pact file
-        Pact.MockServiceRequests.postPact(_pactDetails, _baseURL, callback);
+          that.write(callback);
       });
+    };
+
+    this.verify = function(callback) {
+        callback = callback || function(){};
+        //Verify that the expected interactions have occurred
+        Pact.MockServiceRequests.getVerification(_baseURL, callback);
+    };
+
+    this.write = function(callback) {
+        callback = callback || function(){};
+        Pact.MockServiceRequests.postPact(_pactDetails, _baseURL, callback);
     };
 
     this.given = function(providerState) {
@@ -86,6 +97,8 @@ Pact.MockService = Pact.MockService || {};
         onRunComplete();
       };
 
+        var that = this;
+
       cleanAndSetup(function(error) {
         if (error) {
           done(error);
@@ -93,7 +106,7 @@ Pact.MockService = Pact.MockService || {};
         }
 
         var runComplete = function() {
-          verifyAndWrite(done);
+          that.verifyAndWrite(done);
         };
 
         testFunction(runComplete); // Call the tests
