@@ -120,7 +120,7 @@ Have a look at the [example](/example/web) folder. Ensure you have Google Chrome
     $ cd example
     $ bundle install
     $ npm install
-    $ script/test.sh
+    $ npm test
 
     
 #### Nodejs Example

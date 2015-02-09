@@ -50,7 +50,6 @@ While inside the project folder, setup the dependencies needed by running:
     npm install
     bower install
 
-### During Development
 
 To build and test:
 
