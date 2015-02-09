@@ -96,6 +96,9 @@ Pact.Interaction = Pact.Interaction || {};
 
 }).apply(Pact.Interaction);
 
+Pact.Http = Pact.Http || {};
+
+(function() {
     this.makeRequest = function(method, url, body, callback) {
       var xhr = new XMLHttpRequest();
       xhr.onload = function(event) {
@@ -111,6 +114,7 @@ Pact.Interaction = Pact.Interaction || {};
   };
 
 }).apply(Pact.Http);
+
 Pact.MockServiceRequests = Pact.MockServiceRequests || {};
 
 (function() {
@@ -183,6 +187,13 @@ Pact.MockService = Pact.MockService || {};
       });
     };
 
+    var cleanAndSetup = function(callback) {
+      // Cleanup the interactions from the previous test
+      Pact.MockServiceRequests.deleteInteractions(_baseURL, function(deleteInteractionsError) {
+        if (deleteInteractionsError) {
+          callback(deleteInteractionsError);
+          return;
+        }
 
         // Post the new interactions
         var interactions = _interactions;
