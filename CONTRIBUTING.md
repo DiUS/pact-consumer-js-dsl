@@ -40,16 +40,15 @@ Run the following commands (works in all OS'):
 
 ### To start development
 
-You need to install global binaries to build and test the code:
+You need to install gulp, bower and karma to build and test the code; if you don't want them to be globally available, remove the `-g` at the end:
 
-    $ npm install -g gulp bower karma
+    $ npm install gulp bower karma -g
 
 While inside the project folder, setup the dependencies needed by running:
 
     bundle install
     npm install
     bower install
-
 
 To build and test:
 
