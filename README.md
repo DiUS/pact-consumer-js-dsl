@@ -12,11 +12,15 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 * Google users group: https://groups.google.com/forum/#!forum/pact-support
 * Twitter: [@pact_up](https://twitter.com/pact_up)
 
-### Getting Started (with Karma, Jasmine and the pact-mock_service gem)
+### Installing pact-mock-service
 
-1. Install the [pact-mock_service](https://github.com/bethesque/pact-mock_service) ruby gem
+* If on Windows, please refer to the [Installing pact-mock-service on Windows](https://github.com/bethesque/pact-mock_service/wiki/Installing-the-pact-mock_service-gem-on-Windows) *
 
-   The easiest way is to add `gem 'pact-mock_service', '~> 0.2.3.pre.rc1'` to your `Gemfile` and run `bundle install`
+1. You must install [Ruby](https://www.ruby-lang.org/en/downloads/) and [RubyGems](https://rubygems.org/pages/download) first.
+
+1. After these binaries as available in the console, you can install the mock service easily using this command: `gem i pact-mock_service -v 0.2.4` * Windows users must run this command after following Wiki instructions *
+
+### Getting Started (with Karma, Jasmine and pact-mock-service)
 
 1. Install and configure Karma with Jasmine
 
@@ -26,17 +30,18 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
     This basically consists of running,
 
-    * `npm install karma --save-dev`
-    * `npm install karma-jasmine karma-chrome-launcher --save-dev`
-    * `npm install -g karma-cli`
+    ```
+    npm install karma karma-jasmine karma-chrome-launcher --save-dev
+    npm install -g karma-cli
+    ```
 
   1. Initialise and configure Karma
 
     Run `karma init`. Answer **jasmine** for *testing framework* and **no** for *use require.js*.
 
-  1. Add `pact-consumer-js-dsl` to your project by running `npm install DiUS/pact-consumer-js-dsl#X.Y.Z --save-dev`, where `X.Y.Z` is the latest stable version, according to the [releases][releases] page.
+  1. Add `pact-consumer-js-dsl` to your project by running `bower install pact-consumer-js-dsl --save-dev`.
 
-  1. Tell Karma about `pact-consumer-js-dsl.js` in `karma.conf.js`. In the `files: []` section add a new entry for `node_modules/pact-consumer-js-dsl/dist/pact-consumer-js-dsl.js`.
+  1. Tell Karma about `pact-consumer-js-dsl.js` in `karma.conf.js`. In the `files: []` section add a new entry for `bower_components/pact-consumer-js-dsl/dist/web/pact-consumer-js-dsl.js`.
 
   1. Allow tests to load resources from `pact` mock server. One way to do this is in the `karma.conf.js`, change `browsers: ['Chrome'],` or `browsers: ['PhantomJS'],` to,
 
@@ -104,18 +109,31 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
 1. Let's run that bad boy!
 
-   * start the pact mock server with `bundle exec pact-mock-service -p 1234 -l log/pact.logs --pact-dir tmp/pacts`
+   * start the pact mock server with `pact-mock-service -p 1234 -l log/pact.logs --pact-dir tmp/pacts`
    * run `karma start` (in another terminal window)
    * inspect the pact file that has been written to "hello_consumer-hello_provider.json"
 
-### Example
+#### Web Example
 
-Have a look at the [example](/example) folder. Ensure you have Google Chrome installed.
+Have a look at the [example](/example/web) folder. Ensure you have Google Chrome installed.
 
     $ cd example
     $ bundle install
     $ npm install
     $ npm test
+
+
+#### Nodejs Example
+
+This is only an example on how to use the pact-consumer-js-dsl within Node.  This is not best practice, but is a good starting point without creating a lengthy example using Grunt or Gulp with Protractor or Karma.
+
+1. Start pact-mock-service with `pact-mock-service -p 1234 -l tmp/pact.log --pact-dir tmp/pacts`
+
+1. Run nodejs command to setup pact consumer `node example/nodejs/setup.js`
+
+1. Run your tests here with whatever you want, like Protractor for e2e testing
+
+1. Run nodejs command to verify interactions and write pact files `node example/nodejs/teardown.js`
 
 # Contributing
 
