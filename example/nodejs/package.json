@@ -1,0 +1,7 @@
+{
+  "name": "pact-js-example",
+  "version": "1.0.0",
+  "devDependencies": {
+    "pact-consumer-js-dsl": "0.1.1"
+  }
+}
