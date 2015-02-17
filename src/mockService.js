@@ -5,7 +5,7 @@ Pact.MockService = Pact.MockService || {};
   function MockService(opts) {
     var _baseURL = 'http://127.0.0.1:' + opts.port;
     var _interactions = [];
-    var _doneCallback = opts.done || function(){};
+    var _doneCallback = opts.done;
 
     if (typeof(_doneCallback) !== 'function') {
       throw new Error('Error creating MockService. \'Done\' option must be a function.');
@@ -36,19 +36,28 @@ Pact.MockService = Pact.MockService || {};
       });
     };
 
-    var cleanAndSetup = function(callback) {
-      // Cleanup the interactions from the previous test
-      Pact.MockServiceRequests.deleteInteractions(_baseURL, function(deleteInteractionsError) {
-        if (deleteInteractionsError) {
-          callback(deleteInteractionsError);
+    this.cleanAndSetup = function(callback) {
+      var that = this;
+      this.clean(function(error){
+        if (error) {
+          callback(error);
           return;
         }
 
-        // Post the new interactions
-        var interactions = _interactions;
-        _interactions = []; //Clean the local setup
-        setupInteractionsSequentially(interactions, 0, callback);
+        that.setup(callback);
       });
+    };
+
+    this.clean = function(callback) {
+      // Cleanup the interactions from the previous test
+      Pact.MockServiceRequests.deleteInteractions(_baseURL, callback);
+    };
+
+    this.setup = function(callback) {
+      // Post the new interactions
+      var interactions = _interactions;
+      _interactions = []; //Clean the local setup
+      setupInteractionsSequentially(interactions, 0, callback);
     };
 
     this.verifyAndWrite = function(callback) {
@@ -88,28 +97,28 @@ Pact.MockService = Pact.MockService || {};
       return interaction;
     };
 
-    this.run = function(onRunComplete, testFunction) {
-      onRunComplete = onRunComplete || function(){};
-      testFunction = testFunction || function(){};
+    this.run = function(completeFunction, testFunction) {
+
+      if (typeof(completeFunction) !== 'function' || typeof(testFunction) !== 'function') {
+        throw new Error('Error calling run function. \'completeFunction\' and \'testFunction\' are mandatory.');
+      }
 
       var done = function (error) {
         _doneCallback(error);
-        onRunComplete();
+        completeFunction();
       };
 
-        var that = this;
-
-      cleanAndSetup(function(error) {
+      var that = this;
+      this.cleanAndSetup(function(error) {
         if (error) {
           done(error);
           return;
         }
 
-        var runComplete = function() {
+        // Call the tests
+        testFunction(function() {
           that.verifyAndWrite(done);
-        };
-
-        testFunction(runComplete); // Call the tests
+        });
       });
     };
   }
