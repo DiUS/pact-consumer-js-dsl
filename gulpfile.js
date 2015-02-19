@@ -31,7 +31,7 @@ var waitForServerToStart = function () {
     var checkIfServerHasStarted = function () {
         attempts += 1;
         request('http://localhost:1234', function (error) {
-            if (attempts > 100) {
+            if (attempts > 500) {
                 deferred.reject(new Error('Timed out waiting for the pact-mock-service to start'));
             } else if (error) {
                 setTimeout(checkIfServerHasStarted, 100);
@@ -112,6 +112,11 @@ gulp.task('run-browser-tests', ['build'], function () {
     });
 });
 
+gulp.task('run-unit-tests', ['build'], function () {
+    return gulp.src(distFiles.concat(['spec/unit/**/*spec.js']))
+        .pipe($.karma({configFile: 'spec/karma-unit.conf.js'}));
+});
+
 gulp.task('run-node-tests', ['build'], function () {
     return withServer(function () {
         return gulp.src(distFiles.concat(specFiles))
@@ -119,7 +124,7 @@ gulp.task('run-node-tests', ['build'], function () {
     });
 });
 
-gulp.task('run-tests', ['run-browser-tests', 'run-node-tests']);
+gulp.task('run-tests', ['run-unit-tests', 'run-browser-tests', 'run-node-tests']);
 
 gulp.task('watch', ['clean'], function () {
     return withServer(function () {

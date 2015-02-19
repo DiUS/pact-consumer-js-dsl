@@ -17,11 +17,11 @@ module.exports = function(config) {
       'src/interaction.js',
       'src/mockServiceRequests.js',
       'src/mockService.js',
-      'spec/integration/**/*spec.js'
+      'spec/unit/**/*.js'
     ],
 
     // list of files to exclude
-    exclude: ['spec/unit/**/*.*'],
+    exclude: ['spec/integration/**/*.*'],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -47,18 +47,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS_without_security'],
-
-    customLaunchers: {
-      Chrome_without_security: {
-        base: 'Chrome',
-        flags: ['--disable-web-security']
-      },
-      PhantomJS_without_security: {
-        base: 'PhantomJS',
-        flags: ['--web-security=false']
-      }
-    },
+    browsers: ['PhantomJS'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

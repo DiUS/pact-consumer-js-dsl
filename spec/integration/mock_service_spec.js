@@ -5,7 +5,7 @@ describe('MockService', function() {
 
   baseUrl = 'http://localhost:1234';
   isNodeJs = typeof module === 'object' && typeof module.exports === 'object';
-  Pact = (isNodeJs) ? require('../dist/pact-consumer-js-dsl.js') : window.Pact;
+  Pact = (isNodeJs) ? require('../../dist/pact-consumer-js-dsl.js') : window.Pact;
 
   var makeRequestForNode = function (options, callback) {
     var request = require('request');
