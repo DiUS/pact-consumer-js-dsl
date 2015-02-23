@@ -17,6 +17,7 @@ var srcFiles = ['src/pact.js', 'src/interaction.js', 'src/http.js', 'src/mockSer
 var specFiles = ['spec/**/*spec.js'];
 var distFiles = ['dist/pact-consumer-js-dsl.js'];
 var karmaConfig = 'spec/karma.conf.js';
+var nodeConfig = 'spec/node.conf.js';
 
 var cleanDirectories = function (directories) {
     directories.forEach(function (directory) {
@@ -124,19 +125,19 @@ gulp.task('run-unit-tests', ['build'], function () {
 
 gulp.task('run-node-tests', ['build'], function () {
     return withServer(function () {
-        return gulp.src(distFiles.concat(specFiles))
+        return gulp.src(distFiles.concat(nodeConfig, specFiles))
             .pipe($.jasmine());
     });
 });
 
-gulp.task('run-tests', ['build'], function(callback){
+gulp.task('run-tests', function(callback){
 	runSequence('run-unit-tests', 'run-browser-tests', 'run-node-tests', callback);
 });
 
 gulp.task('watch', ['clean'], function () {
     return withServer(function () {
         return gulp.src(srcFiles.concat(specFiles))
-            .pipe($.karma({configFile: 'spec/karma.conf.js', action: 'watch'}));
+            .pipe($.karma({configFile: karmaConfig, action: 'watch'}));
     });
 });
 

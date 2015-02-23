@@ -1,0 +1,1 @@
+global.Pact = require('../dist/pact-consumer-js-dsl.js');

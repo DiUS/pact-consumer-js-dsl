@@ -2,9 +2,6 @@
 
 describe('MockService', function() {
 
-  var isNodeJs = typeof module === 'object' && typeof module.exports === 'object';
-  var Pact = (isNodeJs) ? require('../../dist/pact-consumer-js-dsl.js') : window.Pact;
-
   describe("run", function () {
 
     var spyContext, mockService;
