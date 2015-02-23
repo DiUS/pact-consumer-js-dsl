@@ -100,8 +100,7 @@ gulp.task('build', ['clean'], function () {
             },
             namespace: function (file) {
                 return 'Pact';
-            },
-            template: path.join(__dirname, 'umd-template.js')
+            }
         }))
         .pipe(gulp.dest('dist'))
         .pipe($.size())
