@@ -5,7 +5,7 @@ GEM
     diff-lcs (1.2.5)
     find_a_port (1.0.1)
     json (1.8.2)
-    pact-mock_service (0.2.4)
+    pact-mock_service (0.2.3)
       find_a_port (~> 1.0.1)
       json
       pact-support (~> 0.2.1)
@@ -51,4 +51,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  pact-mock_service (~> 0.2.4)
+  pact-mock_service (= 0.2.3)

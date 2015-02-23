@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp'),
+	runSequence = require('run-sequence'),
     fs = require('fs-extra'),
     q = require('q'),
     request = require('request'),
@@ -16,6 +17,7 @@ var srcFiles = ['src/pact.js', 'src/interaction.js', 'src/http.js', 'src/mockSer
 var specFiles = ['spec/**/*spec.js'];
 var distFiles = ['dist/pact-consumer-js-dsl.js'];
 var karmaConfig = 'spec/karma.conf.js';
+var nodeConfig = 'spec/node.conf.js';
 
 var cleanDirectories = function (directories) {
     directories.forEach(function (directory) {
@@ -32,9 +34,11 @@ var waitForServerToStart = function () {
         attempts += 1;
         request('http://localhost:1234', function (error) {
             if (attempts > 500) {
-                deferred.reject(new Error('Timed out waiting for the pact-mock-service to start'));
+	            var e = new Error('Timed out waiting for the pact-mock-service to start');
+	            console.error(e);
+                deferred.reject(e);
             } else if (error) {
-                setTimeout(checkIfServerHasStarted, 100);
+                setTimeout(checkIfServerHasStarted, 1000);
             } else {
                 deferred.resolve();
             }
@@ -113,23 +117,27 @@ gulp.task('run-browser-tests', ['build'], function () {
 });
 
 gulp.task('run-unit-tests', ['build'], function () {
-    return gulp.src(distFiles.concat(['spec/unit/**/*spec.js']))
-        .pipe($.karma({configFile: 'spec/karma-unit.conf.js'}));
+    return withServer(function () {
+	    return gulp.src(distFiles.concat(['spec/unit/**/*spec.js']))
+		    .pipe($.karma({configFile: 'spec/karma-unit.conf.js'}));
+    });
 });
 
 gulp.task('run-node-tests', ['build'], function () {
     return withServer(function () {
-        return gulp.src(distFiles.concat(specFiles))
+        return gulp.src(distFiles.concat(nodeConfig, specFiles))
             .pipe($.jasmine());
     });
 });
 
-gulp.task('run-tests', ['run-unit-tests', 'run-browser-tests', 'run-node-tests']);
+gulp.task('run-tests', function(callback){
+	runSequence('run-unit-tests', 'run-browser-tests', 'run-node-tests', callback);
+});
 
 gulp.task('watch', ['clean'], function () {
     return withServer(function () {
         return gulp.src(srcFiles.concat(specFiles))
-            .pipe($.karma({configFile: 'spec/karma.conf.js', action: 'watch'}));
+            .pipe($.karma({configFile: karmaConfig, action: 'watch'}));
     });
 });
 
