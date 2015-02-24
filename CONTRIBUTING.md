@@ -68,4 +68,9 @@ Do not include commit messages that will not affect end users (eg. refactoring, 
 
 * Upload pact-consumer-js-dsl-X.Y.Z.js and publish the release.
 
+Then publish to npm
+
+    $ npm publish ./
+
+
 [new-release]: https://github.com/DiUS/pact-consumer-js-dsl/releases/new
