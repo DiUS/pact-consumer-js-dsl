@@ -1,36 +1,12 @@
 'use strict';
 
 describe('MockService', function() {
-  var baseUrl, doneCallback, isNodeJs, mockService, Pact;
+  var baseUrl, doneCallback, mockService, XMLHttpRequest;
 
   baseUrl = 'http://localhost:1234';
-  isNodeJs = typeof module === 'object' && typeof module.exports === 'object';
-  Pact = (isNodeJs) ? require('../dist/pact-consumer-js-dsl.js') : window.Pact;
+  XMLHttpRequest = typeof exports === 'object'? require('xhr2') : window.XMLHttpRequest;
 
-  var makeRequestForNode = function (options, callback) {
-    var request = require('request');
-    var requestOptions = {
-      body: options.body,
-      headers: options.headers,
-      method: options.method,
-      url: baseUrl + options.path
-    };
-    request(requestOptions, function (error, response, body) {
-      if (error) {
-        callback(new Error('Error calling ' + options.path + ' - ' + err.message));
-      } else {
-        callback(null, {
-          getResponseHeader: function (header) {
-            return response.headers[header.toLowerCase()];
-          },
-          responseText: body,
-          status: response.statusCode
-        });
-      }
-    });
-  };
-
-  var makeRequestForBrowser = function (options, callback) {
+  var makeRequest = function (options, callback) {
     var xhr = new XMLHttpRequest();
     xhr.onload = function(event) {
       callback(null, event.target);
@@ -38,7 +14,7 @@ describe('MockService', function() {
     xhr.onerror = function() {
       callback(new Error('Error calling ' + options.path));
     };
-    xhr.open(options.method, baseUrl + options.path, false);
+    xhr.open(options.method, baseUrl + options.path, true);
 
     if (options.headers) {
       Object.keys(options.headers).forEach(function (header) {
@@ -48,8 +24,6 @@ describe('MockService', function() {
 
     xhr.send(options.body);
   };
-
-  var makeRequest = (isNodeJs) ? makeRequestForNode : makeRequestForBrowser;
 
   beforeEach(function() {
     doneCallback = jasmine.createSpy('doneCallback').and.callFake(function (error) {

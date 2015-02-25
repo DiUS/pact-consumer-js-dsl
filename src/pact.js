@@ -1,3 +1,5 @@
+var Pact = Pact || {};
+
 (function() {
 
   // consumerName, providerName, port, pactDir
