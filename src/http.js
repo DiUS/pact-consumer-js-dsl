@@ -1,6 +1,8 @@
 Pact.Http = Pact.Http || {};
 
 (function() {
+	var XMLHttpRequest = typeof exports === 'object'? require('xhr2') : window.XMLHttpRequest;
+
     this.makeRequest = function(method, url, body, callback) {
       var xhr = new XMLHttpRequest();
       xhr.onload = function(event) {

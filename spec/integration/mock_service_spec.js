@@ -1,9 +1,10 @@
 'use strict';
 
 describe('MockService', function() {
-  var baseUrl, doneCallback, mockService;
+  var baseUrl, doneCallback, mockService, XMLHttpRequest;
 
   baseUrl = 'http://localhost:1234';
+  XMLHttpRequest = typeof exports === 'object'? require('xhr2') : window.XMLHttpRequest;
 
   var makeRequest = function (options, callback) {
     var xhr = new XMLHttpRequest();

@@ -1,16 +1,12 @@
-'use strict';
-
 (function(root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define([], factory);
-    } else if (typeof exports === 'object') {
-        global.XMLHttpRequest = require('xhr2');
-        module.exports = factory();
-    } else {
-        root.Pact = factory();
-    }
+  if (typeof define === 'function' && define.amd) {
+    define([], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory();
+  } else {
+    root.Pact = factory();
+  }
 }(this, function() {
-
 var Pact = Pact || {};
 
 (function() {
@@ -99,6 +95,8 @@ Pact.Interaction = Pact.Interaction || {};
 Pact.Http = Pact.Http || {};
 
 (function() {
+	var XMLHttpRequest = typeof exports === 'object'? require('xhr2') : window.XMLHttpRequest;
+
     this.makeRequest = function(method, url, body, callback) {
       var xhr = new XMLHttpRequest();
       xhr.onload = function(event) {
@@ -283,5 +281,4 @@ Pact.MockService = Pact.MockService || {};
 }).apply(Pact.MockService);
 
 return Pact;
-
 }));
