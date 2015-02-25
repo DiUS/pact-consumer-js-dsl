@@ -2,15 +2,14 @@
 
 describe('MockService', function() {
 
-  describe("cleanAndSetup", function () {
+  describe("setup", function () {
 
     var spyContext, mockService;
-    var postInteractionError, deleteInteractionsError;
+    var putInteractionsError;
 
     beforeEach(function () {
 
-      postInteractionError = null;
-      deleteInteractionsError = null;
+      putInteractionsError = null;
 
       spyContext = {
         mockServiceDone: function(){},
@@ -18,12 +17,8 @@ describe('MockService', function() {
 
       spyOn(spyContext, 'mockServiceDone').and.callThrough();
 
-      spyOn(Pact.MockServiceRequests, 'postInteraction').and.callFake(function(interactions, baseUrl, callback){
-        callback(postInteractionError);
-      });
-
-      spyOn(Pact.MockServiceRequests, 'deleteInteractions').and.callFake(function(baseUrl, callback){
-        callback(deleteInteractionsError);
+      spyOn(Pact.MockServiceRequests, 'putInteractions').and.callFake(function(interactions, baseUrl, callback){
+        callback(putInteractionsError);
       });
 
       mockService = Pact.mockService({
@@ -44,46 +39,25 @@ describe('MockService', function() {
           done();
         }
 
-        mockService.cleanAndSetup(verifyExpectedCallbacksWereInvoked);
-      });
-    });
-
-    describe("when there is an error deleting the interactions from the previous test", function () {
-
-      beforeEach(function () {
-        deleteInteractionsError = new Error("A fake error deleting the interactions");
-      });
-
-      it("invokes the passed in callback with the error", function (done) {
-        mockService.cleanAndSetup(function (error) {
-          expect(error).toBe(deleteInteractionsError);
-          done();
-        });
-      });
-
-      it("does not invoke the MockService done callback", function (done) {
-        mockService.cleanAndSetup(function (error) {
-          expect(spyContext.mockServiceDone).not.toHaveBeenCalled();
-          done();
-        });
+        mockService.setup(verifyExpectedCallbacksWereInvoked);
       });
     });
 
     describe("when there is an error setting up the new interactions", function () {
 
       beforeEach(function () {
-        postInteractionError = new Error("A fake error setting up the interactions");
+        putInteractionsError = new Error("A fake error setting up the interactions");
       });
 
       it("invokes the passed in callback with the error", function (done) {
-        mockService.cleanAndSetup(function (error) {
-          expect(error).toBe(postInteractionError);
+        mockService.setup(function (error) {
+          expect(error).toBe(putInteractionsError);
           done();
         });
       });
 
       it("does not invoke the MockService done callback", function (done) {
-        mockService.cleanAndSetup(function (error) {
+        mockService.setup(function (error) {
           expect(spyContext.mockServiceDone).not.toHaveBeenCalled();
           done();
         });

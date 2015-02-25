@@ -19,6 +19,10 @@ Pact.MockServiceRequests = Pact.MockServiceRequests || {};
     Pact.Http.makeRequest('GET', baseUrl + '/interactions/verification', null, createResponseHandler('Pact verification failed', callback));
   };
 
+  this.putInteractions = function(interactions, baseUrl, callback) {
+    Pact.Http.makeRequest('PUT', baseUrl + '/interactions', JSON.stringify({interactions: interactions}), createResponseHandler('Pact interaction setup failed', callback));
+  };
+
   this.deleteInteractions = function(baseUrl, callback) {
     Pact.Http.makeRequest('DELETE', baseUrl + '/interactions', null, createResponseHandler('Pact interaction cleanup failed', callback));
   };

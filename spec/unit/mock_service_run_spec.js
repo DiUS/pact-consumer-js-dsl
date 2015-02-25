@@ -5,11 +5,11 @@ describe('MockService', function() {
   describe("run", function () {
 
     var spyContext, mockService;
-    var verificationError, postInteractionError, deleteInteractionsError, postPactError;
+    var verificationError, putInteractionsError, deleteInteractionsError, postPactError;
 
     beforeEach(function () {
 
-      postInteractionError = null;
+      putInteractionsError = null;
       deleteInteractionsError = null;
       verificationError = null;
       postPactError = null;
@@ -20,12 +20,8 @@ describe('MockService', function() {
 
       spyOn(spyContext, 'mockServiceDone').and.callThrough();
 
-      spyOn(Pact.MockServiceRequests, 'postInteraction').and.callFake(function(interactions, baseUrl, callback){
-        callback(postInteractionError);
-      });
-
-      spyOn(Pact.MockServiceRequests, 'deleteInteractions').and.callFake(function(baseUrl, callback){
-        callback(deleteInteractionsError);
+      spyOn(Pact.MockServiceRequests, 'putInteractions').and.callFake(function(interactions, baseUrl, callback){
+        callback(putInteractionsError);
       });
 
       spyOn(Pact.MockServiceRequests, 'getVerification').and.callFake(function(baseUrl, callback){
@@ -59,33 +55,15 @@ describe('MockService', function() {
       });
     });
 
-    describe("when an error occurs while deleting the previous test's interactions", function () {
-
-      beforeEach(function () {
-        deleteInteractionsError = new Error('A fake error while deleting interactions');
-      });
-
-      it("invokes the done callback with an error", function (done) {
-        function verifyExpectedCallbacksWereInvoked() {
-          expect(spyContext.mockServiceDone).toHaveBeenCalledWith(deleteInteractionsError);
-          done();
-        }
-
-        mockService.run(verifyExpectedCallbacksWereInvoked, function(runDone){
-          runDone();
-        })
-      });
-    });
-
     describe("when an error occurs while setting up the interactions", function () {
 
       beforeEach(function () {
-        postInteractionError = new Error('A fake error while setting up interactions');
+        putInteractionsError = new Error('A fake error while setting up interactions');
       });
 
       it("invokes the done callback with an error", function (done) {
         function verifyExpectedCallbacksWereInvoked() {
-          expect(spyContext.mockServiceDone).toHaveBeenCalledWith(postInteractionError);
+          expect(spyContext.mockServiceDone).toHaveBeenCalledWith(putInteractionsError);
           done();
         }
 

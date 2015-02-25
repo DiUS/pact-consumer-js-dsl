@@ -134,6 +134,10 @@ Pact.MockServiceRequests = Pact.MockServiceRequests || {};
     Pact.Http.makeRequest('GET', baseUrl + '/interactions/verification', null, createResponseHandler('Pact verification failed', callback));
   };
 
+  this.putInteractions = function(interactions, baseUrl, callback) {
+    Pact.Http.makeRequest('PUT', baseUrl + '/interactions', JSON.stringify({interactions: interactions}), createResponseHandler('Pact interaction setup failed', callback));
+  };
+
   this.deleteInteractions = function(baseUrl, callback) {
     Pact.Http.makeRequest('DELETE', baseUrl + '/interactions', null, createResponseHandler('Pact interaction cleanup failed', callback));
   };
@@ -171,45 +175,12 @@ Pact.MockService = Pact.MockService || {};
       }
     };
 
-    var setupInteractionsSequentially = function(interactions, index, callback) {
-      if (index >= interactions.length) {
-        callback(null);
-        return;
-      }
-
-      Pact.MockServiceRequests.postInteraction(interactions[index], _baseURL, function(error) {
-        if (error) {
-          callback(error);
-          return;
-        }
-
-        setupInteractionsSequentially(interactions, index + 1, callback);
-      });
-    };
-
-    this.cleanAndSetup = function(callback) {
-      this.clean(function(error){
-        if (error) {
-          callback(error);
-          return;
-        }
-
-        self.setup(callback);
-      });
-    };
-
-    //private
-    this.clean = function(callback) {
-      // Cleanup the interactions from the previous test
-      Pact.MockServiceRequests.deleteInteractions(_baseURL, callback);
-    };
-
     //private
     this.setup = function(callback) {
-      // Post the new interactions
+      // PUT the new interactions
       var interactions = _interactions;
       _interactions = []; //Clean the local setup
-      setupInteractionsSequentially(interactions, 0, callback);
+      Pact.MockServiceRequests.putInteractions(interactions, _baseURL, callback);
     };
 
     this.verifyAndWrite = function(callback) {
@@ -260,7 +231,7 @@ Pact.MockService = Pact.MockService || {};
       };
 
       var that = this;
-      this.cleanAndSetup(function(error) {
+      this.setup(function(error) {
         if (error) {
           done(error);
           return;
