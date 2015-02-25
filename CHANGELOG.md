@@ -4,6 +4,18 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.1.3 (25 Feb 2015)
+
+* 0debea5 - Fixing examples. (Beth Skurrie, Wed Feb 25 14:02:46 2015 +1100)
+* db5bd4e - removing custom UMD template, adding scoped XMLHttpRequest within Pact.Http, fixing tests accordingly (Michel Boudreau, Tue Feb 24 10:44:14 2015 +1100)
+* eadd791 - adding run-sequence to package.json (Michel Boudreau, Tue Feb 24 09:11:49 2015 +1100)
+* b1c5324 - fixing tests to be more agnostic, changing gulpfile to work better sequencially (Michel Boudreau, Mon Feb 23 17:27:53 2015 +1100)
+* cfd60c2 - fixing gulp and synchronous tasks so there's no conflict in pact, added some code at top of tests to run in both web and node mode (Michel Boudreau, Mon Feb 23 16:57:59 2015 +1100)
+* 525c762 - Merging in @mboudreau's changes to the MockService and adding unit tests. (Beth Skurrie, Thu Feb 19 12:57:27 2015 +1100)
+* 5690bed - Merging in packaging and gulp build changes from @mboudreau (Beth Skurrie, Wed Feb 18 08:48:19 2015 +1100)
+* 6c372c4 - Fixing typos and improving laying in README. Putting bundle exec back in. (Beth Skurrie, Wed Feb 18 08:47:31 2015 +1100)
+* afbee20 - Merging documentation changes from @mboudreau (Beth Skurrie, Wed Feb 18 08:46:36 2015 +1100)
+
 ### 0.1.2 (25 Feb 2015)
 
 * feec9cc - Updated CONTRIBUTING.md with npm publish instructions (Beth, Wed Feb 25 08:50:21 2015 +1100)
