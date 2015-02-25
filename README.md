@@ -125,7 +125,7 @@ gem 'pact-mock_service', '~> 0.2.4'
 
 Have a look at the [example](/example/web) folder. Ensure you have Google Chrome installed.
 
-    $ cd example
+    $ cd example/web
     $ bundle install
     $ npm install
     $ npm test
@@ -135,13 +135,15 @@ Have a look at the [example](/example/web) folder. Ensure you have Google Chrome
 
 This is only an example on how to use the pact-consumer-js-dsl within Node.  This is not best practice, but is a good starting point without creating a lengthy example using Grunt or Gulp with Protractor or Karma.
 
-1. Start pact-mock-service with `bundle exec pact-mock-service -p 1234 -l tmp/pact.log --pact-dir tmp/pacts`
+1. Start pact-mock-service with `bundle exec pact-mock-service start -p 1234 -l tmp/pact.log --pact-dir tmp/pacts`
 
 1. Run nodejs command to setup pact consumer `node example/nodejs/setup.js`
 
 1. Run your tests here with whatever you want, like Protractor for e2e testing
 
 1. Run nodejs command to verify interactions and write pact files `node example/nodejs/teardown.js`
+
+1. Stop the mock service with `bundle exec pact-mock-service stop -p 1234`
 
 # Contributing
 

@@ -2,15 +2,12 @@
 
 # Start mock service
 mkdir -p tmp/pacts
-pact-mock-service -p 1234 -l tmp/pact.log --pact-dir tmp/pacts &
-PACT_PID=$!
+bundle exec pact-mock-service restart -p 1234 -l tmp/pact.log --pact-dir tmp/pacts
 
-sleep 5 #wip! Need a nicer way to wait for the service to start up
-
-echo $PACT_PID
-
-# Run tests - is this the right way to call karma?!
 node_modules/karma/bin/karma start
+exit_code=$?
 
 # Shutdown mock service
-kill -2 $PACT_PID
+bundle exec pact-mock-service stop -p 1234
+
+exit $exit_code

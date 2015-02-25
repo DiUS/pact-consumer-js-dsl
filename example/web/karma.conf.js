@@ -17,7 +17,7 @@ module.exports = function(config) {
     files: [
       // if you are using this example to setup your own project load pact from the node_modules directory
       // i.e. node_modules/pact-consumer-js-dsl/dist/pact-consumer-js-dsl.js
-      '../dist/pact-consumer-js-dsl.js',
+      '../../dist/pact-consumer-js-dsl.js',
       'client.js',
       'client-spec.js'
     ],
