@@ -95,6 +95,7 @@ gem 'pact-mock_service', '~> 0.4.1'
 
       it("should say hello", function(done) {
         helloProvider
+          .given("default server state")
           .uponReceiving("a request for hello")
           .withRequest("get", "/sayHello")
           .willRespondWith(200, {
