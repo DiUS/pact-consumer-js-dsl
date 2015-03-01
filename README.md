@@ -95,17 +95,18 @@ gem 'pact-mock_service', '~> 0.4.1'
 
       it("should say hello", function(done) {
         helloProvider
-          .given("default server state")
-          .uponReceiving("a request for hello")
-          .withRequest("get", "/sayHello")
-          .willRespondWith(200, {
+          .given("an alligator with the name Mary exists")
+          .uponReceiving("a request for an alligator")
+          .withRequest("get", "/alligators/Mary", {
+            "Accept": "application/json"
+          }).willRespondWith(200, {
             "Content-Type": "application/json"
           }, {
-            reply: "Hello"
+            "name": "Mary"
           });
 
         helloProvider.run(done, function(runComplete) {
-          expect(client.sayHello()).toEqual("Hello");
+          expect(client.getAlligatorByName("Mary")).toEqual(new Alligator("Mary"));
           runComplete();
         });
       });
