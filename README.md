@@ -22,7 +22,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
 * Note: Windows users must run the install command after following Wiki instructions
 
-```
+```ruby
 source 'https://rubygems.org'
 gem 'pact-mock_service', '~> 0.4.1'
 
