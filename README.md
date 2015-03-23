@@ -113,6 +113,15 @@ gem 'pact-mock_service', '~> 0.4.1'
     });
     ```
 
+    The "done" callback is used by the pact framework to communicate to your test framework that the expected interactions have not occurred. It should contain an assertion that will fail the test if an error is present. eg. for Jasmine: 
+    
+    ```javascript
+    done: function (error) {
+      expect(error).toBe(null);
+    }
+    ```
+    This is required because of the asynchonous nature of Javascript - raising exceptions to fail a test is not the "Javascript Way".
+
     See the spec in the example directory for more examples of asynchronous callbacks, how to expect error responses, and how to use query params.
 
     Make sure the source and test files are included by Karma in the `karma.conf.js` in the files array.
