@@ -1,7 +1,5 @@
 # Pact Consumer Javascript DSL
 
-_This DSL is in very early stages of development, please bear with us as we give it some polish. Please raise any problems you have in the github issues. Check out the [Development Roadmap](/ROADMAP.md) to see where we are headed._
-
 This codebase provides a Javascript DSL for creating pacts. If you are new to Pact, please read the Pact [README](pact-readme) first.
 
 This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provide the mock service for the Javascript tests. If you do not want to use Ruby in your project, please read about using a standalone Pact mock service [here][pact-mock-service-without-ruby].
