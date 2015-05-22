@@ -80,8 +80,9 @@ gem 'pact-mock_service', '~> 0.4.1'
       var client, helloProvider;
 
       beforeEach(function() {
+        //ProviderClient is the class you have written to make the HTTP calls to the provider
         client = new ProviderClient('http://localhost:1234');
-        helloProvider = MockService.create({
+        helloProvider = Pact.mockService({
           consumer: 'Hello Consumer',
           provider: 'Hello Provider',
           port: 1234,
