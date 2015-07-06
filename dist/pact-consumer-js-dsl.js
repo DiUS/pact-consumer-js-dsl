@@ -156,7 +156,8 @@ Pact.MockService = Pact.MockService || {};
 (function() {
 
   function MockService(opts) {
-    var _baseURL = 'http://127.0.0.1:' + opts.port;
+    var host = opts.host || '127.0.0.1'
+    var _baseURL = 'http://' + host + ':' + opts.port;
     var _interactions = [];
     var self = this;
 
