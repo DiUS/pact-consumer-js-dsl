@@ -44,7 +44,8 @@
     "example": "example"
   },
   "scripts": {
-    "test": "gulp run-tests"
+    "test": "gulp run-tests",
+    "unit-test": "gulp run-unit-tests"
   },
   "repository": {
     "type": "git",
