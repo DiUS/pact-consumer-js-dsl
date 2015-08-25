@@ -1,7 +1,7 @@
-language: node_js
-node_js:
-  - "0.12"
-sudo: false
+language: ruby
+rvm:
+  - 2.1.0
 before_script:
-  - npm install -g gulp
-script: gulp run-tests
+  - npm install
+script:
+  - node_modules/.bin/gulp run-tests
