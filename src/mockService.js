@@ -3,7 +3,13 @@ Pact.MockService = Pact.MockService || {};
 (function() {
 
   function MockService(opts) {
-    var _baseURL = 'http://127.0.0.1:' + opts.port;
+
+    if (!opts || typeof(opts.port) === 'undefined' ) {
+      throw new Error('Error creating MockService. Please provide the Pact mock service port');
+    }
+
+    var _host = opts.host || '127.0.0.1';
+    var _baseURL = 'http://' + _host + ':' + opts.port;
     var _interactions = [];
     var self = this;
 
