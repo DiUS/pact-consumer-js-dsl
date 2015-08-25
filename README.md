@@ -1,5 +1,7 @@
 # Pact Consumer Javascript DSL
 
+[![Build Status](https://travis-ci.org/DiUS/pact-consumer-js-dsl.svg)](https://travis-ci.org/DiUS/pact-consumer-js-dsl)
+
 This codebase provides a Javascript DSL for creating pacts. If you are new to Pact, please read the Pact [README](pact-readme) first.
 
 This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provide the mock service for the Javascript tests. If you do not want to use Ruby in your project, please read about using a standalone Pact mock service [here][pact-mock-service-without-ruby].
@@ -112,8 +114,8 @@ gem 'pact-mock_service', '~> 0.4.1'
     });
     ```
 
-    The "done" callback is used by the pact framework to communicate to your test framework that the expected interactions have not occurred. It should contain an assertion that will fail the test if an error is present. eg. for Jasmine: 
-    
+    The "done" callback is used by the pact framework to communicate to your test framework that the expected interactions have not occurred. It should contain an assertion that will fail the test if an error is present. eg. for Jasmine:
+
     ```javascript
     done: function (error) {
       expect(error).toBe(null);
