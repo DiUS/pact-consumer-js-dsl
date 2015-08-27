@@ -17,7 +17,7 @@ module.exports = function(config) {
       'src/interaction.js',
       'src/mockServiceRequests.js',
       'src/mockService.js',
-      'spec/integration/*spec.js'
+      'spec/integration/**/*spec.js'
     ],
 
     // list of files to exclude

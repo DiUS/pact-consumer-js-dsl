@@ -133,6 +133,72 @@ gem 'pact-mock_service', '~> 0.4.1'
    * Run `karma start` (in another terminal window)
    * Inspect the pact file that has been written to "hello_consumer-hello_provider.json"
 
+### Flexible Matching
+
+Please read about using regular expressions and type based matching [here][flexible-matching] before continuing.
+
+*Note*: The following will only work with verifications done by the Ruby Pact library, because it uses a Ruby specific way of serialising the data structure.
+
+#### Match by regular expression
+
+Remember that the mock service is written in Ruby, so the regular expression must be in a Ruby format, not a Javascript format.
+
+```javascript
+
+provider
+  .given('there is a product')
+  .uponReceiving("request for products")
+  .withRequest({
+    method: "get",
+    path: "/products",
+    query: {
+      category: Pact.Match.term({matcher: "\\w+", generate: 'pizza'}),
+    }
+  })
+  .willRespondWith(
+    200,
+    {},
+    {
+      "collection": [
+        {
+          guid: Pact.Match.term({matcher: "\\d{16}", generate: "1111222233334444"})
+        }
+      ]
+    }
+  );
+```
+
+#### Match based on type
+
+```javascript
+
+provider
+  .given('there is a product')
+  .uponReceiving("request for products")
+  .withRequest({
+    method: "get",
+    path: "/products",
+    query: {
+      category: Pact.Match.somethingLike("pizza")
+    }
+  })
+  .willRespondWith(
+    200,
+    {},
+    {
+      "collection": [
+        {
+          guid: Pact.Match.somethingLike(1111222233334444)
+        }
+      ]
+    }
+  );
+```
+
+[flexible-matching]: https://github.com/realestate-com-au/pact/wiki/Regular-expressions-and-type-matching-with-Pact
+
+### Examples
+
 #### Web Example
 
 Have a look at the [example](/example/web) folder. Ensure you have Google Chrome installed.

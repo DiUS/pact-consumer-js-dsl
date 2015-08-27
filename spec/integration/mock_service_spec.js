@@ -1,29 +1,7 @@
 'use strict';
 
 describe('MockService', function() {
-  var baseUrl, doneCallback, mockService, XMLHttpRequest;
-
-  baseUrl = 'http://localhost:1234';
-  XMLHttpRequest = typeof exports === 'object'? require('xhr2') : window.XMLHttpRequest;
-
-  var makeRequest = function (options, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function(event) {
-      callback(null, event.target);
-    };
-    xhr.onerror = function() {
-      callback(new Error('Error calling ' + options.path));
-    };
-    xhr.open(options.method, baseUrl + options.path, true);
-
-    if (options.headers) {
-      Object.keys(options.headers).forEach(function (header) {
-        xhr.setRequestHeader(header, options.headers[header]);
-      });
-    }
-
-    xhr.send(options.body);
-  };
+  var doneCallback, mockService;
 
   beforeEach(function() {
     doneCallback = jasmine.createSpy('doneCallback').and.callFake(function (error) {
@@ -41,7 +19,7 @@ describe('MockService', function() {
   describe('a successful match using argument lists', function() {
 
     var doHttpCall = function(callback) {
-      return makeRequest({
+      return specHelper.makeRequest({
         body: 'body',
         headers: {
           'Content-Type': 'text/plain'
@@ -78,7 +56,7 @@ describe('MockService', function() {
   describe('a successful match using hash arguments', function() {
 
     var doHttpCall = function(callback) {
-      makeRequest({
+      specHelper.makeRequest({
         body: 'body',
         headers: {
           'Content-Type': 'text/plain'
@@ -125,7 +103,7 @@ describe('MockService', function() {
   describe('a successful match using a query hash', function() {
 
     var doHttpCall = function(callback) {
-      makeRequest({
+      specHelper.makeRequest({
         method: 'POST',
         path: '/thing?lastName=Smith&firstName=Mary+Jane'
       }, callback);
@@ -157,7 +135,7 @@ describe('MockService', function() {
   describe('multiple interactions mocked at the same time', function() {
 
     var doHttpCall = function(callback) {
-      makeRequest({
+      specHelper.makeRequest({
         body: 'body',
         method: 'GET',
         path: '/thing'
@@ -165,7 +143,7 @@ describe('MockService', function() {
     };
 
     var doDifferentHttpCall = function(callback) {
-      makeRequest({
+      specHelper.makeRequest({
         body: 'body',
         method: 'GET',
         path: '/different-thing'
@@ -200,7 +178,7 @@ describe('MockService', function() {
   describe('verifying a successful match', function() {
 
     var doHttpCall = function(callback) {
-      makeRequest({
+      specHelper.makeRequest({
         method: 'POST',
         path: '/thing'
       }, callback);
@@ -225,7 +203,7 @@ describe('MockService', function() {
   describe('verifying an unsuccessful match', function() {
 
     var doHttpCall = function(callback) {
-      makeRequest({
+      specHelper.makeRequest({
         method: 'POST',
         path: '/wrongThing'
       }, callback);
