@@ -13,8 +13,10 @@ var gulp = require('gulp'),
     $ = require('gulp-load-plugins')();
 
 // FILES
-var srcFiles = ['src/pact.js', 'src/interaction.js', 'src/http.js', 'src/mockServiceRequests.js', 'src/mockService.js'];
-var specFiles = ['spec/**/*spec.js'];
+var srcFiles = ['src/pact.js', 'src/interaction.js', 'src/http.js', 'src/mockServiceRequests.js', 'src/mockService.js', 'src/match.js'];
+var specFiles = ['spec/**/*helper*.js', 'spec/**/*spec.js'];
+var intSpecFiles = ['spec/integration/*spec.js', 'spec/**/*helper*.js'];
+var intSpecPact2Files = ['spec/integration/**/*.js', 'spec/**/*helper*.js'];
 var distFiles = ['dist/pact-consumer-js-dsl.js'];
 var karmaConfig = 'spec/karma.conf.js';
 var nodeConfig = 'spec/node.conf.js';
@@ -50,11 +52,18 @@ var waitForServerToStart = function () {
     return deferred.promise;
 };
 
-var withServer = function (action) {
+var withServer = function (action, version) {
     var deferred = q.defer();
+    var pactSpecificationVersionArgs = [];
+
+    if (!version) {
+        version = 1;
+    } else {
+        pactSpecificationVersionArgs = ['--pact-specification-version', version];
+    }
 
     cleanDirectories(['tmp/pacts', 'log']);
-    var child = spawn('bundle', ['exec', 'pact-mock-service', '-p', '1234', '-l', 'tmp/pact.log', '--pact-dir', './tmp/pacts']);
+    var child = spawn('bundle', ['exec', 'pact-mock-service', '-p', '1234', '-l', 'tmp/pact.log', '--pact-dir', './tmp/pacts'].concat(pactSpecificationVersionArgs));
     child.on('error', function (error) {
         console.log('pact-mock-service:', error.toString());
     });
@@ -110,9 +119,18 @@ gulp.task('default', ['build', 'run-tests']);
 
 gulp.task('run-browser-tests', ['build'], function () {
     return withServer(function () {
-        return gulp.src(distFiles.concat(specFiles))
+        return gulp.src(distFiles.concat(intSpecFiles))
             .pipe($.karma({configFile: karmaConfig}));
-    });
+    }, 1);
+});
+
+gulp.task('run-browser-tests-pact2', ['build'], function () {
+    // NOTE: This is a superset of run-browser-tests, executed
+    //       against a v2 version of the Pact Specification
+    return withServer(function () {
+        return gulp.src(distFiles.concat(intSpecPact2Files))
+		    .pipe($.karma({configFile: 'spec/karma-v2.conf.js'}));
+    }, 2);
 });
 
 gulp.task('run-unit-tests', ['build'], function () {
@@ -130,7 +148,7 @@ gulp.task('run-node-tests', ['build'], function () {
 });
 
 gulp.task('run-tests', function(callback){
-	runSequence('run-unit-tests', 'run-browser-tests', 'run-node-tests', callback);
+	runSequence('run-unit-tests', 'run-browser-tests', 'run-browser-tests-pact2', 'run-node-tests', callback);
 });
 
 gulp.task('watch', ['clean'], function () {

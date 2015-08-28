@@ -39,6 +39,7 @@
     });
 
     describe("findFriendsByAgeAndChildren", function () {
+
       it("should return some friends", function(done) {
         //Add interaction
         helloProvider
@@ -47,7 +48,7 @@
             method: 'get',
             path: '/friends',
             query: {
-              age: '30', //remember query params are always strings
+              age: Pact.Match.term({generate: '30', matcher: '\\d+'}), //remember query params are always strings
               children: ['Mary Jane', 'James'] // specify params with multiple values in an array
             },
             headers: {
@@ -61,14 +62,14 @@
             },
             body: {
               friends: [{
-                name: 'Sue'
+                name: Pact.Match.somethingLike('Sue') // Doesn't tie the Provider to a particular friend such as 'Sue'
               }]
             }
           });
 
         //Run the tests
         helloProvider.run(done, function(runComplete) {
-          expect(client.findFriendsByAgeAndChildren('30', ['Mary Jane', 'James'])).toEqual([{
+          expect(client.findFriendsByAgeAndChildren('33', ['Mary Jane', 'James'])).toEqual([{
             name: 'Sue'
           }]);
           runComplete();
