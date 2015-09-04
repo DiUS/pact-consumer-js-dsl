@@ -4,7 +4,7 @@ Pact.MockService = Pact.MockService || {};
 
   function MockService(opts) {
 
-    if (!opts || typeof(opts.port) === 'undefined' ) {
+    if (!opts || typeof opts.port === 'undefined' ) {
       throw new Error('Error creating MockService. Please provide the Pact mock service port');
     }
 
@@ -13,7 +13,7 @@ Pact.MockService = Pact.MockService || {};
     var _interactions = [];
     var self = this;
 
-    if (typeof(opts.done) !== 'function') {
+    if (typeof opts.done !== 'function') {
       throw new Error('Error creating MockService. Please provide an option called "done", that is a function that asserts (using your test framework of choice) that the first argument, error, is null.');
     }
 

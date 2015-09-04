@@ -19,3 +19,4 @@ example-*/tmp
 checkstyle.xml
 
 .idea
+.DS_Store
