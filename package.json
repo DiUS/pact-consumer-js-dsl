@@ -1,6 +1,6 @@
 {
   "name": "pact-consumer-js-dsl",
-  "version": "0.2",
+  "version": "0.2.0",
   "description": "DSL to write pact tests in Javascript",
   "main": "dist/pact-consumer-js-dsl.js",
   "dependencies": {
