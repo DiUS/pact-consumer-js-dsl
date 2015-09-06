@@ -4,6 +4,18 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.2 (7 Sep 2015)
+
+* 88389ba - Added Pact Term and and SomethingLike flexible matchers. (Matt Fellows, Thu Aug 27 12:11:06 2015 +1000)
+* ea11005 - set travis to run in docker containers (Ronald Holshausen, Tue Aug 25 20:15:53 2015 +1000)
+* a33eb54 - update travis to use node as the language (Ronald Holshausen, Tue Aug 25 19:32:52 2015 +1000)
+* 7c6434f - added travis build status badge (Ronald Holshausen, Tue Aug 25 19:17:46 2015 +1000)
+* 9442f36 - Unit tests for the MockService configuration (Matt Fellows, Tue Aug 25 09:01:14 2015 +1000)
+* 4e0f0be - Allow mock service host to be configured (Andrew Browne, Tue Apr 21 10:57:59 2015 +1000)
+* 9760b87 - Updating example with the given method as it is required to add provider_state (cwmyers, Fri Feb 27 13:48:15 2015 +1100)
+* 6428ad8 - Using PUT /interactions instead of DELETE /interactions and POST /interactions (Beth, Wed Feb 25 17:42:36 2015 +1100)
+* e465e88 - Bump pact-mock_service gem version (Beth, Wed Feb 25 14:08:48 2015 +1100)
+
 ### 0.1.3 (25 Feb 2015)
 
 * 0debea5 - Fixing examples. (Beth Skurrie, Wed Feb 25 14:02:46 2015 +1100)

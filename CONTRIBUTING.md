@@ -75,7 +75,7 @@ The `pact-consumer-js-dsl.js` is a minified and concatenated version of the Pact
 
 When a stable version X.Y.Z can be released:
 
-* Increment the version in package.json
+* Increment the version in package.json and bower.json.
 * Update the CHANGELOG.md with the commits since the last release using the command:
 
     $ git log --pretty=format:'  * %h - %s (%an, %ad)'
