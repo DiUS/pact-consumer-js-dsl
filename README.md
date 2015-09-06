@@ -24,7 +24,7 @@ This DSL relies on the Ruby [pact-mock_service][pact-mock-service] gem to provid
 
 ```ruby
 source 'https://rubygems.org'
-gem 'pact-mock_service', '~> 0.4.1'
+gem 'pact-mock_service', '~> 0.7.0'
 
 ```
 
