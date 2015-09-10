@@ -4,6 +4,7 @@ describe('MockService', function() {
   var doneCallback, mockService;
 
   beforeEach(function() {
+
     doneCallback = jasmine.createSpy('doneCallback').and.callFake(function (error) {
       expect(error).toBe(null);
     });
@@ -19,6 +20,7 @@ describe('MockService', function() {
   describe("a successful match using Pact Matchers", function() {
 
     describe("with an argument list", function() {
+
         var doHttpCall = function(callback) {
           specHelper.makeRequest({
             body: 'body',

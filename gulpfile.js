@@ -147,6 +147,10 @@ gulp.task('run-node-tests', ['build'], function () {
     });
 });
 
+gulp.task('run-integration-tests', function(callback){
+    runSequence('run-browser-tests-pact2', 'run-browser-tests', callback);
+});
+
 gulp.task('run-tests', function(callback){
 	runSequence('run-unit-tests', 'run-browser-tests', 'run-browser-tests-pact2', 'run-node-tests', callback);
 });

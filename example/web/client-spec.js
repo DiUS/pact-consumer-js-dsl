@@ -61,9 +61,9 @@
               "Content-Type": "application/json"
             },
             body: {
-              friends: [{
+              friends: Pact.Match.eachLike({
                 name: Pact.Match.somethingLike('Sue') // Doesn't tie the Provider to a particular friend such as 'Sue'
-              }]
+              }, {min: 1})
             }
           });
 

@@ -45,7 +45,8 @@
   },
   "scripts": {
     "test": "gulp run-tests",
-    "unit-test": "gulp run-unit-tests"
+    "unit-test": "gulp run-unit-tests",
+    "integration-test": "gulp run-integration-tests"
   },
   "repository": {
     "type": "git",
