@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/DiUS/pact-consumer-js-dsl.svg)](https://travis-ci.org/DiUS/pact-consumer-js-dsl)
 
-This codebase provides a Javascript DSL for creating pacts. If you are new to Pact, please read the Pact [README](pact-readme) first.
+This codebase provides a Javascript DSL for creating pacts. If you are new to Pact, please read the Pact [README][pact-readme] first.
 
 The Javascript DSL is compatible with v2 of the [pact-specification](https://github.com/bethesque/pact-specification/tree/version-2) and supports type based matching, flexible array lengths, and regular expressions (read more below).
 
