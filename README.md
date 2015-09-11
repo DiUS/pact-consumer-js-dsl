@@ -137,8 +137,6 @@ gem 'pact-mock_service', '~> 0.7.0'
 
 Please read about using regular expressions and type based matching [here][flexible-matching] before continuing.
 
-*Note*: The following will only work with verifications done by the Ruby Pact library, because it uses a Ruby specific way of serialising the data structure.
-
 #### Match by regular expression
 
 Remember that the mock service is written in Ruby, so the regular expression must be in a Ruby format, not a Javascript format.
