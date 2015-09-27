@@ -4,6 +4,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.2.1 (28 Sep 2015)
+
+* 5794963 - Add eachLike array flexible matcher (Michael Isgro, Fri Sep 4 15:07:15 2015 +1000)
+
 ### 0.2 (7 Sep 2015)
 
 * 88389ba - Added Pact Term and and SomethingLike flexible matchers. (Matt Fellows, Thu Aug 27 12:11:06 2015 +1000)
