@@ -131,7 +131,7 @@ gem 'pact-mock_service', '~> 0.7.0'
 
 1. Let's run that bad boy!
 
-   * Start the pact mock server with `bundle exec pact-mock-service -p 1234 --pact-specification-version 2.0.0 -l log/pact.logs --pact-dir tmp/pacts`
+   * Start the pact mock server with `bundle exec pact-mock-service -p 1234 --pact-specification-version 2.0.0 -l log/pact.logs --consumer=hello_consumer --provider=hello_provider --pact-dir tmp/pacts`
    * Run `karma start` (in another terminal window)
    * Inspect the pact file that has been written to "hello_consumer-hello_provider.json"
 
