@@ -83,7 +83,7 @@ gem 'pact-mock_service', '~> 0.7.0'
     describe("Client", function() {
       var client, helloProvider;
 
-      beforeEach(function() {
+      beforeAll(function(done) {
         //ProviderClient is the class you have written to make the HTTP calls to the provider
         client = new ProviderClient('http://localhost:1234');
         helloProvider = Pact.mockService({
@@ -94,6 +94,10 @@ gem 'pact-mock_service', '~> 0.7.0'
             expect(error).toBe(null);
           }
         });
+
+        // This ensures your pact-mock-service is in a clean state before
+        // running your test suite.
+        helloProvider.resetSession(done);
       });
 
       it("should say hello", function(done) {
