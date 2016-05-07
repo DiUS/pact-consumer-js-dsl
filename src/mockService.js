@@ -55,6 +55,13 @@ Pact.MockService = Pact.MockService || {};
         Pact.MockServiceRequests.getVerification(_baseURL, callback);
     };
 
+    this.resetSession = function(callback) {
+        callback = callback || function(){};
+        // DELETE the existing session so the developer can modify pacts without
+        // to restarting the server.
+        Pact.MockServiceRequests.deleteSession(_baseURL, callback);
+    };
+
     this.write = function(callback) {
         callback = callback || function(){};
         Pact.MockServiceRequests.postPact(_pactDetails, _baseURL, callback);

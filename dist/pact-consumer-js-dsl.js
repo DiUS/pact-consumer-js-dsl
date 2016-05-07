@@ -150,7 +150,12 @@ Pact.MockServiceRequests = Pact.MockServiceRequests || {};
     Pact.Http.makeRequest('POST', baseUrl + '/pact', JSON.stringify(pactDetails), createResponseHandler('Could not write the pact file', callback));
   };
 
+  this.deleteSession = function(baseUrl, callback) {
+    Pact.Http.makeRequest('DELETE', baseUrl + '/session', null, createResponseHandler('Pact session cleanup failed', callback));
+  };
+
 }).apply(Pact.MockServiceRequests);
+
 Pact.MockService = Pact.MockService || {};
 
 (function() {
@@ -206,6 +211,13 @@ Pact.MockService = Pact.MockService || {};
         callback = callback || function(){};
         //Verify that the expected interactions have occurred
         Pact.MockServiceRequests.getVerification(_baseURL, callback);
+    };
+
+    this.resetSession = function(callback) {
+        callback = callback || function(){};
+        // DELETE the existing session so the developer can modify pacts without
+        // to restarting the server.
+        Pact.MockServiceRequests.deleteSession(_baseURL, callback);
     };
 
     this.write = function(callback) {
