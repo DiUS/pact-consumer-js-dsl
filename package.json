@@ -1,6 +1,6 @@
 {
   "name": "pact-consumer-js-dsl",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "DSL to write pact tests in Javascript",
   "main": "dist/pact-consumer-js-dsl.js",
   "dependencies": {
@@ -37,7 +37,8 @@
     "Tarcio Saraiva <tsaraiva@dius.com.au>",
     "Beth Skurrie <bskurrie@dius.com.au>",
     "Michel Boudreau <michelboudreau@gmail.com>",
-    "Ben Sayers <bpsayers@gmail.com>"
+    "Ben Sayers <bpsayers@gmail.com>",
+    "Matt Fellows <mfellows@dius.com.au"
   ],
   "directories": {
     "lib": "src",

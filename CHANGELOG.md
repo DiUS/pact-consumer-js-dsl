@@ -4,6 +4,12 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.2.2 (8 May 2016)
+
+  * cf96a12 - Bump Pact Mock Service version in example for flexible matching (Matt Fellows, Sat May 7 22:17:03 2016 +1000)
+  * 137d802 - Merge pull request #54 from aaronrenner/ar-reset-session (Matt Fellows, Sat May 7 21:41:09 2016 +1000)
+  * f28cbb5 - Added resetSession to allow clearing out pact-mock-server (Aaron Renner, Thu Apr 21 13:25:52 2016 -0600)
+
 ### 0.2.1 (28 Sep 2015)
 
 * 5794963 - Add eachLike array flexible matcher (Michael Isgro, Fri Sep 4 15:07:15 2015 +1000)
