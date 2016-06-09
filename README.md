@@ -1,5 +1,7 @@
 # Pact Consumer Javascript DSL
 
+**NOTE: We are in the process of releasing a _better_ Pact experience for JavaScript and Node. This project will soon merge with [Pact JS](https://github.com/pact-foundation/pact-js). Whilst not officially released, if you are starting out we recommend you start there.**
+
 [![Build Status](https://travis-ci.org/DiUS/pact-consumer-js-dsl.svg)](https://travis-ci.org/DiUS/pact-consumer-js-dsl)
 
 This codebase provides a Javascript DSL for creating pacts. If you are new to Pact, please read the Pact [README][pact-readme] first.
@@ -209,7 +211,7 @@ Matching provides the ability to specify flexible length arrays. For example:
 Pact.Match.eachLike(obj, { min: 3 })
 ```
 
-Where `obj` can be any javascript object, value or Pact.Match. It takes optional argument (`{ min: 3 }`) where min is greater than 0 and defaults to 1 if not provided. 
+Where `obj` can be any javascript object, value or Pact.Match. It takes optional argument (`{ min: 3 }`) where min is greater than 0 and defaults to 1 if not provided.
 
 Below is an example that uses all of the Pact Matchers.
 
