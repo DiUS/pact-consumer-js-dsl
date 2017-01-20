@@ -1,6 +1,6 @@
 # Pact Consumer Javascript DSL
 
-**NOTE: We are in the process of releasing a _better_ Pact experience for JavaScript and Node. This project will soon merge with [Pact JS](https://github.com/pact-foundation/pact-js). Whilst not officially released, if you are starting out we recommend you start there.**
+**NOTE: This project has been superceded by [Pact JS](https://github.com/pact-foundation/pact-js) and is no longer receiving regular updates.**
 
 [![Build Status](https://travis-ci.org/DiUS/pact-consumer-js-dsl.svg)](https://travis-ci.org/DiUS/pact-consumer-js-dsl)
 
